@@ -9,7 +9,7 @@ public class SourceFileReader {
     private ArrayList<Character> mnemonics = new ArrayList<Character>();
     
     // open file in read mode, and create & open input stream
-    public ArrayList<Character> fileReader() throws IOException {
+    public ArrayList<Character> fileReader() {
 
         try{
         BufferedReader br = new BufferedReader(new FileReader("TestInherentMnemonics.asm"));
@@ -47,6 +47,11 @@ public class SourceFileReader {
     //     }
     // }
     
+  
+  
+  
+  
+  
   
   
   
