@@ -2,4 +2,8 @@
 
 public class CodeGenerator {
     
+    public void generateList(){
+    
+    }
+    
 }

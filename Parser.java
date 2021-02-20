@@ -18,6 +18,7 @@ public class Parser {
     }
 
     
+        
 
     public ArrayList<LineStatement> getIntermediateRep(){
 
@@ -31,9 +32,10 @@ public class Parser {
         // loop through the array of tokens to perform the parsing
         for(Token token : tokens){
         
-            //Check if the current token does not contain an end of line statement
+            //Check if the current token does not contain an end of line marker
             if(token.getEOL() == ""){
                 
+              
 
                 //check if token is a mnemonic
                 if(token.getComment() == null && token.getLabel() == null){
@@ -53,9 +55,8 @@ public class Parser {
 
             }
 
+            //check if the current token contains an end of line marker
             if(token.getEOL() == "\n"){
-
-                //make same checks as previous if statement
 
                 //check if token is a mnemonic
                 if(token.getComment() == null && token.getLabel() == null){
@@ -100,6 +101,7 @@ public class Parser {
     //     l.readFileByLine(p,s);
     //     System.out.println("-----------------------");
 
+    //     //check to see if mnemonic 
     //     for (String name: s.gHashMap().keySet()){
     //     String key = name.toString();
     //     String value = s.gHashMap().get(name).toString();
@@ -111,6 +113,7 @@ public class Parser {
     // }
 
 
+    
 
 
 

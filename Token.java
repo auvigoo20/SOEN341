@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+//parent class which contains Labe, Instruction and Comment classes
 public class Token {
    
     private Label label;
@@ -6,9 +7,8 @@ public class Token {
     private Comment comment;
     private String EOL;
 
+//halt ;fsdfk
 
-    
-    private ArrayList<Token> token = new ArrayList<Token>();
 
     public Token(){
         label = null;

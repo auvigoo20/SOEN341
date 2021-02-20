@@ -1,4 +1,4 @@
-public class Instruction extends Token {
+public class Instruction extends Token{
     
     private String mnemonic;
     private int operand1;

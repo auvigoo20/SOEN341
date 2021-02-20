@@ -1,4 +1,4 @@
-public class Comment extends Token {
+public class Comment extends Token{
     
     private String comment;
 
@@ -10,9 +10,8 @@ public class Comment extends Token {
         this.comment = comment;
     }
 
-    public String getComment(){
+    public String getCommentToken(){
         return comment;
     }
-
 
 }
