@@ -1,51 +1,55 @@
 public class LineStatement {
     
-    private String label;
-    private String mnemonic;
-    private String comment;
+    private Label label;
+    private Instruction mnemonic;
+    private Comment comment;
     private String eol;
 
+    //Default constructor
     public LineStatement(){
-
     }
 
-    public LineStatement(String label, String mnemonic, String comment, String eol){
+    //Regular constructor
+    public LineStatement(Label label, Instruction mnemonic, Comment comment, String eol){
         this.label = label;
         this.mnemonic = mnemonic;
         this.comment = comment;
         this.eol = eol;
+        
     }
 
-    public String getLabel(){
-        return label;
+
+    public Label getLabel() {
+        return this.label;
     }
 
-    public void setLabel(String label){
+    public void setLabel(Label label) {
         this.label = label;
     }
 
-    
-    public String getMnemonic(){
-        return mnemonic;
+    public Instruction getMnemonic() {
+        return this.mnemonic;
     }
 
-    public void setMnemonic(String mnemonic){
+    public void setMnemonic(Instruction mnemonic) {
         this.mnemonic = mnemonic;
     }
 
-    public String getComment(){
-        return comment;
+    public Comment getComment() {
+        return this.comment;
     }
 
-    public void setComment(String comment){
+    public void setComment(Comment comment) {
         this.comment = comment;
     }
-    
-    public String getEOL(){
-        return eol;
+
+    public String getEol() {
+        return this.eol;
     }
 
-    public void setEOL(String eol){
+    public void setEol(String eol) {
         this.eol = eol;
     }
+
+
 }

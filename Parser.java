@@ -4,52 +4,117 @@ import java.util.ArrayList;
 
 public class Parser {
 
-    private ArrayList<LineStatement> IR = new ArrayList<LineStatement>();;
-    private ArrayList<String> tokens;
+    private ArrayList<LineStatement> IR = new ArrayList<LineStatement>();
+    private ArrayList<Token> tokens;
 
     // default constructor
     public Parser() {
-
+        tokens = new ArrayList<Token>();
     }
 
-    //parse LineStatements to the intermediate representation. Return IR to code generator
-    public ArrayList<LineStatement> getIR(ArrayList<String> tokens) {
+    // This method will be served to take the inputs from the Lexical analyzer
+    public void requestToken(Token t){
+        if(tokens.add(t));
+    }
 
-        this.tokens = tokens;
+    
 
-        String label = null;
-        String mnemonic = null;
-        String comment = null;
-        String eol = null;
+    public ArrayList<LineStatement> getIntermediateRep(){
+
+        ArrayList<LineStatement> IR = new ArrayList<LineStatement>(); // Intermediate representation array list
+       
+        Label label = null; // label field
+        Instruction mnemonic = null; // Instruction field
+        Comment comment = null; // comment field
+
+
+        // loop through the array of tokens to perform the parsing
+        for(Token token : tokens){
         
-        for (String token : this.tokens) {
+            //Check if the current token does not contain an end of line statement
+            if(token.getEOL() == ""){
+                
 
-            // Check if token is a mnemonic
-            if (token.charAt(0) == ' ') {
-                mnemonic = token;
+                //check if token is a mnemonic
+                if(token.getComment() == null && token.getLabel() == null){
+                    mnemonic = token.getInstruction();
+                }
+
+                //check if token is a label
+                if(token.getInstruction()== null && token.getComment()==null){
+                    label = token.getLabel();
+                }
+
+
+                //check if token is a comment
+                if (token.getInstruction() == null && token.getLabel()==null){
+                    comment = token.getComment();
+                }
+
             }
 
-            /*
-             * else if token is label
-             * 
-             * else if token.charAt(0)==';' then comment
-             * 
-             * else if last characters of token == '\n || \r || \r\n' then oel
-             */
+            if(token.getEOL() == "\n"){
 
-            else if (token.contains("\n") || token.contains("\r") || token.contains("/r/n")) {
+                //make same checks as previous if statement
 
-                LineStatement lineStatement = new LineStatement(label, mnemonic, comment, eol);
-                IR.add(lineStatement);
+                //check if token is a mnemonic
+                if(token.getComment() == null && token.getLabel() == null){
+                    mnemonic = token.getInstruction();
+                }
 
+
+                //check if token is a label
+                if(token.getInstruction()== null && token.getComment()==null){
+                    label = token.getLabel();
+                }
+
+
+                //check if token is a comment
+                if (token.getInstruction() == null && token.getLabel()==null){
+                    comment = token.getComment();
+                }
+
+                // when all the fields are set, create a line statement and parse it in the Intermediate representation
+                LineStatement line = new LineStatement(label, mnemonic, comment, token.getEOL());
+                IR.add(line);
+
+                // reinitilize  fields to loop again
                 label = null;
                 mnemonic = null;
                 comment = null;
-                eol = null;
+
+
             }
         }
-
         return IR;
+
     }
+
+
+
+
+    // public static void main(String[] args) {
+    //     Parser p = new Parser();
+    //     SymbolTable s = new SymbolTable();
+    //     LexicalAnalyzer l = new LexicalAnalyzer();
+    //     l.readFileByLine(p,s);
+    //     System.out.println("-----------------------");
+
+    //     for (String name: s.gHashMap().keySet()){
+    //     String key = name.toString();
+    //     String value = s.gHashMap().get(name).toString();
+    //     System.out.println(key+" "+value);
+    //     }
+    
+        
+        
+    // }
+
+
+
+
+
+
+
 
 }
