@@ -14,28 +14,46 @@ public class CodeGenerator {
     //attributes
     private ArrayList<LineStatement> IR = new ArrayList<LineStatement>();
     private SymbolTable symbolTable;
-    private ArrayList<String> opening;
-    private ArrayList<String> closing;
+    private ArrayList<String> opening; //array containing all openings of line statement: Line Addr Code
+    private ArrayList<String> closing; //array containing all closings of line statement: Label Mne Operand Comment
     
-    //private String option;
+    //private String option; //to implement for next sprints
 
     //methods
     /**
      * Traverse the IR using symbol table 
      */
     public void traverseIR(ArrayList IR, SymbolTable symbols){
-        int i = 0;
-        int line = 1;
-        int addr = 0;
-        int code = 0;
+        int lineNbr = 1; //line number output
+        int addr = 0; //address number in decimal, needs to be converted to hexadecimal
+        int code = 0; //code number in decimal, needs to be converted to hexadecimal
         String label = "";
         String mne = "";
         String operand = "";
+        String comment = "";
 
-        //want to traverse using symbol table and assign to opening and closing of line, but difficult when it is not in array form
-        for(String name : symbolTable.gHashMap().keySet()) {
-            
-            
+        //for each mnemonic in the table
+        for(String tableMne : symbolTable.gHashMap().keySet()) {
+            //for each line statement in IR
+            for(int i = 0; i < this.IR.size(); i++) {
+                if(tableMne == this.IR.get(i).getMnemonic().getMnemonic()) {    //if table mnemonic is the same as line mnemonic
+                    //assign all the info into the appropriate variables
+                    label = this.IR.get(i).getLabel().getLabelToken();
+                    mne = this.IR.get(i).getMnemonic().getMnemonic();
+                    //operand = this.IR.get(i).getMnemonic().getOperand1(); //questions: why 2 operands and why are they integers?
+                    comment = this.IR.get(i).getComment().getCommentToken();
+
+                    //find the opcode to the mnemonic
+                    code = searchCode(mne);
+
+                    opening.add(lineNbr + " \t " + addr + " \t " + code + " \t "); //missing format to hexadecimal
+                    closing.add(label + " \t " + mne + " \t " + operand + " \t " + comment);
+
+                    //increment line number and address
+                    lineNbr++;
+                    addr++;
+                }
+            }
             
             //VERY WRONG CODE; DONT USE; PSEUDOCODE
             //line++; 
