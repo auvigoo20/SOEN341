@@ -1,4 +1,4 @@
-public class LineStatement {
+public class LineStatement implements ILineStatement{
     
     private Label label;
     private Instruction mnemonic;
@@ -52,4 +52,7 @@ public class LineStatement {
     }
 
 
+    public String toString(){
+        return "["+mnemonic+"]";
+    }
 }

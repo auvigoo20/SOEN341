@@ -2,7 +2,7 @@
 
 import java.util.ArrayList;
 
-public class Parser {
+public class Parser implements IParser{
 
     private ArrayList<LineStatement> IR = new ArrayList<LineStatement>();
     private ArrayList<Token> tokens;

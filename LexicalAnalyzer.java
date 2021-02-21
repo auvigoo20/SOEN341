@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class LexicalAnalyzer 
+public class LexicalAnalyzer implements ILexicalAnalyzer
 {
 
     // method to read file character by character and generate token
@@ -16,10 +16,6 @@ public class LexicalAnalyzer
         int i;
         String mnemonic = "";
 
-
-        // halt
-        // add
-        // sub
 
         while((i = fis.read()) != -1){
             // System.out.print((char)i);
@@ -48,6 +44,8 @@ public class LexicalAnalyzer
                     mnemonic = mnemonic.stripLeading();
                 }
         }
+
+        fis.close();
     }
     catch(FileNotFoundException e){
         System.out.println("File not found");

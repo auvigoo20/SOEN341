@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 //parent class which contains Labe, Instruction and Comment classes
-public class Token {
+public class Token implements IToken{
    
     private Label label;
     private Instruction instruction;
