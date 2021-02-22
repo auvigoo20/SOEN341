@@ -1,4 +1,4 @@
-Line 	 Addr 	 Code 	 Label 	 Mne 	 Operand 	 Comment
-1 	 0000 	 01 	  	  	 pop 	 null
-2 	 0001 	 00 	  	  	 halt 	 null
-3 	 0002 	 02 	  	  	 dup 	 null
+Line Addr Code  Label     Mne   Operand   Comments  
+1    0000 00    null      halt            null      
+2    0001 0C    null      not             null      
+3    0002 02    null      dup             null      

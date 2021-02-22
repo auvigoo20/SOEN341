@@ -45,8 +45,8 @@ public class CodeGenerator {
                     //find the opcode to the mnemonic
                    code = String.format("%02X", searchCode(mne)); //To hexadecimal (2bit)
 
-                    opening.add(lineNbr + " \t " + addr + " \t " + code + " \t "); 
-                    closing.add(label + " \t " + mne + " \t " + operand + comment);
+                    opening.add(String.format("%-5s%-5s%-6s", lineNbr, addr, code)); 
+                    closing.add(String.format("%-10s%-6s%-10s%-10s", label, mne, operand, comment));
 
                     //increment line number and address
                     lineNbr++;
@@ -133,11 +133,11 @@ public class CodeGenerator {
         }
 
         //Create format header
-        outStr.println("Line \t Addr \t Code \t Label \t Mne \t Operand \t Comments");
+        outStr.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments"));
             
         //Generating opening and closing line statement - TO DO
         for(int i = 0; i < opening.size(); i++) {
-            outStr.println(opening.get(i) + " \t " + closing.get(i));
+            outStr.println(String.format("%-16s%-36s", opening.get(i), closing.get(i)));
         }
 
         //close listing file
