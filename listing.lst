@@ -1,0 +1,4 @@
+Line 	 Addr 	 Code 	 Label 	 Mne 	 Operand 	 Comment
+1 	 0000 	 01 	  	  	 pop 	 null
+2 	 0001 	 00 	  	  	 halt 	 null
+3 	 0002 	 02 	  	  	 dup 	 null

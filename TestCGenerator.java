@@ -20,13 +20,12 @@ public class TestCGenerator {
         IR.add(line2);
         IR.add(line3);
 
-        System.out.println("Expected output:\n");
+        System.out.println("Expected output on listing file:\n");
         System.out.println("Line \t Addr \t Code \t Label \t Mne \t Operand \t Comments");
         System.out.println("1 \t 0000 \t 00 \t  \t halt \t ");
         System.out.println("2 \t 0001 \t 01 \t  \t pop \t ");
         System.out.println("3 \t 0003 \t 02 \t  \t dup \t \n");
 
-        System.out.println("Tested output:");
         CodeGenerator generate = new CodeGenerator();
         generate.traverseIR(IR, table);
         generate.generateListing();

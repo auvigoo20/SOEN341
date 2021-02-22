@@ -3,19 +3,15 @@
 //don't know if we're allowed to use printwriter
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
 
 public class CodeGenerator {
     //attributes
-    private ArrayList<LineStatement> IR = new ArrayList<LineStatement>();
-    private SymbolTable symbolTable;
-    private ArrayList<String> opening; //array containing all openings of line statement: Line Addr Code
-    private ArrayList<String> closing; //array containing all closings of line statement: Label Mne Operand Comment
+    //private ArrayList<LineStatement> IR = new ArrayList<LineStatement>();
+    //private SymbolTable symbolTable;
+    private ArrayList<String> opening = new ArrayList<>(); //array containing all openings of line statement: Line Addr Code
+    private ArrayList<String> closing = new ArrayList<>(); //array containing all closings of line statement: Label Mne Operand Comment
     
     //private String option; //to implement for next sprints
 
@@ -23,58 +19,40 @@ public class CodeGenerator {
     /**
      * Traverse the IR using symbol table 
      */
-    public void traverseIR(ArrayList IR, SymbolTable symbols){
+    public void traverseIR(ArrayList<LineStatement> intRep, SymbolTable symbols){
         int lineNbr = 1; //line number output
-        int addr = 0; //address number in decimal, needs to be converted to hexadecimal
-        int code = 0; //code number in decimal, needs to be converted to hexadecimal
+        int counter = 0; // counter for line number and address
         String label = "";
         String mne = "";
         String operand = "";
         String comment = "";
 
+        String addr="";
+        String code="";
+
         //for each mnemonic in the table
-        for(String tableMne : symbolTable.gHashMap().keySet()) {
+        for(String tableMne : symbols.gHashMap().keySet()) {
             //for each line statement in IR
-            for(int i = 0; i < this.IR.size(); i++) {
-                if(tableMne == this.IR.get(i).getMnemonic().getMnemonic()) {    //if table mnemonic is the same as line mnemonic
+            for(int i = 0; i < intRep.size(); i++) {
+                if(tableMne.equals(intRep.get(i).getMnemonic().getMnemonic())) {    //if table mnemonic is the same as line mnemonic
                     //assign all the info into the appropriate variables
-                    label = this.IR.get(i).getLabel().getLabelToken();
-                    mne = this.IR.get(i).getMnemonic().getMnemonic();
-                    //operand = this.IR.get(i).getMnemonic().getOperand1(); //questions: why 2 operands and why are they integers?
-                    comment = this.IR.get(i).getComment().getCommentToken();
-
+                    label = intRep.get(i).getLabel().getLabelToken();
+                    mne = intRep.get(i).getMnemonic().getMnemonic();
+                    //operand = intRep.get(i).getMnemonic().getOperand1(); //might change, also this is probably not an int?
+                    comment = intRep.get(i).getComment().getCommentToken();
+                    addr=String.format("%04X", counter); //To hexadecimal (4bit)
+                    
                     //find the opcode to the mnemonic
-                    code = searchCode(mne);
+                   code = String.format("%02X", searchCode(mne)); //To hexadecimal (2bit)
 
-                    opening.add(lineNbr + " \t " + addr + " \t " + code + " \t "); //missing format to hexadecimal
-                    closing.add(label + " \t " + mne + " \t " + operand + " \t " + comment);
+                    opening.add(lineNbr + " \t " + addr + " \t " + code + " \t "); 
+                    closing.add(label + " \t " + mne + " \t " + operand + comment);
 
                     //increment line number and address
                     lineNbr++;
-                    addr++;
+                    counter++;             
                 }
-            }
-            
-            //VERY WRONG CODE; DONT USE; PSEUDOCODE
-            //line++; 
-            //addr++;
-            /*
-            symbol mnemonic
-
-           
-            
-            for(IR)
-                symbol mnemonic = IR mnemonic Instruction
-                if it is do
-                    opening[i] = line addr code
-                    closing[i] = Label Mne Operand Comment
-                    i++
-                    line++
-                    addr++   
-            */
-            
-   
-
+            } 
      } 
     } 
 
@@ -148,45 +126,21 @@ public class CodeGenerator {
         //create listing file to output to
         PrintWriter outStr = null;
         try {
-            outStr = new PrintWriter(new FileOutputStream ("listing.lst"));
+            outStr = new PrintWriter(new FileOutputStream("listing.lst"));
             
         } catch(FileNotFoundException e) {
             System.out.println("Cannot create file!");
         }
 
         //Create format header
-        outStr.println("Line \t Addr \t Code \t Label \t Mne \t Operand \t Comment");
+        outStr.println("Line \t Addr \t Code \t Label \t Mne \t Operand \t Comments");
             
-        //Generating opening line statement - TO DO
-        String addr=null;
-        int i=0;
-             for(int line=1; line<=26; line++){ //26 is placeholder for testing
-                    
-                      addr=String.format("%04X", i);
-                      i++;          
-                      outStr.println(line+" "+addr);
-             } 
-
-        
-        
-
-
-
-        //generate closing line statement - TO DO
+        //Generating opening and closing line statement - TO DO
+        for(int i = 0; i < opening.size(); i++) {
+            outStr.println(opening.get(i) + " \t " + closing.get(i));
+        }
 
         //close listing file
         outStr.close(); 
-    } 
-
-    /**
-     * Generates the executable file, to do later
-    void generateExecutable(){} 
-    */  
-
-    /*
-    public static void main(String[] args){
-        CodeGenerator code = new CodeGenerator();
-        code.generateListing();
-    } 
-    */   
+    }    
 } 
