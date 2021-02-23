@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch TestParser",
+            "request": "launch",
+            "mainClass": "TestParser",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestLexicalAnalyzer",
+            "request": "launch",
+            "mainClass": "TestLexicalAnalyzer",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch TestCGenerator",
             "request": "launch",
             "mainClass": "TestCGenerator",

@@ -39,6 +39,8 @@ public class LexicalAnalyzer implements ILexicalAnalyzer
                 //ASCII of \n == 10. If the current character is a newline, use the built string
                 if(i == 10 ){
                     
+                    if(mnemonic.length() > 0){
+
                      // make checks to see if mnemonic, label, or comment, or EOL -- TODO
                     Token t = new Token(new Instruction(mnemonic), "\n");
                     
@@ -51,12 +53,14 @@ public class LexicalAnalyzer implements ILexicalAnalyzer
 
                     //System.out.println(t);
                     mnemonic = ""; // re-initialize word
+                    }
+                    
                 }
                 
                 else{
                     //concatenate characters to string
                     mnemonic += (char)i;
-                    mnemonic = mnemonic.stripLeading();
+                    mnemonic = mnemonic.strip();
                 }
         }
 
