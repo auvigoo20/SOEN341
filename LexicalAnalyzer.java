@@ -8,11 +8,31 @@ import java.util.HashMap;
 public class LexicalAnalyzer implements ILexicalAnalyzer
 {
 
+    private Parser parser;
+    private SymbolTable symbolTable;
+    private FileInputStream fis;
+
+
+    public LexicalAnalyzer(Parser parser, SymbolTable symbolTable){
+        this.parser = parser;
+        this.symbolTable = symbolTable;
+
+        try{
+            this.fis = new FileInputStream("TestInherentMnemonics.asm");
+        }
+        catch(FileNotFoundException e){
+            System.out.println("File not found");
+            System.exit(0);
+        }
+    }
+
+
+
+
     // method to read file character by character and generate token
    public void readFileByLine(Parser p, SymbolTable symbolTable){
     
     try{    
-        FileInputStream fis = new FileInputStream("TestInherentMnemonics.asm");
         int i;
         String mnemonic = "";
 
