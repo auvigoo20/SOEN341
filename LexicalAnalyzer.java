@@ -7,15 +7,10 @@ import java.util.HashMap;
 
 public class LexicalAnalyzer implements ILexicalAnalyzer
 {
-
-    private Parser parser;
-    private SymbolTable symbolTable;
     private FileInputStream fis;
 
 
-    public LexicalAnalyzer(Parser parser, SymbolTable symbolTable){
-        this.parser = parser;
-        this.symbolTable = symbolTable;
+    public LexicalAnalyzer(){
 
         try{
             this.fis = new FileInputStream("TestInherentMnemonics.asm");
