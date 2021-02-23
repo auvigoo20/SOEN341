@@ -1,11 +1,11 @@
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SymbolTable implements ISymbolTable{
 
-    private HashMap<String, Token> symbolTable;
+    private LinkedHashMap<String, Token> symbolTable;
 
     public SymbolTable(){
-        symbolTable = new HashMap<String, Token>();
+        symbolTable = new LinkedHashMap<String, Token>();
     }
 
     public void insertMnemonic(String key, Token value){
@@ -13,7 +13,7 @@ public class SymbolTable implements ISymbolTable{
         symbolTable.put(key, value.getInstruction());
     }
 
-    public HashMap<String, Token> gHashMap(){
+    public LinkedHashMap<String, Token> gHashMap(){
         return symbolTable;
     }
 
