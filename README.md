@@ -40,3 +40,14 @@ The final output should be:
 ....
 OK
 ```
+
+### Running the `Driver.java`
+To run the code to generate the `.lst` file from the `.asm` file, you need to run it in command line since we want the user to input the `.asm` file name
+without using any `Scanner` class. In order to do so, I added a constructor that will take in the value of `args[0]`, which is the first string that the user inputs in the command line when running `Driver.java`. In our case, `args[0] = "TestInherentMnemonics.asm"`
+
+Follow these steps:
+
+```
+javac Driver.java
+java Driver TestInherentMnemonics.asm
+```
