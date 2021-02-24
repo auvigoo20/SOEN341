@@ -21,13 +21,13 @@ public class TestCGenerator {
         IR.add(line3);
 
         System.out.println("Test Code Generator");
-        System.out.println("Expected output on listing file:");
-        System.out.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments"));
-        System.out.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "1", "0000", "00", "", "halt", "", ""));
-        System.out.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "2", "0001", "0C", "", "not", "", ""));
-        System.out.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "3", "0002", "02", "", "dup", "", ""));
+        //Expected output on listing file
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-6s%-10s%-10s]", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments"));
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-6s%-10s%-10s]", "1", "0000", "00", "", "halt", "", ""));
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-6s%-10s%-10s]", "2", "0001", "0C", "", "not", "", ""));
+        System.out.println(String.format("[%-5s%-5s%-6s%-10s%-6s%-10s%-10s]", "3", "0002", "02", "", "dup", "", ""));
 
-        System.out.println("\nTested output: ");
+        //Tested output
 
         CodeGenerator generate = new CodeGenerator();
         generate.traverseIR(IR, table);

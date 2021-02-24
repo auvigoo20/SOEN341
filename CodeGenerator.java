@@ -134,12 +134,12 @@ public class CodeGenerator {
 
         //Create format header
         outStr.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments"));
-        System.out.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments")); //for testing purposes
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-6s%-10s%-10s]", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments")); //for testing purposes
             
         //Generating opening and closing line statement - TO DO
         for(int i = 0; i < opening.size(); i++) {
             outStr.println(String.format("%-16s%-36s", opening.get(i), closing.get(i)));
-            System.out.println(String.format("%-16s%-36s", opening.get(i), closing.get(i))); //for testing purposes
+            System.out.print(String.format("[%-16s%-36s]", opening.get(i), closing.get(i))); //for testing purposes
         }
 
         //close listing file
