@@ -32,6 +32,7 @@ public class TestCGenerator {
         CodeGenerator generate = new CodeGenerator();
         generate.traverseIR(IR, table);
         generate.generateListing();
+        System.out.println();
 
     }
     

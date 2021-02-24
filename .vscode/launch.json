@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch TestSymbolTable",
+            "request": "launch",
+            "mainClass": "TestSymbolTable",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestCGenerator",
+            "request": "launch",
+            "mainClass": "TestCGenerator",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch TestParser",
             "request": "launch",
             "mainClass": "TestParser",
