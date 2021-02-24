@@ -30,10 +30,11 @@ public class CodeGenerator {
         String addr="";
         String code="";
 
+
         //for each mnemonic in the table
-        for(String tableMne : symbols.gHashMap().keySet()) {
+        for(int i = 0; i < intRep.size(); i++) {
             //for each line statement in IR
-            for(int i = 0; i < intRep.size(); i++) {
+            for(String tableMne : symbols.gHashMap().keySet()) {
                 if(tableMne.equals(intRep.get(i).getMnemonic().getMnemonic())) {    //if table mnemonic is the same as line mnemonic
                     //assign all the info into the appropriate variables
                     //label = intRep.get(i).getLabel().getLabelToken(); //for later

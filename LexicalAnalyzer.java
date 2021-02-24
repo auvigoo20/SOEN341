@@ -21,6 +21,17 @@ public class LexicalAnalyzer implements ILexicalAnalyzer
         }
     }
 
+    public LexicalAnalyzer(String fileName){
+
+        try{
+            this.fis = new FileInputStream(fileName);
+        }
+        catch(FileNotFoundException e){
+            System.out.println("File not found");
+            System.exit(0);
+        }
+    }
+
 
 
 
