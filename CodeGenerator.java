@@ -36,10 +36,10 @@ public class CodeGenerator {
             for(int i = 0; i < intRep.size(); i++) {
                 if(tableMne.equals(intRep.get(i).getMnemonic().getMnemonic())) {    //if table mnemonic is the same as line mnemonic
                     //assign all the info into the appropriate variables
-                    label = intRep.get(i).getLabel().getLabelToken();
+                    //label = intRep.get(i).getLabel().getLabelToken(); //for later
                     mne = intRep.get(i).getMnemonic().getMnemonic();
                     //operand = intRep.get(i).getMnemonic().getOperand1(); //might change, also this is probably not an int?
-                    comment = intRep.get(i).getComment().getCommentToken();
+                    //comment = intRep.get(i).getComment().getCommentToken(); for later
                     addr=String.format("%04X", counter); //To hexadecimal (4bit)
                     
                     //find the opcode to the mnemonic
@@ -134,10 +134,12 @@ public class CodeGenerator {
 
         //Create format header
         outStr.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments"));
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-6s%-10s%-10s]", "Line", "Addr", "Code", "Label", "Mne", "Operand", "Comments")); //for testing purposes
             
         //Generating opening and closing line statement - TO DO
         for(int i = 0; i < opening.size(); i++) {
             outStr.println(String.format("%-16s%-36s", opening.get(i), closing.get(i)));
+            System.out.print(String.format("[%-16s%-36s]", opening.get(i), closing.get(i))); //for testing purposes
         }
 
         //close listing file
