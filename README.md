@@ -5,6 +5,7 @@
 
 ### **TODO for Sprint 2**  
 
+- [x]  Create test case for CodeGenerator.java
 - [x]  Create test case for LexicalAnalyzer.java
 - [ ]  Create test case for SymbolTable.java
 - [ ] Create driver file
