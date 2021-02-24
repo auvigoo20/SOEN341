@@ -5,8 +5,8 @@
 
 ### **TODO for Sprint 2**  
 
-- [ ] Create test case for LexicalAnalyzer.java
-- [ ] Create test case for SymbolTable.java
+- [x]  Create test case for LexicalAnalyzer.java
+- [ ]  Create test case for SymbolTable.java
 - [ ] Create driver file
 - [ ] Comment and format **all** code
 - [ ] Finalize UML Diagram
