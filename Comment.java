@@ -3,7 +3,9 @@ public class Comment extends Token{
     private String comment;
 
 
-    public Comment(){}  
+    public Comment(){
+        this.comment = null;
+    }  
 
     public Comment(String comment){
 
@@ -12,6 +14,10 @@ public class Comment extends Token{
 
     public String getCommentToken(){
         return comment;
+    }
+
+    public void setCommentToken(String comment){
+        this.comment = comment;
     }
 
 }

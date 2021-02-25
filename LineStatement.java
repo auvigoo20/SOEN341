@@ -1,23 +1,22 @@
-public class LineStatement implements ILineStatement{
-    
+public class LineStatement implements ILineStatement {
+
     private Label label;
     private Instruction mnemonic;
     private Comment comment;
     private String eol;
 
-    //Default constructor
-    public LineStatement(){
+    // Default constructor
+    public LineStatement() {
     }
 
-    //Regular constructor
-    public LineStatement(Label label, Instruction mnemonic, Comment comment, String eol){
+    // Regular constructor
+    public LineStatement(Label label, Instruction mnemonic, Comment comment, String eol) {
         this.label = label;
         this.mnemonic = mnemonic;
         this.comment = comment;
         this.eol = eol;
-        
-    }
 
+    }
 
     public Label getLabel() {
         return this.label;
@@ -51,8 +50,7 @@ public class LineStatement implements ILineStatement{
         this.eol = eol;
     }
 
-
-    public String toString(){
-        return "["+mnemonic+"]";
+    public String toString() {
+        return "[" + mnemonic + "]";
     }
 }

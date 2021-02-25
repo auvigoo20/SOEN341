@@ -1,6 +1,13 @@
-public class Label extends Token{
-    
+public class Label extends Token {
+
     String label;
+
+    public Label() {
+    }
+
+    public Label(String label) {
+        this.label = label;
+    }
 
     public String getLabelToken() {
         return this.label;
@@ -9,12 +16,5 @@ public class Label extends Token{
     public void setLabelToken(String label) {
         this.label = label;
     }
-
-    public Label(){ }
-
-    public Label(String label){
-        this.label = label;
-    }
-
 
 }
