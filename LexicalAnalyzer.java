@@ -7,36 +7,41 @@ import java.util.HashMap; //Importing all the relevant packages and libraries fo
 
 public class LexicalAnalyzer implements ILexicalAnalyzer
 {
-    private FileInputStream fis; //Creating an object of type FileInputStream for use in opening the file.
-
-
-    public LexicalAnalyzer(){ //Creating a method for the lexicalAnalyzer, the default constructor
-
+    //Creating an object of type FileInputStream for use in opening the file.
+    private FileInputStream fis; 
+    
+    //Creating a method for the lexicalAnalyzer, the default constructor
+    public LexicalAnalyzer(){ 
+    
+        //Opening the input file specified
         try{
-            this.fis = new FileInputStream("TestInherentMnemonics.asm"); //Opening the input file specified
+            this.fis = new FileInputStream("TestInherentMnemonics.asm"); 
         }
-        catch(FileNotFoundException e){ //Checking if the file was read correctly. 
+        
+        //Checking if the file was read correctly. 
+        catch(FileNotFoundException e){ 
             System.out.println("File not found");
             System.exit(0);
         }
     }
+    
+    //Creating a method for the lexicalAnalyzer, the parametrized constructor
+    public LexicalAnalyzer(String fileName){ 
 
-    public LexicalAnalyzer(String fileName){ //Creating a method for the lexicalAnalyzer, the parametrized constructor
-
+        //Opening the input file, with fileName taken as parameter
         try{
-            this.fis = new FileInputStream(fileName); //Opening the input file, with fileName taken as parameter
+            this.fis = new FileInputStream(fileName); 
         }
-        catch(FileNotFoundException e){ //Checking if the file was read correctly. 
+        
+        //Checking if the file was read correctly. 
+        catch(FileNotFoundException e){ 
             System.out.println("File not found");
             System.exit(0);
         }
     }
-
-
-
-
-  
-   public void readFileByLine(Parser p, SymbolTable symbolTable){ //Method to read file character by character and generate token
+    
+   //Method to read file character by character and generate token
+   public void readFileByLine(Parser p, SymbolTable symbolTable){ 
     
     try{    
         int i; //Declaring integer for use in skipping white spaces
@@ -45,14 +50,17 @@ public class LexicalAnalyzer implements ILexicalAnalyzer
 
         while((i = fis.read()) != -1){
         
+                //ASCII of \n == 10. If the current character is a newline, use the previously defined string
+                if(i == 10 ){
                 
-                if(i == 10 ){//ASCII of \n == 10. If the current character is a newline, use the previously defined string
+                    //If mnemonic variable was not empty
+                    if(mnemonic.length() > 0){ 
                     
-                    if(mnemonic.length() > 0){ //If mnemonic variable was not empty
-
-                    Token t = new Token(new Instruction(mnemonic), "\n"); // Creating a token object and passing in the mnemonic variable as an argument as an instruction
-
-                    symbolTable.insertMnemonic(mnemonic, t); //Insert mnemonic in the symbol table. This mnemonic is the same as the one that is sent as a token.
+                    //Creating a token object and passing in the mnemonic variable as an argument as an instruction
+                    Token t = new Token(new Instruction(mnemonic), "\n"); 
+                    
+                    //Insert mnemonic in the symbol table. This mnemonic is the same as the one that is sent as a token.
+                    symbolTable.insertMnemonic(mnemonic, t); 
                    
                     p.requestToken(t); //Return token to the Parser
 
@@ -61,7 +69,8 @@ public class LexicalAnalyzer implements ILexicalAnalyzer
                     
                 }
                 
-                else{   //if i was not equal to ten (ie: not a newline ), concatenate characters to string
+                //if i was not equal to ten (ie: not a newline ), concatenate characters to string
+                else{  
                     mnemonic += (char)i;
                     mnemonic = mnemonic.strip();
                 }
@@ -69,11 +78,15 @@ public class LexicalAnalyzer implements ILexicalAnalyzer
 
         fis.close(); //close the FileInputStream object
     }
-    catch(FileNotFoundException e){ //FileInputStream exception handling, if file was not read
+    
+    //FileInputStream exception handling, if file was not read
+    catch(FileNotFoundException e){ 
         System.out.println("File not found");
         System.exit(0);
     }
-    catch(IOException e){ //Expection handling if error not related to the file
+    
+     //Expection handling if error not related to the file
+    catch(IOException e){
         System.out.println("Error");
         System.exit(0);
     }     
