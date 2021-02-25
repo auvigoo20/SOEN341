@@ -1,0 +1,12 @@
+Test Code Generator
+[Line Addr Code  Label     Mne   Operand   Comments  ][1    0000 00              halt                      ][2    0001 0C              not                       ][3    0002 02              dup                       ]
+[Line Addr Code  Label     Mne   Operand   Comments  ][1    0000 00              halt                      ][2    0001 0C              not                       ][3    0002 02              dup                       ]
+Test Lexical Analyzer
+[halt][pop][dup][exit][ret][not][and][or][xor][neg][inc][dec][add][sub][mul][div][rem][shl][shr][teq][tne][tlt][tgt][tle][tge][halt]
+[halt][pop][dup][exit][ret][not][and][or][xor][neg][inc][dec][add][sub][mul][div][rem][shl][shr][teq][tne][tlt][tgt][tle][tge][halt]
+Test Parser
+[halt][pop][dup]
+[halt][pop][dup]
+Test Symbol Table
+not:not and:and or:or 
+not:not and:and or:or 

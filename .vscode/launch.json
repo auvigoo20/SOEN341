@@ -9,6 +9,13 @@
             "name": "Launch Driver",
             "request": "launch",
             "mainClass": "Driver",
+            "projectName": "SOEN341_e61323cc"
+        },
+        {
+            "type": "java",
+            "name": "Launch Driver",
+            "request": "launch",
+            "mainClass": "Driver",
             "projectName": "SOEN341_7a1d1cb1"
         },
         {
