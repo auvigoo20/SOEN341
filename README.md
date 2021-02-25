@@ -9,7 +9,7 @@
 - [x]  Create test case for LexicalAnalyzer.java
 - [x]  Create test case for SymbolTable.java
 - [x] Create driver file
-- [ ] Comment and format **all** code
+- [x] Comment and format **all** code
 - [ ] Finalize UML Diagram
 - [ ] Write report
 
