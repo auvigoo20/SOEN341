@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch TestLineStatement",
+            "request": "launch",
+            "mainClass": "TestLineStatement",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestToken",
+            "request": "launch",
+            "mainClass": "TestToken",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestCGenerator",
+            "request": "launch",
+            "mainClass": "TestCases.TestCGenerator",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestInstruction",
+            "request": "launch",
+            "mainClass": "TestCases.TestInstruction",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch Driver",
             "request": "launch",
             "mainClass": "Driver",

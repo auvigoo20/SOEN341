@@ -1,3 +1,8 @@
+
+package SourceFiles;
+
+import InterfaceFiles.*;
+
 public class LineStatement implements ILineStatement {
 
     private Label label;

@@ -1,33 +1,34 @@
-//Shriman,Auvigoo, Shangirna
 
+package SourceFiles;
+import InterfaceFiles.*;
 import java.util.ArrayList;
 
 public class Parser implements IParser {
 
-    private ArrayList<LineStatement> IR = new ArrayList<LineStatement>();
-    private ArrayList<Token> tokens; // tokens received from the lexical analyzer
+    private ArrayList<ILineStatement> IR = new ArrayList<ILineStatement>();
+    private ArrayList<IToken> tokens; // tokens received from the lexical analyzer
 
     // default constructor
     public Parser() {
-        tokens = new ArrayList<Token>();
+        tokens = new ArrayList<IToken>();
     }
 
     // This method will be used to take the inputs from the Lexical analyzer
-    public void requestToken(Token t) {
+    public void requestToken(IToken t) {
         tokens.add(t);
     }
 
     // Returns the IR that the code generator will use
-    public ArrayList<LineStatement> getIntermediateRep() {
+    public ArrayList<ILineStatement> getIntermediateRep() {
 
-        ArrayList<LineStatement> IR = new ArrayList<LineStatement>(); // Intermediate representation array list
+        ArrayList<ILineStatement> IR = new ArrayList<ILineStatement>(); // Intermediate representation array list
 
         Label label = null; // label field
         Instruction mnemonic = null; // Instruction field
         Comment comment = null; // comment field
 
         // loop through the array of tokens to perform the parsing
-        for (Token token : tokens) {
+        for (IToken token : tokens) {
 
             // Check if the current token does not contain an end of line marker
             if (token.getEOL() == "") {

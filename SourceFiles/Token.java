@@ -1,36 +1,40 @@
+
+package SourceFiles;
+
+import InterfaceFiles.*;
 import java.util.ArrayList;
-//parent class which contains Labe, Instruction and Comment classes
-public class Token implements IToken{
-   
+
+public class Token implements IToken {
+
     private Label label;
     private Instruction instruction;
     private Comment comment;
     private String EOL;
 
-//halt ;fsdfk
+    // halt ;fsdfk
 
-
-    public Token(){
+    public Token() {
         label = null;
-        instruction=null;
-        comment =null;
-        EOL =null;
+        instruction = null;
+        comment = null;
+        EOL = null;
     }
 
     // constructor used for the sake of Sprint 2
-    public Token(Instruction mnemonic, String EOL){
+    public Token(Instruction mnemonic, String EOL) {
         // this.label = label;
         this.instruction = mnemonic;
         // this.comment = comment;
         this.EOL = EOL;
     }
 
-    // public Token(Label label, Instruction instruction, Comment comment, String EOL){
-    //     
-    //     this.label = label
-    //     this.instruction = instruction;
-    //     this.comment - comment;
-    //     this.EOL = EOL;
+    // public Token(Label label, Instruction instruction, Comment comment, String
+    // EOL){
+    //
+    // this.label = label
+    // this.instruction = instruction;
+    // this.comment - comment;
+    // this.EOL = EOL;
     // }
 
     public Label getLabel() {
@@ -65,12 +69,9 @@ public class Token implements IToken{
         this.EOL = EOL;
     }
 
-
-    public String toString(){
+    public String toString() {
         return label + " " + instruction + " " + comment + " " + EOL;
-        
+
     }
 
-
-    
 }

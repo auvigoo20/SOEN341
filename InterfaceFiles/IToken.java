@@ -1,6 +1,10 @@
+package InterfaceFiles;
+
+import SourceFiles.*;
+
 public interface IToken {
-    
-    public Label getLabel() ;
+
+    public Label getLabel();
 
     public void setLabel(Label label);
 
@@ -13,10 +17,9 @@ public interface IToken {
     public void setComment(Comment comment);
 
     public String getEOL();
-    
+
     public void setEOL(String EOL);
 
     public String toString();
-
 
 }
