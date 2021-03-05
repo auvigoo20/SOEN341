@@ -10,8 +10,8 @@
 - [x]  Create test case for SymbolTable.java
 - [x] Create driver file
 - [x] Comment and format **all** code
-- [ ] Finalize UML Diagram
-- [ ] Write report
+- [x] Finalize UML Diagram
+- [x] Write report
 
 
 ### **AUnit Testing**  
