@@ -29,6 +29,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     }
 
     // Creating a constructor for the lexicalAnalyzer, the parametrized constructor
+    // COMMENT: should also inject symbol table
     public LexicalAnalyzer(String fileName) {
 
         // Opening the input file, with fileName taken as parameter

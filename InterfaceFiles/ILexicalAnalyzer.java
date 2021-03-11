@@ -4,8 +4,8 @@ import SourceFiles.*;
 
 public interface ILexicalAnalyzer { // Interface to be used for the lexicalAnalyzer
 
-    public void readFileByLine(IParser p, ISymbolTable symbolTable);
+    public void readFileByLine(IParser p, ISymbolTable symbolTable); //COMMENT: still dependency problem, constructor injection better, also parser not needed
 
-    public Token generateToken();
+    public Token generateToken(); //COMMENT: getToken, nextToken; better naming, should return the interface token
 
 }
