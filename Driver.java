@@ -1,37 +1,39 @@
 import java.util.ArrayList;
+import InterfaceFiles.*;
+import java.util.ArrayList;
+import InterfaceFiles.*;
+import SourceFiles.*;
+
 public class Driver {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        //File name from the user input in the command line
+        // File name from the user input in the command line
         String fileName = args[0];
 
-        //Create a new lexical analyzer with
+        // Create a new lexical analyzer with
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(fileName);
 
-        //Create a new parser
+        // Create a new parser
         Parser parser = new Parser();
 
-        //Create a new symbol table
+        // Create a new symbol table
         SymbolTable symbolTable = new SymbolTable();
 
-        //Create a new code generator
+        // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator();
 
-        //Analyze the .asm file, send tokens to the parser and fill up the symbol table
+        // Analyze the .asm file, send tokens to the parser and fill up the symbol table
         lexicalAnalyzer.readFileByLine(parser, symbolTable);
 
-        //Store the intermediate representation in a variable
-        ArrayList<LineStatement> IR = parser.getIntermediateRep();
+        // Store the intermediate representation in a variable
+        ArrayList<ILineStatement> IR = parser.getIntermediateRep();
 
-        //Traverse the intermediate representation using the symbol table
+        // Traverse the intermediate representation using the symbol table
         codeGenerator.traverseIR(IR, symbolTable);
 
-        //Generate a listing file
+        // Generate a listing file
         codeGenerator.generateListing();
-
-
-
 
     }
 

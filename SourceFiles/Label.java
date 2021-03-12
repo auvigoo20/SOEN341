@@ -1,3 +1,6 @@
+package SourceFiles;
+
+import InterfaceFiles.*;
 public class Label extends Token {
 
     String label;

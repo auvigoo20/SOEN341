@@ -1,5 +1,8 @@
+package InterfaceFiles;
+
+import SourceFiles.*;
+
 public interface ILineStatement {
-    
 
     public Label getLabel();
 
@@ -9,13 +12,12 @@ public interface ILineStatement {
 
     public void setMnemonic(Instruction mnemonic);
 
-    public Comment getComment() ;
+    public Comment getComment();
 
     public void setComment(Comment comment);
 
     public String getEol();
-    
+
     public void setEol(String eol);
-    
 
 }

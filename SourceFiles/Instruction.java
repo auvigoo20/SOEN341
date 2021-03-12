@@ -1,3 +1,7 @@
+package SourceFiles;
+
+import InterfaceFiles.*;
+
 public class Instruction extends Token {
 
     private String mnemonic;
