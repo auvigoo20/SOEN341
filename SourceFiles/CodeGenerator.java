@@ -43,7 +43,7 @@ public class CodeGenerator implements ICGenerator {
                     // assign all the info into the appropriate variables
                     // label = intRep.get(i).getLabel().getLabelToken(); //for later
                     mne = intRep.get(i).getMnemonic().getMnemonic();
-                    // operand = intRep.get(i).getMnemonic().getOperand1(); //for later
+                    operand = String.valueOf(intRep.get(i).getMnemonic().getOperand()) ; //to do this sprint
                     // comment = intRep.get(i).getComment().getCommentToken(); for later
                     addr = String.format("%04X", counter); // Convert decimal counter to hexadecimal (4bit)
 
