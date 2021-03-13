@@ -43,15 +43,21 @@ public class CodeGenerator implements ICGenerator {
                     // assign all the info into the appropriate variables
                     // label = intRep.get(i).getLabel().getLabelToken(); //for later
                     mne = intRep.get(i).getMnemonic().getMnemonic();
+
+                    int intOperand = intRep.get(i).getMnemonic().getOperand();
                     operand = String.valueOf(intRep.get(i).getMnemonic().getOperand()) ; //to do this sprint
-                    // comment = intRep.get(i).getComment().getCommentToken(); for later
+                    comment = intRep.get(i).getComment().getCommentToken(); //to do this sprint
                     addr = String.format("%04X", counter); // Convert decimal counter to hexadecimal (4bit)
 
                     // find the opcode to the mnemonic
-                    code = String.format("%02X", searchCode(mne)); // Convert opcode to hexadecimal (2bit)
+                    int opcode = searchCode(mne, intOperand);                   
+                    if(opcode == -1)
+                        code = "";
+                    else
+                        code = String.format("%02X", opcode); // Convert opcode to hexadecimal (2bit)
 
                     opening.add(String.format("%-5s%-5s%-6s", lineNbr, addr, code));
-                    closing.add(String.format("%-10s%-6s%-10s%-10s", label, mne, operand, comment));
+                    closing.add(String.format("%-10s%-10s%-10s%-10s", label, mne, operand, comment));
 
                     // increment line number and address
                     lineNbr++;
@@ -67,8 +73,9 @@ public class CodeGenerator implements ICGenerator {
      * @param mnemonic the mnemonic to look the opcode for
      * @return opcode associated to the mnemonic
      */
-    public int searchCode(String mnemonic) {
+    public int searchCode(String mnemonic, int operand) {
 
+        //Inherent addressing
         if (mnemonic.equals("halt"))
             return 0;
         else if (mnemonic.equals("pop"))
@@ -119,6 +126,65 @@ public class CodeGenerator implements ICGenerator {
             return 30;
         else if (mnemonic.equals("tge"))
             return 31;
+
+        //Immediate addressing
+        else if(mnemonic.equals("enter.u5")) {
+            int j = 112;
+            for(int i = 0; i < 32; i++) {
+                if(operand == i)
+                    return j;
+                j++;
+            }
+            return -1;
+        }
+
+        else if(mnemonic.equals("ldc.i3")) {
+            int j = 144;
+            for(int i = 0; i < 4; i++) {
+                if(operand == i)
+                    return j;
+                j++;
+            }
+            j = 148;
+            for(int i = -4; i < 0; i++) {
+                if(operand == i)
+                    return j;
+                j++;
+            }
+            
+            return -1;
+        }
+
+        else if(mnemonic.equals("addv.u3")) {
+            int j = 152;
+            for(int i = 0; i < 8; i++) {
+                if(operand == i)
+                    return j;
+                j++;
+            }
+            return -1;
+        }
+
+        else if(mnemonic.equals("ldv.u3")) {
+            int j = 160;
+            for(int i = 0; i < 8; i++) {
+                if(operand == i)
+                    return j;
+                j++;
+            }
+            return -1;
+        }
+
+        else if(mnemonic.equals("stv.u3")) {
+            int j = 168;
+            for(int i = 0; i < 8; i++) {
+                if(operand == i)
+                    return j;
+                j++;
+            }
+            return -1;
+        }
+
         else
             return -1;
     }
@@ -139,15 +205,15 @@ public class CodeGenerator implements ICGenerator {
         }
 
         // Create format header
-        outStr.println(String.format("%-5s%-5s%-6s%-10s%-6s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne",
+        outStr.println(String.format("%-5s%-5s%-6s%-10s%-10s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne",
                 "Operand", "Comments"));
-        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-6s%-10s%-10s]", "Line", "Addr", "Code", "Label", "Mne",
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "Line", "Addr", "Code", "Label", "Mne",
                 "Operand", "Comments")); // for testing purposes
 
         // Generating opening and closing line statement
         for (int i = 0; i < opening.size(); i++) {
-            outStr.println(String.format("%-16s%-36s", opening.get(i), closing.get(i)));
-            System.out.print(String.format("[%-16s%-36s]", opening.get(i), closing.get(i))); // for testing purposes
+            outStr.println(String.format("%-16s%-40s", opening.get(i), closing.get(i)));
+            System.out.print(String.format("[%-16s%-40s]", opening.get(i), closing.get(i))); // for testing purposes
         }
 
         // close listing file
