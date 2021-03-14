@@ -8,6 +8,8 @@ public class Instruction extends Token {
     private int operand;
     private String instructionType;
 
+    
+
     public Instruction() {
     }
 
