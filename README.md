@@ -3,15 +3,26 @@
 
 #### Before merging your branch or pushing into `master`, please make sure to delete all `.class` files created after compiling java files in the command line
 
-### **TODO for Sprint 2**  
+### **TODO for Sprint 3**
 
-- [x]  Create test case for CodeGenerator.java
-- [x]  Create test case for LexicalAnalyzer.java
-- [x]  Create test case for SymbolTable.java
-- [x] Create driver file
-- [x] Comment and format **all** code
-- [x] Finalize UML Diagram
-- [x] Write report
+- [ ] Apply the prof's recommended changes in the code (check David's comments in latest commit in `master`)
+- [ ] Create Position class for Lexical Analyzer
+- [ ] Remove dependencies of Parser from LexicalAnalyzer
+- [ ] Scan comments, numbers and report scanner errors to ErrorReporter
+- [ ] Parse an immediate instruction and report parser errors to ErrorReporter
+- [ ] Parse a directive and comment
+- [ ] Create ErrorReporter class
+- [ ] Create immediate instruction formatter for `.lst` output file
+
+~~### **TODO for Sprint 2**~~
+
+~~- [x]  Create test case for CodeGenerator.java~~
+~~- [x]  Create test case for LexicalAnalyzer.java~~
+~~- [x]  Create test case for SymbolTable.java~~
+~~- [x] Create driver file~~
+~~- [x] Comment and format **all** code~~
+~~- [x] Finalize UML Diagram~~
+~~- [x] Write report~~
 
 
 ### **AUnit Testing**  
