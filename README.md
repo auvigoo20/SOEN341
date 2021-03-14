@@ -13,6 +13,7 @@
 - [ ] Parse a directive and comment
 - [ ] Create ErrorReporter class
 - [ ] Create immediate instruction formatter for `.lst` output file
+- [ ] Create tests **FOR ALL** files
 
 ~~### **TODO for Sprint 2**~~
 
