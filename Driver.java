@@ -27,7 +27,7 @@ public class Driver {
         lexicalAnalyzer.readFileByLine(parser, symbolTable);
 
         // Store the intermediate representation in a variable
-        ArrayList<ILineStatement> IR = parser.getIntermediateRep();
+        ArrayList<ILineStatement> IR = parser.parse();
 
         // Traverse the intermediate representation using the symbol table
         codeGenerator.traverseIR(IR, symbolTable);

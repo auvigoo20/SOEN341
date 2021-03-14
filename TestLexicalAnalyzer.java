@@ -18,7 +18,7 @@ public class TestLexicalAnalyzer {
         lexicalAnalyzer.readFileByLine(parser, symbolTable);
 
         // get the values stored in the IR
-        ArrayList<ILineStatement> IR = parser.getIntermediateRep();
+        ArrayList<ILineStatement> IR = parser.parse();
 
         // Expected Output
         System.out.println("Test Lexical Analyzer");

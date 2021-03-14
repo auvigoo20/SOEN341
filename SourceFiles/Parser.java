@@ -19,7 +19,7 @@ public class Parser implements IParser {
     }
 
     // Returns the IR that the code generator will use
-    public ArrayList<ILineStatement> getIntermediateRep() {
+    public ArrayList<ILineStatement> parse() {
 
         ArrayList<ILineStatement> IR = new ArrayList<ILineStatement>(); // Intermediate representation array list
 
@@ -33,9 +33,10 @@ public class Parser implements IParser {
             // Check if the current token does not contain an end of line marker
             if (token.getEOL() == "") {
 
-                // check if token is a mnemonic
+                // check if token is a mnemonic (INSTRUCTION)
                 if (token.getComment() == null && token.getLabel() == null) {
                     mnemonic = token.getInstruction();
+                    //type check:
                 }
 
                 // check if token is a label
@@ -85,3 +86,9 @@ public class Parser implements IParser {
     }
 
 }
+
+
+/**
+ * Error 1: Check if immediate instructions are part of the 7 possible instructions (Check spelling and stuff)
+ * Error 2: Check if operands attached to immediate instructions respect their defined range of values
+ */
