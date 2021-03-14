@@ -7,6 +7,7 @@ public class SymbolTable implements ISymbolTable {
 
     // Using linked hash map to preserve order of tokens
     private LinkedHashMap<String, Token> symbolTable;
+    
 
     public SymbolTable() {
         symbolTable = new LinkedHashMap<String, Token>();
@@ -16,9 +17,18 @@ public class SymbolTable implements ISymbolTable {
     public void insertMnemonic(String key, Token value) {
         symbolTable.put(key, value.getInstruction());
     }
-
+    
     public LinkedHashMap<String, Token> gHashMap() {
         return symbolTable;
     }
+
+    public LinkedHashMap<String, Token> getSymbolTable() {
+		return this.symbolTable;
+	}
+
+	public void setSymbolTable(LinkedHashMap<String, Token> symbolTable) {
+		this.symbolTable = symbolTable;
+	}
+
 
 }

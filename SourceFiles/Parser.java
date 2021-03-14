@@ -13,7 +13,7 @@ public class Parser implements IParser {
     private final String[] immediateMnemonics = {"enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3"};
 
     //Contains all inherent instructions
-    private final String[] inherentMnemonics = {"halt", "pop", "dup", "exit","ret", "not", "and", "or", "xor", "neg", "inc","dec","add","sub","mul","div","rem","shl","shr","teq","tne","tlt","tgt","tle", "tge"};
+    private final String[] inherentMnemonics = {"halt", "pop", "dup", "exit","ret","not","and","or","xor","neg","inc","dec","add","sub","mul","div","rem","shl","shr","teq","tne","tlt","tgt","tle","tge"};
 
     // default constructor
     public Parser() {
@@ -46,9 +46,10 @@ public class Parser implements IParser {
                     mnemonic = token.getInstruction();
                     
                     //Check if mnemonic is Immediate Type
+
                     if(mnemonic.getInstructionType().equalsIgnoreCase("Immediate")){
 
-
+                        //Error 1: Check if immediate instructions are part of the 7 possible instructions (Check spelling and stuff)
                         boolean immediateInstructionError =  Arrays.asList(immediateMnemonics).contains(mnemonic.getMnemonic());
                         if(immediateInstructionError == false){
                             System.out.println(" Immediate instruction Error!"); // send token to error reporter with details
@@ -56,12 +57,16 @@ public class Parser implements IParser {
 
                         }
 
+                        //Error 2: Check if operands attached to immediate instructions respect their defined range of values
+
                         if(checkOperand(mnemonic) == false){
                             System.out.println("Operand Error!");
+
                         }
                     }
 
                     //Check if mnemonic is Inherent Type
+                    //Error 3: Check if inherent instructions are part of the big list
                     if(mnemonic.getInstructionType().equalsIgnoreCase("Inherent")){
                         boolean inherentInstructionError = Arrays.asList(inherentMnemonics).contains(mnemonic.getMnemonic());
                         if(inherentInstructionError == false){
@@ -91,16 +96,21 @@ public class Parser implements IParser {
 
                     //Check if mnemonic is Immediate Type
                     if(mnemonic.getInstructionType().equalsIgnoreCase("Immediate")){
+                        
+                        //Error 1: Check if immediate instructions are part of the 7 possible instructions (Check spelling and stuff)
                         boolean immediateInstructionError =  Arrays.asList(immediateMnemonics).contains(mnemonic.getMnemonic());
                         if(immediateInstructionError == false){
                             System.out.println("Error!");
                         }
+
+                      //Error 2: Check if operands attached to immediate instructions respect their defined range of values
                         if(checkOperand(mnemonic) == false){
                             System.out.println("Operand Error!");
                         }
                     }
                     
                     //Check if mnemonic is Inherent Type
+                    //Error 3: Check if inherent instructions are part of the big list
                     if(mnemonic.getInstructionType().equalsIgnoreCase("Inherent")){
                         boolean inherentInstructionError = Arrays.asList(inherentMnemonics).contains(mnemonic.getMnemonic());
                         if(inherentInstructionError == false){

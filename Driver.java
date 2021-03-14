@@ -24,7 +24,7 @@ public class Driver {
         CodeGenerator codeGenerator = new CodeGenerator();
 
         // Analyze the .asm file, send tokens to the parser and fill up the symbol table
-        lexicalAnalyzer.readFileByLine(parser, symbolTable);
+        lexicalAnalyzer.readFileByLine(parser);
 
         // Store the intermediate representation in a variable
         ArrayList<ILineStatement> IR = parser.parse();

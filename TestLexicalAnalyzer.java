@@ -15,7 +15,7 @@ public class TestLexicalAnalyzer {
         SymbolTable symbolTable = new SymbolTable();
 
         // insert data into parser and symbol table during lexical analysis
-        lexicalAnalyzer.readFileByLine(parser, symbolTable);
+        lexicalAnalyzer.readFileByLine(parser);
 
         // get the values stored in the IR
         ArrayList<ILineStatement> IR = parser.parse();

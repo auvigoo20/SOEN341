@@ -11,13 +11,18 @@ public class Token implements IToken {
     private Comment comment;
     private String EOL;
 
-    // halt ;fsdfk
+    private Position position;
+    private boolean isValid;
+
+
 
     public Token() {
+        position = new Position();
         label = null;
         instruction = null;
         comment = null;
         EOL = null;
+        isValid = true;
     }
 
     // constructor used for the sake of Sprint 2
@@ -28,14 +33,15 @@ public class Token implements IToken {
         this.EOL = EOL;
     }
 
-    // public Token(Label label, Instruction instruction, Comment comment, String
-    // EOL){
-    //
-    // this.label = label
-    // this.instruction = instruction;
-    // this.comment - comment;
-    // this.EOL = EOL;
-    // }
+    public Token(Label label, Instruction instruction, Comment comment, String EOL, Position position, boolean isValid){
+    
+    this.label = label;
+    this.instruction = instruction;
+    this.comment = comment;
+    this.EOL = EOL;
+    this.position = position;
+    this.isValid = isValid;
+    }
 
     public Label getLabel() {
         return this.label;
@@ -67,6 +73,22 @@ public class Token implements IToken {
 
     public void setEOL(String EOL) {
         this.EOL = EOL;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public boolean getIsValid() {
+        return this.isValid;
+    }
+
+    public void setIsValid(boolean isValid) {
+        this.isValid = isValid;
     }
 
     public String toString() {

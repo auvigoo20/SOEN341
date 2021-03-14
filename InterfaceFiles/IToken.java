@@ -22,4 +22,12 @@ public interface IToken {
 
     public String toString();
 
+    public Position getPosition();
+
+    public void setPosition(Position position);
+
+    public boolean getIsValid();
+
+    public void setIsValid(boolean isValid);
+
 }
