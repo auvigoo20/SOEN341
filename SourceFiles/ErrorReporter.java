@@ -18,5 +18,11 @@ public class ErrorReporter implements IErrorReporter{
         return errorReports;
     }
 
+    public void printAllErrors(){
+        for(String s : errorReports){
+            System.out.println(s);
+        }
+    }
+
    
 }
