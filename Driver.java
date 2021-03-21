@@ -9,10 +9,7 @@ public class Driver {
     public static void main(String[] args) {
 
         // File name from the user input in the command line
-        String fileName = args[0];
-
-        // Create a new lexical analyzer with
-        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(fileName);
+        String fileName = "TestInherentMnemonics.asm";
 
         // Create a new parser
         Parser parser = new Parser();
@@ -20,11 +17,19 @@ public class Driver {
         // Create a new symbol table
         SymbolTable symbolTable = new SymbolTable();
 
+        // Create a new lexical analyzer with
+        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(fileName,symbolTable);
+
         // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator();
 
-        // Analyze the .asm file, send tokens to the parser and fill up the symbol table
-        lexicalAnalyzer.readFileByLine(parser, symbolTable);
+
+        while(lexicalAnalyzer.getFinishScanning() == false){
+            IToken token = lexicalAnalyzer.scan();
+            if(token != null){
+            parser.requestToken(token);
+            }
+        }
 
         // Store the intermediate representation in a variable
         ArrayList<ILineStatement> IR = parser.getIntermediateRep();

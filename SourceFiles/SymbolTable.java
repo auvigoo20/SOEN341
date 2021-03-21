@@ -13,7 +13,7 @@ public class SymbolTable implements ISymbolTable {
     }
 
     // Only inserting mnemonic in symbol table for sprint 2
-    public void insertMnemonic(String key, Token value) {
+    public void insertMnemonic(String key, IToken value) {
         symbolTable.put(key, value.getInstruction());
     }
 

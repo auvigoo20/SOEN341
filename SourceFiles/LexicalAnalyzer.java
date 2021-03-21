@@ -12,13 +12,17 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     private FileInputStream fis; // Creating an object of type FileInputStream for use in opening the file.
     private static int i; // int that stores the position when reading the file
     private static String mnemonic = ""; // Declaring a mnemonic string variable for use in the method
+    private SymbolTable symbolTable;
+    private boolean finishScanning;
 
+    
     // Creating a constructor for the lexicalAnalyzer, the default constructor
     public LexicalAnalyzer() {
 
         // Opening the input file specified
         try {
             this.fis = new FileInputStream("TestInherentMnemonics.asm");
+            this.finishScanning = false;
         }
 
         // Checking if the file was read correctly.
@@ -30,11 +34,13 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
 
     // Creating a constructor for the lexicalAnalyzer, the parametrized constructor
     // COMMENT: should also inject symbol table
-    public LexicalAnalyzer(String fileName) {
+    public LexicalAnalyzer(String fileName, SymbolTable symbolTable) {
 
         // Opening the input file, with fileName taken as parameter
         try {
             this.fis = new FileInputStream(fileName);
+            this.symbolTable = symbolTable;
+            this.finishScanning = false;
         }
 
         // Checking if the file was read correctly.
@@ -45,9 +51,9 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     }
 
     // Method to generate tokens while reading the file
-    public Token generateToken() {
+    public IToken getToken() {
 
-        Token token = null;
+        IToken token = null;
 
         // ASCII of \n == 10. If the current character is a newline, use the previously
         // defined string
@@ -77,23 +83,27 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
 
     // Method to read file character by character and send tokens to parser and
     // symbol table
-    public void readFileByLine(IParser p, ISymbolTable symbolTable) {
+    public IToken scan() {
+        
+        
+        IToken token =null;
 
         try {
 
             while ((i = fis.read()) != -1) {
 
-                Token token = generateToken();
+                token = getToken();
 
                 if (token != null) {
                     // Insert mnemonic in the symbol table. This mnemonic is the same as the one
                     // that is sent as a token.
                     symbolTable.insertMnemonic(token.getInstruction().getMnemonic(), token);
 
-                    p.requestToken(token); // Return token to the Parser
+                    return token; // Return token to the Parser
                 }
-
+                
             }
+            this.finishScanning = true;
 
             fis.close(); // close the FileInputStream object
         }
@@ -109,5 +119,16 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             System.out.println("Error");
             System.exit(0);
         }
+        return token;
     }
+
+
+public boolean getFinishScanning(){
+
+    return finishScanning;
+}
+
+public void setFinishScanning(boolean fs){
+finishScanning = fs;
+}
 }

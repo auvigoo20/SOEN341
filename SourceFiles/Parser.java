@@ -18,6 +18,10 @@ public class Parser implements IParser {
         tokens.add(t);
     }
 
+    public ArrayList<IToken> getTokens(){
+        return tokens;
+    }
+
     // Returns the IR that the code generator will use
     public ArrayList<ILineStatement> getIntermediateRep() {
 
