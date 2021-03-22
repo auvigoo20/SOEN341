@@ -10,14 +10,14 @@ public class TestCGenerator {
         ArrayList<ILineStatement> IR = new ArrayList<>();
 
         // add test data in test table
-        table.insertMnemonic("enter.u5", new Token(new Instruction("enter.u5", 5), "\n"));
-        table.insertMnemonic("addv.u3", new Token(new Instruction("addv.u3", 0), "\n"));
-        table.insertMnemonic("stv.u3", new Token(new Instruction("stv.u3", 7), "\n"));
+        table.insertMnemonic("enter.u5", new Token(new Instruction("enter.u5", "5"), "\n"));
+        table.insertMnemonic("addv.u3", new Token(new Instruction("addv.u3", "0"), "\n"));
+        table.insertMnemonic("stv.u3", new Token(new Instruction("stv.u3", "7"), "\n"));
 
         // add test data in test IR
-        ILineStatement line1 = new LineStatement(new Label(), new Instruction("enter.u5", 5), new Comment("; OK, number <u5> [0..31]."), "\n");
-        ILineStatement line2 = new LineStatement(new Label(), new Instruction("addv.u3", 0), new Comment("; OK, number <u3> [0..7]."), "\n");
-        ILineStatement line3 = new LineStatement(new Label(), new Instruction("stv.u3", 7), new Comment("; OK, number <u3> [0..7]."), "\n");
+        ILineStatement line1 = new LineStatement(new Label(), new Instruction("enter.u5", "5"), new Comment("; OK, number <u5> [0..31]."), "\n");
+        ILineStatement line2 = new LineStatement(new Label(), new Instruction("addv.u3", "0"), new Comment("; OK, number <u3> [0..7]."), "\n");
+        ILineStatement line3 = new LineStatement(new Label(), new Instruction("stv.u3", "7"), new Comment("; OK, number <u3> [0..7]."), "\n");
 
         IR.add(line1);
         IR.add(line2);

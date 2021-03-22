@@ -44,13 +44,12 @@ public class CodeGenerator implements ICGenerator {
                     // label = intRep.get(i).getLabel().getLabelToken(); //for later
                     mne = intRep.get(i).getMnemonic().getMnemonic();
 
-                    int intOperand = intRep.get(i).getMnemonic().getOperand();
-                    operand = String.valueOf(intRep.get(i).getMnemonic().getOperand()) ; //to do this sprint
+                    operand = intRep.get(i).getMnemonic().getOperand() ; //to do this sprint
                     comment = intRep.get(i).getComment().getCommentToken(); //to do this sprint
                     addr = String.format("%04X", counter); // Convert decimal counter to hexadecimal (4bit)
 
                     // find the opcode to the mnemonic
-                    int opcode = searchCode(mne, intOperand);                   
+                    int opcode = searchCode(mne, operand);                   
                     if(opcode == -1)
                         code = "";
                     else
@@ -73,7 +72,7 @@ public class CodeGenerator implements ICGenerator {
      * @param mnemonic the mnemonic to look the opcode for
      * @return opcode associated to the mnemonic
      */
-    public int searchCode(String mnemonic, int operand) {
+    public int searchCode(String mnemonic, String operand) {
 
         //Inherent addressing
         if (mnemonic.equals("halt"))
@@ -131,7 +130,7 @@ public class CodeGenerator implements ICGenerator {
         else if(mnemonic.equals("enter.u5")) {
             int j = 112;
             for(int i = 0; i < 32; i++) {
-                if(operand == i)
+                if(operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
@@ -141,13 +140,13 @@ public class CodeGenerator implements ICGenerator {
         else if(mnemonic.equals("ldc.i3")) {
             int j = 144;
             for(int i = 0; i < 4; i++) {
-                if(operand == i)
+                if(operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
             j = 148;
             for(int i = -4; i < 0; i++) {
-                if(operand == i)
+                if(operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
@@ -158,7 +157,7 @@ public class CodeGenerator implements ICGenerator {
         else if(mnemonic.equals("addv.u3")) {
             int j = 152;
             for(int i = 0; i < 8; i++) {
-                if(operand == i)
+                if(operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
@@ -168,7 +167,7 @@ public class CodeGenerator implements ICGenerator {
         else if(mnemonic.equals("ldv.u3")) {
             int j = 160;
             for(int i = 0; i < 8; i++) {
-                if(operand == i)
+                if(operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
@@ -178,7 +177,7 @@ public class CodeGenerator implements ICGenerator {
         else if(mnemonic.equals("stv.u3")) {
             int j = 168;
             for(int i = 0; i < 8; i++) {
-                if(operand == i)
+                if(operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
