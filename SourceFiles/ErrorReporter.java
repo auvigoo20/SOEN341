@@ -3,24 +3,24 @@ import InterfaceFiles.*;
 import java.util.ArrayList;
 
 public class ErrorReporter implements IErrorReporter{
-    private ArrayList<String> errorReports;
 
+    // should have an array of errorMessage objects
+     private ArrayList<ErrorMessage> errorReports;
 
     public ErrorReporter(){
-        errorReports = new ArrayList<String>();
+        errorReports = new ArrayList<ErrorMessage>();
     }
 
-    public void addError(String error){
+    public void record(ErrorMessage error){
         errorReports.add(error);
     }
     
-    public ArrayList<String> getErrorReports(){
-        return errorReports;
-    }
 
-    public void printAllErrors(){
-        for(String s : errorReports){
-            System.out.println(s);
+    public void report(){
+        for(ErrorMessage e : errorReports){
+            System.out.println(e.getMessage());
+            System.out.println("@column: "+ e.getPosition().getColumn() + " @line: "+ e.getPosition().getLine());
+            System.out.println();
         }
     }
 

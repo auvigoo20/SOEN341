@@ -7,8 +7,8 @@ import SourceFiles.*;
 
 public interface IErrorReporter {
 
-    public void addError(String error);
+    public void record(ErrorMessage error);
     
-    public ArrayList<String> getErrorReports();
+    public void report();
 
 }
