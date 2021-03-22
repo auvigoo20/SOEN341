@@ -46,9 +46,20 @@ to iterate until the next white space
 
  *ADD COMMENTED CODE FROM PARSER*
 
+***LEXICAL ANALYZER ERRORS***
+1. The string contains literally '\n', '\r'
+    error reporting must be embedded mnemonics scanning
+2. The string contains '-1', except if it's an operand or comment then it's ok to be -1
+
+
+if the token contains any of the errors, then flag the token as invalid and send it to the error reporter
 
 
 
+LAError: hat+desc (1) --- > error arrayList in error reporter
+ParseError:  hat 5 + desc (2); ---> error arrayList in error reporter
+---------
 
+(1) (3) (2) (4)
 
-
+LA error: add(token) to error reporter

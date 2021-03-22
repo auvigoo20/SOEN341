@@ -1,26 +1,28 @@
 
 package SourceFiles;
+
 import InterfaceFiles.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Parser implements IParser {
 
-    private ArrayList<ILineStatement> IR = new ArrayList<ILineStatement>();
+    private ArrayList<ILineStatement> IR;
     private ArrayList<IToken> tokens; // tokens received from the lexical analyzer
-    // creater errorList attribute
-    private ArrayList<String> errorList;
+    private ArrayList<String> parsingErrors;
 
-    //Does not contain ALL 7 immediate instructions (br.i5, brf.15)
-    private final String[] immediateMnemonics = {"enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3"};
+    // Does not contain ALL 7 immediate instructions (br.i5, brf.15)
+    private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
 
-    //Contains all inherent instructions
-    private final String[] inherentMnemonics = {"halt", "pop", "dup", "exit","ret","not","and","or","xor","neg","inc","dec","add","sub","mul","div","rem","shl","shr","teq","tne","tlt","tgt","tle","tge"};
+    // Contains all inherent instructions
+    private final String[] inherentMnemonics = { "halt", "pop", "dup", "exit", "ret", "not", "and", "or", "xor", "neg",
+            "inc", "dec", "add", "sub", "mul", "div", "rem", "shl", "shr", "teq", "tne", "tlt", "tgt", "tle", "tge" };
 
     // default constructor
     public Parser() {
         tokens = new ArrayList<IToken>();
-        errorList = new ArrayList<String>();
+        parsingErrors = new ArrayList<String>();
+        IR = new ArrayList<ILineStatement>();
     }
 
     // This method will be used to take the inputs from the Lexical analyzer
@@ -28,233 +30,206 @@ public class Parser implements IParser {
         tokens.add(t);
     }
 
-    public ArrayList<IToken> getTokens(){
+    public ArrayList<IToken> getTokens() {
         return tokens;
     }
 
     // Returns the IR that the code generator will use
     public ArrayList<ILineStatement> parse() {
 
-        ArrayList<ILineStatement> IR = new ArrayList<ILineStatement>(); // Intermediate representation array list
-
         Label label = null; // label field
         Instruction mnemonic = null; // Instruction field
         Comment comment = null; // comment field
 
-        // loop through the array of tokens to perform the parsing
-        for (IToken token : tokens) {
+        for (int i = 0; i < tokens.size(); i++) {
 
-            // Check if the current token does not contain an end of line marker
-            if (token.getEOL() == "") {
+            // --------IF TOKEN DOES NOT CONTAIN EOL----------------------------
+            if (tokens.get(i).getEOL() == "") {
 
+                // inherent mnemonics check:
+                // if the token is found in the inherent mnemonic list
+                if (Arrays.asList(inherentMnemonics).contains(tokens.get(i).getTokenString())) {
 
-                // check if token is a mnemonic (INSTRUCTION)
-                if (token.getComment() == null && token.getLabel() == null) {
-                    mnemonic = token.getInstruction();
-                    
-                    //Check if mnemonic is Immediate Type
+                    // Error handling: If inherent mnemonic has an operand, error
+                    if (i != (tokens.size() - 1)) {
 
-                    if(mnemonic.getInstructionType().equalsIgnoreCase("Immediate")){
+                        if (tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
 
-                        // //Error 1: Check if immediate instructions are part of the 7 possible instructions (Check spelling and stuff)
-                        // boolean immediateInstructionError =  Arrays.asList(immediateMnemonics).contains(mnemonic.getMnemonic());
-                        // if(immediateInstructionError == false){
-                        //     System.out.println(" Immediate instruction Error!"); // send token with line  to error reporter with details
-                        //     String error = ""
-                        // }
-
-                        // Error 2: Check if the operand following the immediate instruction exists
-                        if(mnemonic.getOperand() == null){
-                            mnemonic.setIsValid(false);
-                            System.out.println("Immediate instruction missing operand!"); // send token with line to error reporter
-                            String error = "Error: This immediate instruction must have a number as an operand field.\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            errorList.add(error);
-                        }
-
-                        //Error 3: Check if operands attached to immediate instructions respect their defined range of values
-
-                        if(checkOperand(mnemonic) == false){
-                            mnemonic.setIsValid(false);
-                            System.out.println("Operand Error!");
-                            String error = "";
-
-                            if(mnemonic.getMnemonic().contains(".u5")){
-                                error = "Error: The immediate instruction"+ mnemonic.getMnemonic()+ "must have a 5-bit unsigned operand number ranging from 0 to 31."+
-                                "\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            }
-                            else if(mnemonic.getMnemonic().contains(".i3")){
-                                error = "Error: The immediate instruction"+mnemonic.getMnemonic()+" must have a 3-bit signed operand number ranging from -4 to 3."
-                                +"\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            }
-                            else if(mnemonic.getMnemonic().contains(".u3")){
-                                error = "Error: The immediate instruction "+mnemonic.getMnemonic()+" must have a 3-bit unsigned operand number ranging from 0 to 7."
-                                +"\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            }
-
-                            errorList.add(error);
-
-                        }
-                    }
-
-                    //Check if mnemonic is Inherent Type
-                    //Error 4: Check if inherent instructions contains an operand (which is an error)
-                    if(mnemonic.getInstructionType().equalsIgnoreCase("Inherent")){
-                        // boolean inherentInstructionError = Arrays.asList(inherentMnemonics).contains(mnemonic.getMnemonic());
-                        // if(inherentInstructionError == false){
-                        //     System.out.println(" Inherent Error!");
-                        // }
-                        if(mnemonic.getOperand() != null){
-                            mnemonic.setIsValid(false);
                             String error = "Error: Instructions with inherent mode addressing do not have an operand field."
-                            +"\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            errorList.add(error);
+                                    + "\n@column: " + tokens.get(i).getPosition().getColumn() + " and line: "
+                                    + tokens.get(i).getPosition().getLine();
+                            parsingErrors.add(error);
                         }
-
                         
+                        else {
+                            mnemonic = new Instruction(tokens.get(i).getTokenString());
+                        }
                     }
                 }
 
-                // check if token is a label
-                if (token.getInstruction() == null && token.getComment() == null) {
-                    label = token.getLabel();
+                // immediate mnemonic check:
+                // if the token is found in the immediate mnemonic list
+                else if (Arrays.asList(immediateMnemonics).contains(tokens.get(i).getTokenString())) {
+
+                    if (i != (tokens.size() - 1)) {
+
+                        // If the mnemonic is not followed by an operand
+                        if (!tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
+                            // error
+                            String error = "Error: This immediate instruction must have a number as an operand field.\n@column: "
+                                    + tokens.get(i).getPosition().getColumn() + " and line: "
+                                    + tokens.get(i).getPosition().getLine();
+                            parsingErrors.add(error);
+                        }
+
+                        // If the mnemonic IS followed by an operant
+                        else if (tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
+
+                            // If the operand that follows the mnemonic does not fall within its allowed
+                            // range
+                            if (checkOperand(tokens.get(i), tokens.get(i + 1)) == false) {
+                                String error = "";
+                                if (tokens.get(i).getTokenString().contains(".u5")) {
+                                    error = "Error: The immediate instruction " + tokens.get(i).getTokenString()
+                                            + " must have a 5-bit unsigned operand number ranging from 0 to 31."
+                                            + "\n@column: " + tokens.get(i).getPosition().getColumn() + " and line: "
+                                            + tokens.get(i).getPosition().getLine();
+                                } else if (tokens.get(i).getTokenString().contains(".i3")) {
+                                    error = "Error: The immediate instruction " + tokens.get(i).getTokenString()
+                                            + " must have a 3-bit signed operand number ranging from -4 to 3."
+                                            + "\n@column: " + tokens.get(i).getPosition().getColumn() + " and line: "
+                                            + tokens.get(i).getPosition().getLine();
+                                } else if (tokens.get(i).getTokenString().contains(".u3")) {
+                                    error = "Error: The immediate instruction " + tokens.get(i).getTokenString()
+                                            + " must have a 3-bit unsigned operand number ranging from 0 to 7."
+                                            + "\n@column: " + tokens.get(i).getPosition().getColumn() + " and line: "
+                                            + tokens.get(i).getPosition().getLine();
+                                }
+                                parsingErrors.add(error);
+                            } else {
+                                mnemonic = new Instruction(tokens.get(i).getTokenString(),
+                                        tokens.get(i + 1).getTokenString());
+                            }
+                        }
+                    }
+                    // The immediate mnemonic is the LAST token, meaning it does not have an operand
+                    // after it
+                    else {
+                        String error = "Error: This immediate instruction must have a number as an operand field.\n@column: "
+                                + tokens.get(i).getPosition().getColumn() + " and line: "
+                                + tokens.get(i).getPosition().getLine();
+                        parsingErrors.add(error);
+                    }
+
                 }
 
-                // check if token is a comment
-                if (token.getInstruction() == null && token.getLabel() == null) {
-                    comment = token.getComment();
-                }
-
+                // *****LABEL CHECK FOR SPRINT 4*****
             }
 
+           // Otherwise if the token contains the end of line marker "newLine"
+            else if (tokens.get(i).getEOL().contains("newLine")) {
 
-            // check if the current token contains an end of line marker
-            if (token.getEOL() == "\n") {
+                //Check to see if the token is an inherent mnemonic
+                if (Arrays.asList(inherentMnemonics).contains(tokens.get(i).getTokenString())) {
 
-                // check if token is a mnemonic
-                if (token.getComment() == null && token.getLabel() == null) {
-                    mnemonic = token.getInstruction();
+                    // Error handling: If inherent mnemonic has an operand, send it to error reporter with error message and token details
+                    if (i != (tokens.size() - 1)) {
 
-                    //Check if mnemonic is Immediate Type
-                    if(mnemonic.getInstructionType().equalsIgnoreCase("Immediate")){
-                        
-                        // //Error 1: Check if immediate instructions are part of the 7 possible instructions (Check spelling and stuff)
-                        // boolean immediateInstructionError =  Arrays.asList(immediateMnemonics).contains(mnemonic.getMnemonic());
-                        // if(immediateInstructionError == false){
-                        //     System.out.println(" Immediate instruction Error!"); // send token with line  to error reporter with details
-                        // }
-
-                         // Error 2: Check if the operand following the immediate instruction exists
-                         if(mnemonic.getOperand() == null){
-                            mnemonic.setIsValid(false);
-                            System.out.println("Immediate instruction missing operand!"); // send token with line to error reporter
-                            String error = "Error: This immediate instruction must have a number as an operand field.\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            errorList.add(error);
-                        }
-
-                        //Error 3: Check if operands attached to immediate instructions respect their defined range of values
-
-                        if(checkOperand(mnemonic) == false){
-                            mnemonic.setIsValid(false);
-                            System.out.println("Operand Error!");
-                            String error = "";
-
-                            if(mnemonic.getMnemonic().contains(".u5")){
-                                error = "Error: The immediate instruction"+ mnemonic.getMnemonic()+ "must have a 5-bit unsigned operand number ranging from 0 to 31."+
-                                "\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            }
-                            else if(mnemonic.getMnemonic().contains(".i3")){
-                                error = "Error: The immediate instruction"+mnemonic.getMnemonic()+" must have a 3-bit signed operand number ranging from -4 to 3."
-                                +"\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            }
-                            else if(mnemonic.getMnemonic().contains(".u3")){
-                                error = "Error: The immediate instruction "+mnemonic.getMnemonic()+" must have a 3-bit unsigned operand number ranging from 0 to 7."
-                                +"\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            }
-
-                            errorList.add(error);
-
-                        }
-                    }
-                    
-                    //Check if mnemonic is Inherent Type
-                    //Error 4: Check if inherent instructions contains an operand (which is an error)
-                    if(mnemonic.getInstructionType().equalsIgnoreCase("Inherent")){
-                        // boolean inherentInstructionError = Arrays.asList(inherentMnemonics).contains(mnemonic.getMnemonic());
-                        // if(inherentInstructionError == false){
-                        //     System.out.println(" Inherent Error!");
-                        // }
-                        if(mnemonic.getOperand() != null){
-                            mnemonic.setIsValid(false);
+                        if (tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
                             String error = "Error: Instructions with inherent mode addressing do not have an operand field."
-                            +"\n@column: "+mnemonic.getPosition().getColumn() +" and line: "+mnemonic.getPosition().getLine();
-                            errorList.add(error);
+                                    + "\n@column: " + tokens.get(i).getPosition().getColumn() + " and line: "
+                                    + tokens.get(i).getPosition().getLine();
+                            parsingErrors.add(error);
                         }
 
-                        
+                        else {
+                            mnemonic = new Instruction(tokens.get(i).getTokenString());
+                        }
                     }
                 }
 
-                // check if token is a label
-                if (token.getInstruction() == null && token.getComment() == null) {
-                    label = token.getLabel();
+                // Immediate Mnemonic Check: if the token is found in the immediate mnemonic list
+                else if (Arrays.asList(immediateMnemonics).contains(tokens.get(i).getTokenString())) {
+                    String error = "Error: This immediate instruction must have a number as an operand field.\n@column: "
+                            + tokens.get(i).getPosition().getColumn() + " and line: "
+                            + tokens.get(i).getPosition().getLine();
+                    parsingErrors.add(error);
                 }
-
-                // check if token is a comment
-                if (token.getInstruction() == null && token.getLabel() == null) {
-                    comment = token.getComment();
+                //Comment Check: if the token contains a semi-colon (;)
+                if (tokens.get(i).getTokenString().contains(";")) {
+                    comment = new Comment(tokens.get(i).getTokenString());
                 }
+                // *****LABEL CHECK FOR SPRINT 4*****
 
-             
-                // Intermediate representation
-
-                //Print the whole line if it contains an error
-                if(mnemonic.getIsValid() == false || comment.getIsValid() == false){
-                    String wholeLine = label + " " + mnemonic + " " + comment + token.getEOL();
-                    errorList.add(wholeLine);
-                }
-                
-                // check the flags of each tokensa.  Once done, send line as a string to the parser 
-                LineStatement line = new LineStatement(label, mnemonic, comment, token.getEOL());
+                //Line statement object initialization
+                LineStatement line = new LineStatement(label, mnemonic, comment, tokens.get(i).getEOL());
+                // Add to the IR array list
                 IR.add(line);
 
                 // reinitilize fields to loop again
-                label = null;
+                // label = null;
                 mnemonic = null;
                 comment = null;
-
             }
+
         }
         return IR;
-
     }
 
-    public boolean checkOperand(Instruction m){
+    public boolean checkOperand(IToken mnemonic, IToken operand) {
 
-        if(m.getMnemonic().contains(".u5")){
-            return Integer.parseInt(m.getOperand())  >= 0 && Integer.parseInt(m.getOperand()) <= 31;
+        if (mnemonic.getTokenString().contains(".u5")) {
+            return Integer.parseInt(operand.getTokenString()) >= 0 && Integer.parseInt(operand.getTokenString()) <= 31;
+        } else if (mnemonic.getTokenString().contains(".i3")) {
+            return Integer.parseInt(operand.getTokenString()) >= -4 && Integer.parseInt(operand.getTokenString()) <= 3;
+        } else if (mnemonic.getTokenString().contains(".u3")) {
+            return Integer.parseInt(operand.getTokenString()) >= 0 && Integer.parseInt(operand.getTokenString()) <= 7;
         }
-        else if(m.getMnemonic().contains(".i3")){
-            return Integer.parseInt(m.getOperand()) >= -4 && Integer.parseInt(m.getOperand()) <= 3;
-        }
-        
-        else if(m.getMnemonic().contains(".u3")){
-            return Integer.parseInt(m.getOperand()) >= 0 && Integer.parseInt(m.getOperand()) <= 7;
-        }
-
         return true;
     }
+
+    public ArrayList<String> getParsingErrors() {
+        return this.parsingErrors;
+    }
+
+    // public static void main(String[] args) {
+
+    //     SymbolTable st = new SymbolTable();
+
+    //     LexicalAnalyzer la = new LexicalAnalyzer("TestImmediate.asm", st);
+
+    //     Parser parser = new Parser();
+
+    //     while (la.getFinishScanning() == false) {
+    //         IToken token = la.scan();
+    //         if (token != null) {
+
+    //             String newLine = token.getEOL().equals("\n") ? "newLine" : "not newLine";
+
+    //             // System.out.println(token.getTokenString() +" @column:
+    //             // "+token.getPosition().getColumn() + " @line: "+ token.getPosition().getLine()
+    //             // );
+
+    //             parser.requestToken(token);
+
+    //         }
+    //     }
+    //     ArrayList<ILineStatement> lineStatements = parser.parse();
+
+    //     for (ILineStatement l : lineStatements) {
+    //         if (l.getMnemonic() != null) {
+    //             System.out.print(l.getMnemonic().getMnemonic() + " " + l.getMnemonic().getOperand());
+    //         }
+    //         if (l.getComment() != null) {
+    //             System.out.print(" " + l.getComment().getCommentToken() + "\n");
+    //         }
+    //     }
+
+    //     for (String s : parser.getParsingErrors()) {
+    //         System.out.println(s);
+    //     }
+    // }
 
 }
 
 
-
-
-/**
- * Error 1: Check if immediate instructions are part of the 7 possible instructions (Check spelling and stuff)
- * Error 2: Check if operands attached to immediate instructions respect their defined range of values
- * Error 3: Check if inherent instructions are part of the big list
- * 
- * -----Lexical error
- * Error1:  if the token created matches a previously created token 
- * Error2: if there are no EOL markers
- */

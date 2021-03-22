@@ -15,6 +15,18 @@ public class Token implements IToken {
     private boolean isValid;
 
 
+    private String tokenString;
+
+    public Token(String tokenString, String EOL, Position position){
+        this.tokenString = tokenString;
+        this.EOL = EOL;
+        this.position = position;
+    }
+
+    public String getTokenString(){
+        return this.tokenString;
+    }
+
 
     public Token() {
         position = new Position();

@@ -21,6 +21,7 @@ public class Instruction extends Token {
     public Instruction(String mnemonic, String operand) {
         this.mnemonic = mnemonic;
         this.operand = operand;
+        setInstructionType(mnemonic);
     }
 
     public String getInstructionType(){

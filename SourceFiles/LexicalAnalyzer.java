@@ -1,11 +1,10 @@
 package SourceFiles;
-import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap; //Importing all the relevant packages and libraries for use in the LexicalAnalyzer
 import InterfaceFiles.*;
 
 public class LexicalAnalyzer implements ILexicalAnalyzer {
@@ -14,15 +13,16 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     private static int i; // int that stores the position when reading the file
     private static String unknownString = ""; // Declaring a mnemonic string variable for use in the method
     private SymbolTable symbolTable;
-    private static int tokenLine=0;
-    private static int tokenColumn=1;
-    private final String[] inherentMnemonics = {"halt", "pop", "dup", "exit","ret","not","and","or","xor","neg","inc","dec","add","sub","mul","div","rem","shl","shr","teq","tne","tlt","tgt","tle","tge"};
-    private final String[] immediateMnemonics = {"enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3"};
+    private static int tokenLine = 1;
+    private static int tokenColumn = 1;
+    private final String[] inherentMnemonics = { "halt", "pop", "dup", "exit", "ret", "not", "and", "or", "xor", "neg",
+            "inc", "dec", "add", "sub", "mul", "div", "rem", "shl", "shr", "teq", "tne", "tlt", "tgt", "tle", "tge" };
+    private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
+    private ArrayList<String> scannerErrors;
 
     private static String mnemonic = ""; // Declaring a mnemonic string variable for use in the method
     private boolean finishScanning;
 
-    
     // Creating a constructor for the lexicalAnalyzer, the default constructor
     public LexicalAnalyzer() {
 
@@ -30,6 +30,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
         try {
             this.fis = new FileInputStream("TestInherentMnemonics.asm");
             this.finishScanning = false;
+            this.scannerErrors = new ArrayList<String>();
         }
 
         // Checking if the file was read correctly.
@@ -40,125 +41,108 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     }
 
     // Creating a constructor for the lexicalAnalyzer, the parametrized constructor
-    // COMMENT: should also inject symbol table
     public LexicalAnalyzer(String fileName, SymbolTable symbolTable) {
 
-        // Opening the input file, with fileName taken as parameter
+        // Checking if the file was read correctly.
         try {
             this.fis = new FileInputStream(fileName);
             this.symbolTable = symbolTable;
+            this.scannerErrors = new ArrayList<String>();
             this.finishScanning = false;
         }
-
-        // Checking if the file was read correctly.
         catch (FileNotFoundException e) {
             System.out.println("File not found");
             System.exit(0);
         }
     }
 
-    // Method to generate tokens while reading the file
+    // Method to sequentially generate tokens while reading the file
     public IToken getToken() {
 
         IToken token = null;
 
-/** Mnemonic  oper     comment
- *  enter.u5  0        ; OK, number <u5> [0..31].           
- *  ente6.u5  15        ; OK, number <u5> [0..31].
- */
-try{
+        try {
 
-        if (i ==32){
+            //if the token does not contain the EOL marker
+            if ((i == 32) && unknownString.trim().length() > 0) {
+
+
+                //if the token is a comment, build the string until reaching end of line
+                if(unknownString.contains(";")){
+                    while((i = fis.read()) != 10){
+                        unknownString += (char) i;
+                    }
+                    unknownString = unknownString.trim();
+                    token = new Token(unknownString, "newLine", new Position(tokenColumn, tokenLine));
+                    tokenLine++;
+                    tokenColumn = 1;
+                }
+                //token is NOT a comment
+                else{
+                    unknownString = unknownString.trim();
+                    //check for invalid characters if it's not a comment
+                    if(!unknownString.matches("[a-zA-Z0-9.-]*")){
+                        String error = "Error: Invalid character in "+ unknownString +"\n@column:" + tokenColumn + " and line: "+tokenLine +"\n";
+                        scannerErrors.add(error);
+                    }
+                    //check for \n or \r
+                    else if (unknownString.contains("\n") || unknownString.contains("\r")){
+                        String error = "Error: EOL in string\n@column:" + tokenColumn + " and line: "+tokenLine +"\n";
+                        scannerErrors.add(error);
+                    }
+                    //no lexical errors
+                    else{
+                        token = new Token(unknownString, "", new Position(tokenColumn, tokenLine));
+                    }
+                    tokenColumn++;
+                }
+                //re-initialize string to build next token
+                unknownString = "";
             
-            if (Arrays.asList(inherentMnemonics).contains(unknownString.strip())){
-
-                token = new Token(null, new Instruction(unknownString), null, "", new Position(tokenColumn, tokenLine), true);
-                
             }
-            
-            else if (Arrays.asList(immediateMnemonics).contains(unknownString.strip())){
-                while ((i = fis.read()) == 32);
-                String operandString = "";
-                while ((i = fis.read()) != 32){
-                    operandString += (char) i;
-                    if(i == 10){
-                        tokenLine++;
+
+            //if the token contains the EOL marker
+            else if((i == 10)){
+                unknownString = unknownString.trim();
+                if(unknownString.length() > 0){
+
+                    //check for invalid characters if it's not a comment
+                    if(!unknownString.matches("[a-zA-Z0-9.-]*")){
+                        String error = "Error: Invalid character in "+ unknownString +"\n@column:" + tokenColumn + " and line: "+tokenLine +"\n";
+                        scannerErrors.add(error);
+                    }
+                    //check for \n or \r
+                    else if (unknownString.contains("\n") || unknownString.contains("\r")){
+                        String error = "Error: EOL in string\n@column:" + tokenColumn + " and line: "+tokenLine +"\n";
+                        scannerErrors.add(error);
+                    }
+                    else{
+                        token = new Token(unknownString, "newLine",new Position(tokenLine, tokenColumn));
                     }
                 }
-                int operandInt = Integer.parseInt(operandString);
-
-                token = new Token(null, new Instruction(unknownString,operandInt),null,"",new Position(tokenColumn, tokenLine), true);
-            }
-            else if (unknownString.charAt(0)==';'){
-                while ((i = fis.read()) != 10){
-                    unknownString += (char) i;
-                }
-                token = new Token(null,null,new Comment(unknownString),"\n",new Position(tokenColumn, tokenLine), true);
                 tokenLine++;
+                tokenColumn = 1;
+                unknownString = "";
             }
-            else{
-                //generate error
+
+            //if the cursor is not pointing towards an empty space, then continue building the string
+            else {
+                unknownString += (char) i;
             }
 
-            tokenColumn++;
-            
+        } 
+
+        catch (IOException e) {
+            System.out.println("IO Exception");
         }
 
-        else{
-            unknownString += (char) i;
-        }
-
-        if(i == 10){
-            tokenLine++;
-        }
-
-
-
-
-
-
-
-
-
-        // ASCII of \n == 10. If the current character is a newline, use the previously
-        // defined string
-        // if (i == 10) {
-
-        //     // If mnemonic variable was not empty
-        //     if (mnemonic.length() > 0) {
-
-        //         // Creating a token object and passing in the mnemonic variable as an argument
-        //         // as an instruction
-        //         token = new Token(new Instruction(mnemonic), "\n");
-
-        //         mnemonic = ""; // re-initialize word for next loop
-        //         return token;
-        //     }
-
-        // }
-
-        // // if i was not equal to ten (ie: not a newline ), concatenate characters to
-        // // string
-        // else {
-        //     mnemonic += (char) i;
-        //     mnemonic = mnemonic.strip();
-        // }
-
-        
-        
-}
-catch(IOException e){
-
-}
-return token;
+        return token;
     }
 
-    // Method to read file character by character and send tokens to parser and
-    // symbol table
+    // Method to read file character by character and send tokens to parser and symbol table
     public IToken scan() {
-        
-        
-        IToken token =null;
+
+        IToken token = null;
 
         try {
 
@@ -167,13 +151,14 @@ return token;
                 token = getToken();
 
                 if (token != null) {
-                    // Insert mnemonic in the symbol table. This mnemonic is the same as the one
-                    // that is sent as a token.
-                    symbolTable.insertMnemonic(token.getInstruction().getMnemonic(), token);
+                    // Insert mnemonic in the symbol table. This mnemonic is the same as the one that is sent as a token.
+                    if(Arrays.asList(inherentMnemonics).contains(token.getTokenString()) || Arrays.asList(immediateMnemonics).contains(token.getTokenString())){
+                        symbolTable.insertMnemonic(token.getTokenString(), new Instruction(token.getTokenString()));
+                    }
 
                     return token; // Return token to the Parser
                 }
-                
+
             }
             this.finishScanning = true;
 
@@ -195,7 +180,6 @@ return token;
 
     }
 
-
     public SymbolTable getSymbolTable() {
         return this.symbolTable;
     }
@@ -204,14 +188,49 @@ return token;
         this.symbolTable = symbolTable;
     }
 
+    public boolean getFinishScanning() {
+
+        return finishScanning;
+    }
+
+    public void setFinishScanning(boolean fs) {
+        finishScanning = fs;
+    }
+
+    public ArrayList<String> getErrorList(){
+        return scannerErrors;
+    }
 
 
-public boolean getFinishScanning(){
+    // public static void main(String[] args){
 
-    return finishScanning;
-}
+    //     SymbolTable st = new SymbolTable();
 
-public void setFinishScanning(boolean fs){
-finishScanning = fs;
-}
+    //     LexicalAnalyzer la = new LexicalAnalyzer("TestImmediate.asm", st);
+
+
+    //     while(la.getFinishScanning() == false){
+    //         IToken token = la.scan();
+    //         if(token != null){
+               
+    //             String newLine = token.getEOL().equals("newLine") ? "newLine" : "not newLine";
+
+    //             System.out.println(token.getTokenString() +"   @column: "+token.getPosition().getColumn() + " @line: "+ token.getPosition().getLine() );
+    //         }
+    //     }
+    //     for(String s: la.getErrorList()){
+    //         System.out.println(s);
+    //     }
+
+    //     for(String s: st.gHashMap().keySet()){
+    // System.out.println(s);
+    //     }
+
+
+    // }
+
+
+
+
+
 }

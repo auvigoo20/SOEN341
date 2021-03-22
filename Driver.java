@@ -6,10 +6,13 @@ import SourceFiles.*;
 
 public class Driver {
 
+
+    //halt\n 50 ;comment\n
+    //pop 
     public static void main(String[] args) {
 
         // File name from the user input in the command line
-        String fileName = "TestInherentMnemonics.asm";
+        String fileName = "TestImmediate.asm";
 
         // Create a new parser
         Parser parser = new Parser();
@@ -22,7 +25,6 @@ public class Driver {
 
         // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator();
-
 
         while(lexicalAnalyzer.getFinishScanning() == false){
             IToken token = lexicalAnalyzer.scan();

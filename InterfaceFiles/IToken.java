@@ -4,6 +4,8 @@ import SourceFiles.*;
 
 public interface IToken {
 
+    public String getTokenString();
+
     public Label getLabel();
 
     public void setLabel(Label label);
