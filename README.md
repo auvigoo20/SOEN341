@@ -8,10 +8,10 @@
 - [x] Apply the prof's recommended changes in the code (check David's comments in latest commit in `master`)
 - [x] Create Position class for Lexical Analyzer
 - [x] Remove dependencies of Parser from LexicalAnalyzer
-- [ ] Scan comments, numbers and report scanner errors to ErrorReporter
-- [ ] Parse an immediate instruction and report parser errors to ErrorReporter
-- [ ] Parse a directive and comment
-- [ ] Create ErrorReporter class
+- [x] Scan comments, numbers and report scanner errors to ErrorReporter
+- [x] Parse an immediate instruction and report parser errors to ErrorReporter
+- [ ] Parse a directive (.cstring)
+- [x] Create ErrorReporter class
 - [ ] Create immediate instruction formatter for `.lst` output file
 - [ ] Create tests **FOR ALL** files
 
