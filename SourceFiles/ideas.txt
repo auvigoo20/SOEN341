@@ -1,0 +1,65 @@
+Changes for Token class:
+Add attribute Position: *
+    - Class which contains the line and the column of a token
+        - getters and setters to retrieve the position. 
+Add attribute isValid (bool)
+    - If token does not contain any scanning or parsing error then set to true, else set to false
+    - If isValid=false, send the token credentials to error reporter
+
+
+    enter.u5 50 --> parsing error
+    
+
+
+Error[enter(.)u5,]
+
+
+loop through the line until the end of line is reached
+    when a white space is hit, take the word between the white spaces and create a token
+    compare the created word with the following cases:
+        1. array of mnemonics
+        2. check to see if the first character is ';'
+        3. check if character after white space is a number. If yes then combine the mnemonic with the operand 
+        4*. check if label
+    if found then set isValid to true and send it to the parser
+    otherwise set isValid to false, and set it to the error reporter
+increment line and reset column
+
+
+
+
+
+
+1. How to create token while reading the files,
+2.How to send those tokens to the parser without it being an object in LA
+
+
+
+enter.u5 50
+
+if at i =  whitespace we already have an immediate mnemonic, then continue
+to iterate until the next white space
+ if the new character is a literal, then assign that character to a temp variable
+ 
+
+
+
+ *ADD COMMENTED CODE FROM PARSER*
+
+***LEXICAL ANALYZER ERRORS***
+1. The string contains literally '\n', '\r'
+    error reporting must be embedded mnemonics scanning
+2. The string contains '-1', except if it's an operand or comment then it's ok to be -1
+
+
+if the token contains any of the errors, then flag the token as invalid and send it to the error reporter
+
+
+
+LAError: hat+desc (1) --- > error arrayList in error reporter
+ParseError:  hat 5 + desc (2); ---> error arrayList in error reporter
+---------
+
+(1) (3) (2) (4)
+
+LA error: add(token) to error reporter

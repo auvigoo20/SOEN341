@@ -15,10 +15,10 @@ public class TestLexicalAnalyzer {
         SymbolTable symbolTable = new SymbolTable();
 
         // insert data into parser and symbol table during lexical analysis
-        lexicalAnalyzer.readFileByLine(parser, symbolTable);
+        lexicalAnalyzer.scan();
 
         // get the values stored in the IR
-        ArrayList<ILineStatement> IR = parser.getIntermediateRep();
+        ArrayList<ILineStatement> IR = parser.parse();
 
         // Expected Output
         System.out.println("Test Lexical Analyzer");

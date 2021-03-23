@@ -4,6 +4,8 @@ import SourceFiles.*;
 
 public interface IToken {
 
+    public String getTokenString();
+
     public Label getLabel();
 
     public void setLabel(Label label);
@@ -21,5 +23,13 @@ public interface IToken {
     public void setEOL(String EOL);
 
     public String toString();
+
+    public Position getPosition();
+
+    public void setPosition(Position position);
+
+    public boolean getIsValid();
+
+    public void setIsValid(boolean isValid);
 
 }

@@ -22,7 +22,7 @@ public class TestParser {
 
         // Parser creating line statements from the tokens and inserting them into
         // the intermediate representation
-        ArrayList<ILineStatement> IR = parser.getIntermediateRep();
+        ArrayList<ILineStatement> IR = parser.parse();
 
         ILineStatement l0 = IR.get(0);
         ILineStatement l1 = IR.get(1);

@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Parser",
+            "request": "launch",
+            "mainClass": "SourceFiles.Parser",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch LexicalAnalyzer",
+            "request": "launch",
+            "mainClass": "SourceFiles.LexicalAnalyzer",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch TestLineStatement",
             "request": "launch",
             "mainClass": "TestLineStatement",
