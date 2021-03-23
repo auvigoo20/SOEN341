@@ -14,24 +14,30 @@ public class Driver {
         // File name from the user input in the command line
         String fileName = "TestImmediate.asm";
 
-        // Create a new parser
-        Parser parser = new Parser();
+        ErrorReporter errorReporter = new ErrorReporter();
 
         // Create a new symbol table
         SymbolTable symbolTable = new SymbolTable();
 
         // Create a new lexical analyzer with
-        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(fileName,symbolTable);
+        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(fileName,symbolTable, errorReporter);
 
-        // Create a new code generator
-        CodeGenerator codeGenerator = new CodeGenerator();
+        // Create a new parser
+        Parser parser = new Parser(errorReporter);
 
         while(lexicalAnalyzer.getFinishScanning() == false){
             IToken token = lexicalAnalyzer.scan();
             if(token != null){
             parser.requestToken(token);
             }
-        }
+        }        
+
+
+
+        // Create a new code generator
+        CodeGenerator codeGenerator = new CodeGenerator();
+
+
 
         // Store the intermediate representation in a variable
         ArrayList<ILineStatement> IR = parser.parse();

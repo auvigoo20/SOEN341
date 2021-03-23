@@ -6,21 +6,27 @@ public class Instruction extends Token {
 
     private String mnemonic;
     private String operand;
+    private Position position;
     private String instructionType;
 
+    public Instruction(){
 
-
-    public Instruction() {
     }
 
     public Instruction(String mnemonic) {
         this.mnemonic = mnemonic;
-        setInstructionType(mnemonic);
     }
 
-    public Instruction(String mnemonic, String operand) {
+    public Instruction(String mnemonic, Position position) {
+        this.mnemonic = mnemonic;
+        setInstructionType(mnemonic);
+        this.position = position;
+    }
+
+    public Instruction(String mnemonic, String operand, Position position) {
         this.mnemonic = mnemonic;
         this.operand = operand;
+        this.position = position;
         setInstructionType(mnemonic);
     }
 
@@ -51,6 +57,10 @@ public class Instruction extends Token {
 
     public String getOperand() {
         return operand;
+    }
+
+    public Position getPosition(){
+        return this.position;
     }
 
     public String toString() {

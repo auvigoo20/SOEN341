@@ -61,7 +61,7 @@ public class Parser implements IParser {
 
                         
                         else {
-                            mnemonic = new Instruction(tokens.get(i).getTokenString());
+                            mnemonic = new Instruction(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                         }
                     }
                 }
@@ -105,7 +105,7 @@ public class Parser implements IParser {
                             } 
                             else {
                                 mnemonic = new Instruction(tokens.get(i).getTokenString(),
-                                        tokens.get(i + 1).getTokenString());
+                                        tokens.get(i + 1).getTokenString(), tokens.get(i).getPosition());
                             }
                         }
                     }
@@ -122,7 +122,7 @@ public class Parser implements IParser {
             }
 
            // Otherwise if the token contains the end of line marker "newLine"
-            else if (tokens.get(i).getEOL().contains("newLine")) {
+            else if (tokens.get(i).getEOL().equalsIgnoreCase("newLine")) {
 
                 //Check to see if the token is an inherent mnemonic
                 if (Arrays.asList(inherentMnemonics).contains(tokens.get(i).getTokenString())) {
@@ -148,7 +148,7 @@ public class Parser implements IParser {
                 }
                 //Comment Check: if the token contains a semi-colon (;)
                 if (tokens.get(i).getTokenString().contains(";")) {
-                    comment = new Comment(tokens.get(i).getTokenString());
+                    comment = new Comment(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                 }
                 // *****LABEL CHECK FOR SPRINT 4*****
 
@@ -202,8 +202,9 @@ public class Parser implements IParser {
                 System.out.print(l.getMnemonic().getMnemonic() + " " + l.getMnemonic().getOperand());
             }
             if (l.getComment() != null) {
-                System.out.print(" " + l.getComment().getCommentToken() + "\n");
+                System.out.print(" " + l.getComment().getCommentToken());
             }
+            System.out.println();
         }
 
         er.report();

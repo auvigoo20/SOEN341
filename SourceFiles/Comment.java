@@ -5,14 +5,16 @@ import InterfaceFiles.*;
 public class Comment extends Token {
 
     private String comment;
+    private Position position;
 
     public Comment() {
         this.comment = null;
     }
 
-    public Comment(String comment) {
+    public Comment(String comment, Position position) {
 
         this.comment = comment;
+        this.position = position;
     }
 
     public String getCommentToken() {
@@ -21,6 +23,10 @@ public class Comment extends Token {
 
     public void setCommentToken(String comment) {
         this.comment = comment;
+    }
+
+    public Position getPosition(){
+        return this.position;
     }
 
 }
