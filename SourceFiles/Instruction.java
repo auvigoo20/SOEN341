@@ -5,7 +5,7 @@ import InterfaceFiles.*;
 public class Instruction extends Token {
 
     private String mnemonic;
-    private int operand;
+    private String operand;
 
     public Instruction() {
     }
@@ -14,7 +14,7 @@ public class Instruction extends Token {
         this.mnemonic = mnemonic;
     }
 
-    public Instruction(String mnemonic, int operand) {
+    public Instruction(String mnemonic, String operand) {
         this.mnemonic = mnemonic;
         this.operand = operand;
     }
@@ -27,7 +27,7 @@ public class Instruction extends Token {
         mnemonic = m;
     }
 
-    public int getOperand() {
+    public String getOperand() {
         return operand;
     }
 
