@@ -168,6 +168,7 @@ public class CodeGenerator implements ICGenerator {
 
         // Immediate addressing
         else if (mnemonic.equals("enter.u5")) {
+           /*
             int j = 112;
             for (int i = 0; i < 32; i++) {
                 if (operand.equals(String.valueOf(i)))
@@ -175,6 +176,16 @@ public class CodeGenerator implements ICGenerator {
                 j++;
             }
             return -1;
+            */
+            
+            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+		    int opcode = (number > 15) ? 0x70 : 0x80;
+			opcode = opcode |(number & 0x1F); 
+			opcode = opcode | number;
+		
+		    return opcode;
+
+
         }
 
         else if (mnemonic.equals("ldc.i3")) {
@@ -195,33 +206,56 @@ public class CodeGenerator implements ICGenerator {
         }
 
         else if (mnemonic.equals("addv.u3")) {
-            int j = 152;
+            /*int j = 152;
             for (int i = 0; i < 8; i++) {
                 if (operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
-            return -1;
+            return -1;*/
+
+            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+		    int opcode = 0x98;
+			opcode = opcode |(number & 0x07); 
+			opcode = opcode | number;
+
+            return opcode; 
+
         }
 
         else if (mnemonic.equals("ldv.u3")) {
-            int j = 160;
+           /* int j = 160;
             for (int i = 0; i < 8; i++) {
                 if (operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
-            return -1;
+            return -1; */ 
+
+            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+		    int opcode = 0xA0;
+			opcode = opcode |(number & 0x07); 
+			opcode = opcode | number; 
+
+            return opcode;
+
         }
 
         else if (mnemonic.equals("stv.u3")) {
-            int j = 168;
+          /*  int j = 168;
             for (int i = 0; i < 8; i++) {
                 if (operand.equals(String.valueOf(i)))
                     return j;
                 j++;
             }
-            return -1;
+            return -1; */
+
+            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+		    int opcode = 0xA8;
+			opcode = opcode |(number & 0x07); 
+			opcode = opcode | number;
+
+            return opcode; 
         }
 
         else
