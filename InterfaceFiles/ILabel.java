@@ -1,14 +1,14 @@
 package InterfaceFiles;
 import SourceFiles.*;
 
-public interface IErrorMessage {
 
-    public String getMessage();
+public interface ILabel{
+    
+    public String getLabelToken();
 
-    public void setMessage(String message);
+    public void setLabelToken(String label);
 
     public IPosition getPosition();
 
     public void setPosition(IPosition position);
-    
 }

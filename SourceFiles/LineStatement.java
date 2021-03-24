@@ -5,54 +5,45 @@ import InterfaceFiles.*;
 
 public class LineStatement implements ILineStatement {
 
-    private Label label;
-    private Instruction mnemonic;
-    private Comment comment;
-    private String eol;
+    // Attributes
+    private ILabel label;
+    private IInstruction mnemonic;
+    private IComment comment;
 
     // Default constructor
     public LineStatement() {
     }
 
     // Regular constructor
-    public LineStatement(Label label, Instruction mnemonic, Comment comment, String eol) {
+    public LineStatement(ILabel label, IInstruction mnemonic, IComment comment) {
         this.label = label;
         this.mnemonic = mnemonic;
         this.comment = comment;
-        this.eol = eol;
 
     }
 
-    public Label getLabel() {
+    public ILabel getLabel() {
         return this.label;
     }
 
-    public void setLabel(Label label) {
+    public void setLabel(ILabel label) {
         this.label = label;
     }
 
-    public Instruction getMnemonic() {
+    public IInstruction getMnemonic() {
         return this.mnemonic;
     }
 
-    public void setMnemonic(Instruction mnemonic) {
+    public void setMnemonic(IInstruction mnemonic) {
         this.mnemonic = mnemonic;
     }
 
-    public Comment getComment() {
+    public IComment getComment() {
         return this.comment;
     }
 
-    public void setComment(Comment comment) {
+    public void setComment(IComment comment) {
         this.comment = comment;
-    }
-
-    public String getEol() {
-        return this.eol;
-    }
-
-    public void setEol(String eol) {
-        this.eol = eol;
     }
 
     public String toString() {

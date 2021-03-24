@@ -9,7 +9,7 @@ public class Parser implements IParser {
 
     private ArrayList<ILineStatement> IR;
     private ArrayList<IToken> tokens; // tokens received from the lexical analyzer
-    private ErrorReporter errorReporter;
+    private IErrorReporter errorReporter;
 
     // Does not contain ALL 7 immediate instructions (br.i5, brf.15)
     private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
@@ -19,7 +19,7 @@ public class Parser implements IParser {
             "inc", "dec", "add", "sub", "mul", "div", "rem", "shl", "shr", "teq", "tne", "tlt", "tgt", "tle", "tge" };
 
     // default constructor
-    public Parser(ErrorReporter errorReporter) {
+    public Parser(IErrorReporter errorReporter) {
         this.tokens = new ArrayList<IToken>();
         this.errorReporter = errorReporter;
         this.IR = new ArrayList<ILineStatement>();
@@ -30,7 +30,7 @@ public class Parser implements IParser {
         tokens.add(t);
     }
 
-    public ArrayList<IToken> getTokens() {
+    public ArrayList<IToken> getTokenList() {
         return tokens;
     }
 
@@ -138,12 +138,11 @@ public class Parser implements IParser {
                     // after it
                     else {
                         String error = "Error: This immediate instruction must have a number as an operand field.\n@column: ";
-                        errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(),
+                        errorReporter
+                                .record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(),
                                         tokens.get(i).getPosition().getLine())));
                     }
-
                 }
-
                 // *****LABEL CHECK FOR SPRINT 4*****
             }
 
@@ -172,7 +171,7 @@ public class Parser implements IParser {
                         }
 
                         else {
-                            mnemonic = new Instruction(tokens.get(i).getTokenString());
+                            mnemonic = new Instruction(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                         }
                     }
                 }
@@ -191,7 +190,7 @@ public class Parser implements IParser {
                 // *****LABEL CHECK FOR SPRINT 4*****
 
                 // Line statement object initialization
-                LineStatement line = new LineStatement(label, mnemonic, comment, tokens.get(i).getEOL());
+                LineStatement line = new LineStatement(label, mnemonic, comment);
                 // Add to the IR array list
                 IR.add(line);
 

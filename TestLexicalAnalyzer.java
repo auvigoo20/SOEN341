@@ -1,35 +1,31 @@
 
 import SourceFiles.*;
 import InterfaceFiles.*;
-import java.util.ArrayList;
 
 public class TestLexicalAnalyzer {
 
     public static void main(String[] args) {
 
-        // Create new lexical analyzer to read the .asm file
-        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
+        SymbolTable st = new SymbolTable();
+        ErrorReporter er = new ErrorReporter();
 
-        // create new parser and symbol table objects
-        Parser parser = new Parser();
-        SymbolTable symbolTable = new SymbolTable();
+        LexicalAnalyzer la = new LexicalAnalyzer("TestForLexical.asm", st, er);
 
-        // insert data into parser and symbol table during lexical analysis
-        lexicalAnalyzer.scan();
+        System.out.println("Test LexicalAnalyzer");
 
-        // get the values stored in the IR
-        ArrayList<ILineStatement> IR = parser.parse();
+        //Expected output
+        System.out.println("enter.u5 0 ; OK, number <u5> [0..31]. enter.u5 1 ; OK, number <u5> [0..31]. enter.u5 2 ; OK, number <u5> [0..31]. ");
 
-        // Expected Output
-        System.out.println("Test Lexical Analyzer");
-        System.out.println(
-                "[halt][pop][dup][exit][ret][not][and][or][xor][neg][inc][dec][add][sub][mul][div][rem][shl][shr][teq][tne][tlt][tgt][tle][tge][halt]");
+        //Actual output
+        while (la.getFinishScanning() == false) {
+            IToken token = la.scan();
+            if (token != null) {
 
-        // Actual output
-        for (ILineStatement l : IR) {
-            System.out.print(l);
+                System.out.print(token.getTokenString() + " ");
+            }
         }
         System.out.println();
+
 
     }
 }

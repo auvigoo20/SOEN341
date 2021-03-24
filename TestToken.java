@@ -4,18 +4,15 @@ import InterfaceFiles.*;
 public class TestToken {
     public static void main(String[] args) {
 
-        Instruction i1 = new Instruction("halt");
-        String eol = "";
-
-        Token t1 = new Token(i1, eol);
+        IToken t1 = new Token("halt", "", new Position(1,1));
 
         System.out.println("Test Token");
 
         // Expected Output
-        System.out.println("halt");
+        System.out.println("halt 1 1");
 
         // Actual output
-        System.out.println(t1.getInstruction());
+        System.out.println(t1.getTokenString() + " " + t1.getPosition().getColumn() +" "+ t1.getPosition().getLine());
     }
 
 }

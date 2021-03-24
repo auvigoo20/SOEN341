@@ -10,17 +10,15 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
 
     private FileInputStream fis; // Creating an object of type FileInputStream for use in opening the file.
     private static int i; // int that stores the position when reading the file
-    private static String unknownString = ""; // Declaring a mnemonic string variable for use in the method
-    private SymbolTable symbolTable; // symbol table object
-    private ErrorReporter errorReporter;
+    private static String unknownString = ""; // String to hold the token being created
+    private ISymbolTable symbolTable; // symbol table object
+    private IErrorReporter errorReporter;
 
     private static int tokenLine = 1;
     private static int tokenColumn = 1;
     private final String[] inherentMnemonics = { "halt", "pop", "dup", "exit", "ret", "not", "and", "or", "xor", "neg",
             "inc", "dec", "add", "sub", "mul", "div", "rem", "shl", "shr", "teq", "tne", "tlt", "tgt", "tle", "tge" };
     private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
-
-    private static String mnemonic = ""; // Declaring a mnemonic string variable for use in the method
     private boolean finishScanning;
 
     // Creating a constructor for the lexicalAnalyzer, the default constructor
@@ -40,12 +38,12 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     }
 
     // Creating a constructor for the lexicalAnalyzer, the parametrized constructor
-    public LexicalAnalyzer(String fileName, SymbolTable symbolTable, ErrorReporter errorReporter) {
+    public LexicalAnalyzer(String fileName, ISymbolTable symbolTable, IErrorReporter errorReporter) {
 
         // Checking if the file was read correctly.
         try {
             this.fis = new FileInputStream(fileName);
-            this.symbolTable = symbolTable;
+            this.symbolTable = symbolTable; // constructor injection of symbol table
             this.finishScanning = false;
             this.errorReporter = errorReporter; // constructor injection of error reporter
         } catch (FileNotFoundException e) {
@@ -60,7 +58,6 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
         IToken token = null;
 
         try {
-
             // if the token is a comment (starts with a ;), build the string until reaching
             // end of line
             if (i == 59) {
@@ -83,8 +80,8 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
                 if (!unknownString.matches("[a-zA-Z0-9\".-]*")) {
                     String error = "Error: Invalid character in " + unknownString;
                     errorReporter.record(new ErrorMessage(error, new Position(tokenColumn, tokenLine)));
-
                 }
+
                 // check for \n or \r
                 else if (unknownString.contains("\n") || unknownString.contains("\r")) {
                     String error = "Error: EOL in string in " + unknownString;
@@ -95,9 +92,8 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
                 else {
                     token = new Token(unknownString, "", new Position(tokenColumn, tokenLine));
                 }
-                tokenColumn++;
-                // re-initialize string to build next token
-                unknownString = "";
+                tokenColumn++; // go to next column
+                unknownString = ""; // re-initialize string to build next token
 
             }
 
@@ -129,39 +125,31 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             else {
                 unknownString += (char) i;
             }
-
         }
 
         catch (IOException e) {
             System.out.println("IO Exception");
         }
-
         return token;
     }
 
     // Method to read file character by character and send tokens to parser and
     // symbol table
     public IToken scan() {
-
         IToken token = null;
-
         try {
-
             while ((i = fis.read()) != -1) {
-
                 token = getToken();
-
                 if (token != null) {
                     // Insert mnemonic in the symbol table. This mnemonic is the same as the one
                     // that is sent as a token.
                     if (Arrays.asList(inherentMnemonics).contains(token.getTokenString())
                             || Arrays.asList(immediateMnemonics).contains(token.getTokenString())) {
-                        symbolTable.insertMnemonic(token.getTokenString(), new Instruction(token.getTokenString()));
+                        symbolTable.insertMnemonic(token.getTokenString(),
+                                new Instruction(token.getTokenString(), token.getPosition()));
                     }
-
                     return token; // Return token to the Parser
                 }
-
             }
             this.finishScanning = true;
 
@@ -183,11 +171,11 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
 
     }
 
-    public SymbolTable getSymbolTable() {
+    public ISymbolTable getSymbolTable() {
         return this.symbolTable;
     }
 
-    public void setSymbolTable(SymbolTable symbolTable) {
+    public void setSymbolTable(ISymbolTable symbolTable) {
         this.symbolTable = symbolTable;
     }
 
@@ -198,32 +186,6 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
 
     public void setFinishScanning(boolean fs) {
         finishScanning = fs;
-    }
-
-    public static void main(String[] args) {
-
-        SymbolTable st = new SymbolTable();
-        ErrorReporter er = new ErrorReporter();
-
-        LexicalAnalyzer la = new LexicalAnalyzer("TestImmediate.asm", st, er);
-
-        while (la.getFinishScanning() == false) {
-            IToken token = la.scan();
-            if (token != null) {
-
-                String newLine = token.getEOL().equals("newLine") ? "newLine" : "not newLine";
-
-                System.out.println(token.getTokenString() +" @column: "+token.getPosition().getColumn() + " @line: "+ token.getPosition().getLine()
-                );
-            }
-        }
-
-        // for(String s: st.gHashMap().keySet()){
-        // System.out.println(s);
-        // }
-
-        er.report();
-
     }
 
 }

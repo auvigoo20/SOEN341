@@ -2,16 +2,18 @@ package SourceFiles;
 
 import InterfaceFiles.*;
 
-public class Comment extends Token {
+public class Comment extends Token implements IComment {
 
+    // Attributes
     private String comment;
-    private Position position;
+    private IPosition position;
 
     public Comment() {
         this.comment = null;
+        this.position = null;
     }
 
-    public Comment(String comment, Position position) {
+    public Comment(String comment, IPosition position) {
 
         this.comment = comment;
         this.position = position;
@@ -25,7 +27,8 @@ public class Comment extends Token {
         this.comment = comment;
     }
 
-    public Position getPosition(){
+    // used to retrieve the position of a token
+    public IPosition getPosition() {
         return this.position;
     }
 

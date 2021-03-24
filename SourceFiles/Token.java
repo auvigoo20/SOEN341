@@ -2,81 +2,22 @@
 package SourceFiles;
 
 import InterfaceFiles.*;
-import java.util.ArrayList;
 
 public class Token implements IToken {
 
-    private Label label;
-    private Instruction instruction;
-    private Comment comment;
+    // Attributes
     private String EOL;
-
-    private Position position;
-    private boolean isValid;
-
-
+    private IPosition position;
     private String tokenString;
 
-    public Token(String tokenString, String EOL, Position position){
+    public Token() {
+
+    }
+
+    public Token(String tokenString, String EOL, IPosition position) {
         this.tokenString = tokenString;
         this.EOL = EOL;
         this.position = position;
-    }
-
-    public String getTokenString(){
-        return this.tokenString;
-    }
-
-
-    public Token() {
-        position = new Position();
-        label = null;
-        instruction = null;
-        comment = null;
-        EOL = null;
-        isValid = true;
-    }
-
-    // constructor used for the sake of Sprint 2
-    public Token(Instruction mnemonic, String EOL) {
-        // this.label = label;
-        this.instruction = mnemonic;
-        // this.comment = comment;
-        this.EOL = EOL;
-    }
-
-    public Token(Label label, Instruction instruction, Comment comment, String EOL, Position position, boolean isValid){
-    
-    this.label = label;
-    this.instruction = instruction;
-    this.comment = comment;
-    this.EOL = EOL;
-    this.position = position;
-    this.isValid = isValid;
-    }
-
-    public Label getLabel() {
-        return this.label;
-    }
-
-    public void setLabel(Label label) {
-        this.label = label;
-    }
-
-    public Instruction getInstruction() {
-        return this.instruction;
-    }
-
-    public void setInstruction(Instruction instruction) {
-        this.instruction = instruction;
-    }
-
-    public Comment getComment() {
-        return this.comment;
-    }
-
-    public void setComment(Comment comment) {
-        this.comment = comment;
     }
 
     public String getEOL() {
@@ -87,25 +28,20 @@ public class Token implements IToken {
         this.EOL = EOL;
     }
 
-    public Position getPosition() {
+    public IPosition getPosition() {
         return this.position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(IPosition position) {
         this.position = position;
     }
 
-    public boolean getIsValid() {
-        return this.isValid;
+    public String getTokenString() {
+        return this.tokenString;
     }
 
-    public void setIsValid(boolean isValid) {
-        this.isValid = isValid;
-    }
-
-    public String toString() {
-        return label + " " + instruction + " " + comment + " " + EOL;
-
+    public void setTokenString(String tokenString) {
+        this.tokenString = tokenString;
     }
 
 }

@@ -4,20 +4,16 @@ import SourceFiles.*;
 
 public interface ILineStatement {
 
-    public Label getLabel();
+    public ILabel getLabel();
 
-    public void setLabel(Label label);
+    public void setLabel(ILabel label);
 
-    public Instruction getMnemonic();
+    public IInstruction getMnemonic();
 
-    public void setMnemonic(Instruction mnemonic);
+    public void setMnemonic(IInstruction mnemonic);
 
-    public Comment getComment();
+    public IComment getComment();
 
-    public void setComment(Comment comment);
-
-    public String getEol();
-
-    public void setEol(String eol);
+    public void setComment(IComment comment);
 
 }

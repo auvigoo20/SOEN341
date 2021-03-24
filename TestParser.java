@@ -9,11 +9,12 @@ public class TestParser {
     public static void main(String[] args) {
 
         // Simulate 3 tokens being read by the lexical analyzer
-        Token t1 = new Token(new Instruction("halt"), "\n");
-        Token t2 = new Token(new Instruction("pop"), "\n");
-        Token t3 = new Token(new Instruction("dup"), "\n");
+        IToken t1 = new Token("enter.u5", "", new Position(1, 1));
+        IToken t2 = new Token("10", "", new Position(2, 1));
+        IToken t3 = new Token(";hello","newLine",new Position(3,1));
 
-        Parser parser = new Parser();
+        IErrorReporter er = new ErrorReporter();
+        IParser parser = new Parser(er);
 
         // Simulate the lexical analyzer sending 3 tokens to the parser
         parser.requestToken(t1);
@@ -25,17 +26,14 @@ public class TestParser {
         ArrayList<ILineStatement> IR = parser.parse();
 
         ILineStatement l0 = IR.get(0);
-        ILineStatement l1 = IR.get(1);
-        ILineStatement l2 = IR.get(2);
+
 
         // Expected Output
         System.out.println("Test Parser");
-        System.out.println("[halt][pop][dup]");
+        System.out.println("enter.u5 10 ;hello");
 
         // Actual output
-        System.out.print(l0);
-        System.out.print(l1);
-        System.out.print(l2);
+        System.out.print(l0.getMnemonic().getMnemonic() + " " + l0.getMnemonic().getOperand() + " "+ l0.getComment().getCommentToken());
         System.out.println();
 
     }

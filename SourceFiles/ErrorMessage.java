@@ -1,12 +1,13 @@
 package SourceFiles;
+
 import InterfaceFiles.*;
 
-public class ErrorMessage {
-    
-    private String message;
-    private Position position;
+public class ErrorMessage implements IErrorMessage {
 
-    public ErrorMessage(String message, Position position){
+    private String message;
+    private IPosition position;
+
+    public ErrorMessage(String message, IPosition position) {
         this.message = message;
         this.position = position;
     }
@@ -19,12 +20,12 @@ public class ErrorMessage {
         this.message = message;
     }
 
-    public Position getPosition() {
+    public IPosition getPosition() {
         return this.position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(IPosition position) {
         this.position = position;
     }
-    
+
 }

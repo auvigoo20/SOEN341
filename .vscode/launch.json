@@ -6,6 +6,41 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch TestPosition",
+            "request": "launch",
+            "mainClass": "TestPosition",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestInstruction",
+            "request": "launch",
+            "mainClass": "TestInstruction",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestErrorReporter",
+            "request": "launch",
+            "mainClass": "TestErrorReporter",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestErrorMessage",
+            "request": "launch",
+            "mainClass": "TestErrorMessage",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestComment",
+            "request": "launch",
+            "mainClass": "TestComment",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch Parser",
             "request": "launch",
             "mainClass": "SourceFiles.Parser",

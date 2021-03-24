@@ -4,32 +4,15 @@ import SourceFiles.*;
 
 public interface IToken {
 
-    public String getTokenString();
-
-    public Label getLabel();
-
-    public void setLabel(Label label);
-
-    public Instruction getInstruction();
-
-    public void setInstruction(Instruction instruction);
-
-    public Comment getComment();
-
-    public void setComment(Comment comment);
-
     public String getEOL();
 
     public void setEOL(String EOL);
 
-    public String toString();
+    public IPosition getPosition();
 
-    public Position getPosition();
+    public void setPosition(IPosition position);
 
-    public void setPosition(Position position);
+    public String getTokenString();
 
-    public boolean getIsValid();
-
-    public void setIsValid(boolean isValid);
-
+    public void setTokenString(String tokenString);
 }

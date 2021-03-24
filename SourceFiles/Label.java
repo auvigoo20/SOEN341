@@ -1,15 +1,18 @@
 package SourceFiles;
 
 import InterfaceFiles.*;
-public class Label extends Token {
 
-    String label;
+public class Label extends Token implements ILabel {
+
+    private String label;
+    private IPosition position;
 
     public Label() {
     }
 
-    public Label(String label) {
+    public Label(String label, IPosition position) {
         this.label = label;
+        this.position = position;
     }
 
     public String getLabelToken() {
@@ -20,4 +23,11 @@ public class Label extends Token {
         this.label = label;
     }
 
+    public IPosition getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(IPosition position) {
+        this.position = position;
+    }
 }

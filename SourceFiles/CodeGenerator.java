@@ -36,7 +36,7 @@ public class CodeGenerator implements ICGenerator {
         // for each line statement in IR
         for (int i = 0; i < intRep.size(); i++) {
 
-            Position position = null;
+            IPosition position = null;
 
             //Get the position from either the mnemonic or the comment (doesn't matter which since only line number is needed)
             if (intRep.get(i).getMnemonic() != null){

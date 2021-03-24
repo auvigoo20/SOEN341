@@ -1,19 +1,25 @@
 package SourceFiles;
+
 import InterfaceFiles.*;
 
-public class Position implements IPosition{
-    
+public class Position implements IPosition {
+
+    // Attributes
     private int column;
     private int line;
-    
-    public Position(){
+
+    // Default constructor
+    public Position() {
 
     }
 
-    public Position(int column, int line){
-        this.column=column;
-        this.line=line;
+    // parametrized constructor
+    public Position(int column, int line) {
+        this.column = column;
+        this.line = line;
     }
+
+    // get the column of the token
     public int getColumn() {
         return this.column;
     }
@@ -22,6 +28,7 @@ public class Position implements IPosition{
         this.column = column;
     }
 
+    // get the line of the token
     public int getLine() {
         return this.line;
     }
@@ -30,12 +37,4 @@ public class Position implements IPosition{
         this.line = line;
     }
 
-  
-
-    
-
-
-
-
-    
 }

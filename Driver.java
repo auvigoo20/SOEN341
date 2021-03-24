@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import InterfaceFiles.*;
-import java.util.ArrayList;
-import InterfaceFiles.*;
 import SourceFiles.*;
 
 public class Driver {
@@ -32,12 +30,8 @@ public class Driver {
             }
         }        
 
-
-
         // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator();
-
-
 
         // Store the intermediate representation in a variable
         ArrayList<ILineStatement> IR = parser.parse();
