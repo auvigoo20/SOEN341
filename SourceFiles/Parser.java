@@ -46,6 +46,25 @@ public class Parser implements IParser {
             // --------IF TOKEN DOES NOT CONTAIN EOL----------------------------
             if (tokens.get(i).getEOL() == "") {
 
+                if (tokens.get(i).getTokenString().equalsIgnoreCase(".cstring")) {
+
+                    // check if the token that follows it is a string operand
+                    // bounds check
+                    // [.cstring "ABC]
+                    if (i != (tokens.size() - 1)) {
+                        if (tokens.get(i + 1).getTokenString().contains("\"")) {
+                            mnemonic = new Instruction(tokens.get(i).getTokenString(),
+                                    tokens.get(i + 1).getTokenString(), tokens.get(i).getPosition());
+                        } else {
+                            String error = "Error: A directive instruction must be followed by an array of characters in the operand field";
+                            errorReporter.record(new ErrorMessage(error, new Position(
+                                    tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                        }
+
+                    }
+
+                }
+
                 // inherent mnemonics check:
                 // if the token is found in the inherent mnemonic list
                 if (Arrays.asList(inherentMnemonics).contains(tokens.get(i).getTokenString())) {
@@ -56,10 +75,10 @@ public class Parser implements IParser {
                         if (tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
 
                             String error = "Error: Instructions with inherent mode addressing do not have an operand field.";
-                            errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                            errorReporter.record(new ErrorMessage(error, new Position(
+                                    tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
                         }
 
-                        
                         else {
                             mnemonic = new Instruction(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                         }
@@ -76,7 +95,8 @@ public class Parser implements IParser {
                         if (!tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
                             // error
                             String error = "Error: This immediate instruction must have a number as an operand field.";
-                            errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                            errorReporter.record(new ErrorMessage(error, new Position(
+                                    tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
                         }
 
                         // If the mnemonic IS followed by an operand
@@ -89,21 +109,26 @@ public class Parser implements IParser {
                                 if (tokens.get(i).getTokenString().contains(".u5")) {
                                     error = "Error: The immediate instruction " + tokens.get(i).getTokenString()
                                             + " must have a 5-bit unsigned operand number ranging from 0 to 31.";
-                                    errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                                    errorReporter.record(new ErrorMessage(error,
+                                            new Position(tokens.get(i).getPosition().getColumn(),
+                                                    tokens.get(i).getPosition().getLine())));
 
                                 } else if (tokens.get(i).getTokenString().contains(".i3")) {
                                     error = "Error: The immediate instruction " + tokens.get(i).getTokenString()
                                             + " must have a 3-bit signed operand number ranging from -4 to 3.";
-                                    errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
-                                    
+                                    errorReporter.record(new ErrorMessage(error,
+                                            new Position(tokens.get(i).getPosition().getColumn(),
+                                                    tokens.get(i).getPosition().getLine())));
+
                                 } else if (tokens.get(i).getTokenString().contains(".u3")) {
                                     error = "Error: The immediate instruction " + tokens.get(i).getTokenString()
                                             + " must have a 3-bit unsigned operand number ranging from 0 to 7.";
-                                    errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                                    errorReporter.record(new ErrorMessage(error,
+                                            new Position(tokens.get(i).getPosition().getColumn(),
+                                                    tokens.get(i).getPosition().getLine())));
 
                                 }
-                            } 
-                            else {
+                            } else {
                                 mnemonic = new Instruction(tokens.get(i).getTokenString(),
                                         tokens.get(i + 1).getTokenString(), tokens.get(i).getPosition());
                             }
@@ -113,7 +138,8 @@ public class Parser implements IParser {
                     // after it
                     else {
                         String error = "Error: This immediate instruction must have a number as an operand field.\n@column: ";
-                        errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                        errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(),
+                                        tokens.get(i).getPosition().getLine())));
                     }
 
                 }
@@ -121,18 +147,28 @@ public class Parser implements IParser {
                 // *****LABEL CHECK FOR SPRINT 4*****
             }
 
-           // Otherwise if the token contains the end of line marker "newLine"
+            // Otherwise if the token contains the end of line marker "newLine"
             else if (tokens.get(i).getEOL().equalsIgnoreCase("newLine")) {
 
-                //Check to see if the token is an inherent mnemonic
+                // check to see if .cstring mnemonic is valid. If not then print message
+                if (tokens.get(i).getTokenString().equalsIgnoreCase(".cstring")) {
+
+                    String error = "Error: A directive instruction must be followed by an array of characters in the operand field";
+                    errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(),
+                            tokens.get(i).getPosition().getLine())));
+                }
+
+                // Check to see if the token is an inherent mnemonic
                 if (Arrays.asList(inherentMnemonics).contains(tokens.get(i).getTokenString())) {
 
-                    // Error handling: If inherent mnemonic has an operand, send it to error reporter with error message and token details
+                    // Error handling: If inherent mnemonic has an operand, send it to error
+                    // reporter with error message and token details
                     if (i != (tokens.size() - 1)) {
 
                         if (tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
                             String error = "Error: Instructions with inherent mode addressing do not have an operand field.";
-                            errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                            errorReporter.record(new ErrorMessage(error, new Position(
+                                    tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
                         }
 
                         else {
@@ -141,18 +177,20 @@ public class Parser implements IParser {
                     }
                 }
 
-                // Immediate Mnemonic Check: if the token is found in the immediate mnemonic list
+                // Immediate Mnemonic Check: if the token is found in the immediate mnemonic
+                // list
                 else if (Arrays.asList(immediateMnemonics).contains(tokens.get(i).getTokenString())) {
                     String error = "Error: This immediate instruction must have a number as an operand field.";
-                    errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                    errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(),
+                            tokens.get(i).getPosition().getLine())));
                 }
-                //Comment Check: if the token contains a semi-colon (;)
+                // Comment Check: if the token contains a semi-colon (;)
                 if (tokens.get(i).getTokenString().contains(";")) {
                     comment = new Comment(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                 }
                 // *****LABEL CHECK FOR SPRINT 4*****
 
-                //Line statement object initialization
+                // Line statement object initialization
                 LineStatement line = new LineStatement(label, mnemonic, comment, tokens.get(i).getEOL());
                 // Add to the IR array list
                 IR.add(line);
@@ -179,13 +217,12 @@ public class Parser implements IParser {
         return true;
     }
 
-
     public static void main(String[] args) {
 
         SymbolTable st = new SymbolTable();
 
         ErrorReporter er = new ErrorReporter();
-        LexicalAnalyzer la = new LexicalAnalyzer("TestImmediate.asm", st,er);
+        LexicalAnalyzer la = new LexicalAnalyzer("TestImmediate.asm", st, er);
 
         Parser parser = new Parser(er);
 
@@ -211,5 +248,3 @@ public class Parser implements IParser {
     }
 
 }
-
-

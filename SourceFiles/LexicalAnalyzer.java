@@ -80,7 +80,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
 
                 unknownString = unknownString.trim();
                 // check for invalid characters if it's not a comment
-                if (!unknownString.matches("[a-zA-Z0-9.-]*")) {
+                if (!unknownString.matches("[a-zA-Z0-9\".-]*")) {
                     String error = "Error: Invalid character in " + unknownString;
                     errorReporter.record(new ErrorMessage(error, new Position(tokenColumn, tokenLine)));
 
@@ -107,7 +107,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
                 if (unknownString.length() > 0) {
 
                     // check for invalid characters if it's not a comment
-                    if (!unknownString.matches("[a-zA-Z0-9.-]*")) {
+                    if (!unknownString.matches("[a-zA-Z0-9\".-]*")) {
                         String error = "Error: Invalid character in " + unknownString;
                         errorReporter.record(new ErrorMessage(error, new Position(tokenColumn, tokenLine)));
                     }

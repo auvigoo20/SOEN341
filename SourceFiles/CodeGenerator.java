@@ -65,8 +65,7 @@ public class CodeGenerator implements ICGenerator {
                 // for each symbol in the table
                 for (String tableMne : symbols.gHashMap().keySet()) {
 
-                    if (tableMne.equals(intRep.get(i).getMnemonic().getMnemonic())) { // if table mnemonic is the same
-                                                                                      // as line mnemonic
+                    if (tableMne.equals(intRep.get(i).getMnemonic().getMnemonic())) { // if table mnemonic is the same as line mnemonic
 
                         // assign all the info into the appropriate variables
                         // label = intRep.get(i).getLabel().getLabelToken(); //for later
