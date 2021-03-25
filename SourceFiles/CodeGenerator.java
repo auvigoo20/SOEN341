@@ -189,7 +189,7 @@ public class CodeGenerator implements ICGenerator {
         }
 
         else if (mnemonic.equals("ldc.i3")) {
-            int j = 144;
+            /*int j = 144;
             for (int i = 0; i < 4; i++) {
                 if (operand.equals(String.valueOf(i)))
                     return j;
@@ -203,6 +203,17 @@ public class CodeGenerator implements ICGenerator {
             }
 
             return -1;
+            */
+            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+            int opcode = 0x90;
+            opcode = opcode |(number & 0x07);
+            if(number >= 0)
+                opcode = opcode | number;
+            else
+                opcode = opcode | ~number+1;
+            
+            return opcode;
+        
         }
 
         else if (mnemonic.equals("addv.u3")) {
