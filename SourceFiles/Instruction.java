@@ -14,9 +14,9 @@ public class Instruction extends Token implements IInstruction {
     public Instruction() {
 
     }
-
+    //NOTES FROM PROF: Should also have class Operand that can be either int or Label
     // Parametrized constructor without operand field
-    public Instruction(String mnemonic, IPosition position) {
+    public Instruction(String mnemonic, IPosition position) { //NOTES FROM PROF: should inject the object mnemonic class (should create mnemonic class: has all characteristics; size, type, opcode, operand, etc.)
         this.mnemonic = mnemonic;
         setInstructionType(mnemonic);
         this.position = position;

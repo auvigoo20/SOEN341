@@ -38,12 +38,13 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     }
 
     // Creating a constructor for the lexicalAnalyzer, the parametrized constructor
+    //NOTES FROM PROF: should have a mnemonic class that has all characteristics of the mnemonic (name, size, opcode, type, etc.)
     public LexicalAnalyzer(String fileName, ISymbolTable symbolTable, IErrorReporter errorReporter) {
 
         // Checking if the file was read correctly.
         try {
             this.fis = new FileInputStream(fileName);
-            this.symbolTable = symbolTable; // constructor injection of symbol table
+            this.symbolTable = symbolTable; // constructor injection of symbol table. NOTES FROM PROF: should insert mnemonic objects in the constructor
             this.finishScanning = false;
             this.errorReporter = errorReporter; // constructor injection of error reporter
         } catch (FileNotFoundException e) {
