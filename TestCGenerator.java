@@ -35,7 +35,7 @@ public class TestCGenerator {
                 "Operand", "Comments"));
         System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "1", "0000", "85", "", "enter.u5", "5", "; OK, number <u5> [0..31]."));
         System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "2", "0001", "98", "", "addv.u3", "0", "; OK, number <u3> [0..7]."));
-        System.out.println(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "3", "0002", "AF", "", "stv.u3", "7", "; OK, number <u3> [0..7]."));
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "3", "0002", "AF", "", "stv.u3", "7", "; OK, number <u3> [0..7]."));
         System.out.println(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "4", "0003", "96", "", "ldc.i3", "-2", "; OK, number <i3> [-4..3]."));
 
         // Tested output
