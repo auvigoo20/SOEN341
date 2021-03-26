@@ -24,4 +24,8 @@ public class ErrorReporter implements IErrorReporter {
         }
     }
 
+    public ArrayList<IErrorMessage> getErrorReports(){
+        return errorReports;
+    }
+
 }

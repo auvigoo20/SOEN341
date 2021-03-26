@@ -9,8 +9,16 @@ public class Driver {
     //pop 
     public static void main(String[] args) {
 
+        String fileName = null;
+
+        if(args.length == 0){
+            fileName = "TestImmediate.asm";
+        }
+
         // File name from the user input in the command line
-        String fileName = "TestImmediate.asm";
+        else{
+            fileName = args[0];
+        }
 
         ErrorReporter errorReporter = new ErrorReporter();
 
@@ -28,7 +36,12 @@ public class Driver {
             if(token != null){
             parser.requestToken(token);
             }
-        }        
+        }
+        
+        if(errorReporter.getErrorReports().size() > 0){
+            errorReporter.report();
+            System.exit(0);
+        }
 
         // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator();
