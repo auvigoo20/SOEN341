@@ -10,46 +10,48 @@
 - [x] Remove dependencies of Parser from LexicalAnalyzer
 - [x] Scan comments, numbers and report scanner errors to ErrorReporter
 - [x] Parse an immediate instruction and report parser errors to ErrorReporter
-- [ ] Parse a directive (.cstring)
+- [x] Parse a directive (.cstring)
 - [x] Create ErrorReporter class
-- [ ] Create immediate instruction formatter for `.lst` output file
-- [ ] Create tests **FOR ALL** files
-
-~~### **TODO for Sprint 2**~~
-
-~~- [x]  Create test case for CodeGenerator.java~~
-~~- [x]  Create test case for LexicalAnalyzer.java~~
-~~- [x]  Create test case for SymbolTable.java~~
-~~- [x] Create driver file~~
-~~- [x] Comment and format **all** code~~
-~~- [x] Finalize UML Diagram~~
-~~- [x] Write report~~
+- [x] Create immediate instruction formatter for `.lst` output file
+- [x] Create tests **FOR ALL** files
 
 
 ### **AUnit Testing**  
 
-For sprint 2, we have 4 tests to run: `TestLexicalAnalyzer.java`, `TestParser.java`, `TestCGenerator.java` and `TestSymbolTable.java`.
-We will combine all the outputs of each test in a single file called `Tests.txt` and then run **AUnit** with that file.
 
 Follow the following commands to run the tests: 
 
 ```
 javac -Xlint:unchecked aunit.java
 javac TestCGenerator.java
-javac TestLexicalAnalyzer.java 
-javac TestParser.java 
-javac TestSymbolTable.java 
+javac TestComment.java
+javac TestErrorMessage.java
+javac TestErrorReporter.java
+javac TestInstruction.java
+javac TestLexicalAnalyzer.java
+javac TestLineStatement.java
+javac TestParser.java
+javac TestPosition.java
+javac TestSymbolTable.java
+javac TestToken.java
 java TestCGenerator > Tests.txt
-java TestLexicalAnalyzer >> Tests.txt 
-java TestParser >> Tests.txt 
+java TestComment >> Tests.txt
+java TestErrorMessage >> Tests.txt
+java TestErrorReporter >> Tests.txt
+java TestInstruction >> Tests.txt
+java TestLexicalAnalyzer >> Tests.txt
+java TestLineStatement >> Tests.txt
+java TestParser >> Tests.txt
+java TestPosition >> Tests.txt
 java TestSymbolTable >> Tests.txt
+java TestToken >> Tests.txt
 java aunit Tests.txt
 ```
 
 The final output should be:
 
 ```
-....
+...........
 OK
 ```
 
