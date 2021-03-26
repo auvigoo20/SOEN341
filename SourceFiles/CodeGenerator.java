@@ -201,11 +201,11 @@ public class CodeGenerator implements ICGenerator {
           
             int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
             int opcode = 0x90;
-            opcode = opcode | (number & 0x07);
+            
             if(number >= 0)
                 opcode = opcode | number;
             else
-                opcode = opcode | ~number+1;
+                opcode = opcode | (number & 0x07);
             
             return opcode;
         
