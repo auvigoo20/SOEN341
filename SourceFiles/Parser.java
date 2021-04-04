@@ -18,7 +18,6 @@ public class Parser implements IParser {
     private final String[] inherentMnemonics = { "halt", "pop", "dup", "exit", "ret", "not", "and", "or", "xor", "neg",
             "inc", "dec", "add", "sub", "mul", "div", "rem", "shl", "shr", "teq", "tne", "tlt", "tgt", "tle", "tge" };
 
-    // default constructor
     public Parser(IErrorReporter errorReporter) {
         this.tokens = new ArrayList<IToken>();
         this.errorReporter = errorReporter;
@@ -49,12 +48,11 @@ public class Parser implements IParser {
                 if (tokens.get(i).getTokenString().equalsIgnoreCase(".cstring")) {
 
                     // check if the token that follows it is a string operand
-                    // bounds check
                     // [.cstring "ABC]
                     if (i != (tokens.size() - 1)) {
                         if (tokens.get(i + 1).getTokenString().contains("\"")) {
-                            mnemonic = new Instruction(tokens.get(i).getTokenString(),
-                                    tokens.get(i + 1).getTokenString(), tokens.get(i).getPosition());
+                            mnemonic = new Instruction(tokens.get(i).getTokenString(), new Operand(tokens.get(i + 1).getTokenString())
+                                    ,tokens.get(i).getPosition());
                         } else {
                             String error = "Error: A directive instruction must be followed by an array of characters in the operand field";
                             errorReporter.record(new ErrorMessage(error, new Position(
@@ -72,7 +70,7 @@ public class Parser implements IParser {
                     // Error handling: If inherent mnemonic has an operand, error
                     if (i != (tokens.size() - 1)) {
 
-                        if (tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
+                        if (isNumber(tokens.get(i + 1).getTokenString())) {
 
                             String error = "Error: Instructions with inherent mode addressing do not have an operand field.";
                             errorReporter.record(new ErrorMessage(error, new Position(
@@ -92,7 +90,7 @@ public class Parser implements IParser {
                     if (i != (tokens.size() - 1)) {
 
                         // If the mnemonic is not followed by an operand
-                        if (!tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
+                        if (!isNumber(tokens.get(i + 1).getTokenString())) {
                             // error
                             String error = "Error: This immediate instruction must have a number as an operand field.";
                             errorReporter.record(new ErrorMessage(error, new Position(
@@ -130,7 +128,7 @@ public class Parser implements IParser {
                                 }
                             } else {
                                 mnemonic = new Instruction(tokens.get(i).getTokenString(),
-                                        tokens.get(i + 1).getTokenString(), tokens.get(i).getPosition());
+                                new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
                             }
                         }
                     }
@@ -143,6 +141,7 @@ public class Parser implements IParser {
                                         tokens.get(i).getPosition().getLine())));
                     }
                 }
+                //else, ITS A LABEL
                 // *****LABEL CHECK FOR SPRINT 4*****
             }
 
@@ -164,7 +163,7 @@ public class Parser implements IParser {
                     // reporter with error message and token details
                     if (i != (tokens.size() - 1)) {
 
-                        if (tokens.get(i + 1).getTokenString().matches("[0-9-]*")) {
+                        if (isNumber(tokens.get(i + 1).getTokenString())) {
                             String error = "Error: Instructions with inherent mode addressing do not have an operand field.";
                             errorReporter.record(new ErrorMessage(error, new Position(
                                     tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
@@ -184,7 +183,7 @@ public class Parser implements IParser {
                             tokens.get(i).getPosition().getLine())));
                 }
                 // Comment Check: if the token contains a semi-colon (;)
-                if (tokens.get(i).getTokenString().contains(";")) {
+                else if (tokens.get(i).getTokenString().contains(";")) {
                     comment = new Comment(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                 }
                 // *****LABEL CHECK FOR SPRINT 4*****
@@ -204,7 +203,7 @@ public class Parser implements IParser {
         return IR;
     }
 
-    public boolean checkOperand(IToken mnemonic, IToken operand) {
+    private boolean checkOperand(IToken mnemonic, IToken operand) {
 
         if (mnemonic.getTokenString().contains(".u5")) {
             return Integer.parseInt(operand.getTokenString()) >= 0 && Integer.parseInt(operand.getTokenString()) <= 31;
@@ -212,6 +211,16 @@ public class Parser implements IParser {
             return Integer.parseInt(operand.getTokenString()) >= -4 && Integer.parseInt(operand.getTokenString()) <= 3;
         } else if (mnemonic.getTokenString().contains(".u3")) {
             return Integer.parseInt(operand.getTokenString()) >= 0 && Integer.parseInt(operand.getTokenString()) <= 7;
+        }
+        return true;
+    }
+
+    private boolean isNumber(String operand){
+        char[] chars = operand.toCharArray();
+        for(char c : chars){
+            if(!Character.isDigit(c) && c != '-'){
+                return false;
+            }
         }
         return true;
     }
@@ -235,7 +244,7 @@ public class Parser implements IParser {
 
         for (ILineStatement l : lineStatements) {
             if (l.getMnemonic() != null) {
-                System.out.print(l.getMnemonic().getMnemonic() + " " + l.getMnemonic().getOperand());
+                System.out.print(l.getMnemonic().getMnemonic() + " " + l.getMnemonic().getOperand().getOperandNumber());
             }
             if (l.getComment() != null) {
                 System.out.print(" " + l.getComment().getCommentToken());

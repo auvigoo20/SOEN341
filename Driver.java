@@ -49,6 +49,11 @@ public class Driver {
         // Store the intermediate representation in a variable
         ArrayList<ILineStatement> IR = parser.parse();
 
+        if(errorReporter.getErrorReports().size() > 0){
+            errorReporter.report();
+            System.exit(0);
+        }
+
         // Traverse the intermediate representation using the symbol table
         codeGenerator.traverseIR(IR, symbolTable);
 

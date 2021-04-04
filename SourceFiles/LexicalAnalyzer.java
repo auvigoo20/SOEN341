@@ -21,30 +21,12 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
     private boolean finishScanning;
 
-    // Creating a constructor for the lexicalAnalyzer, the default constructor
-    public LexicalAnalyzer() {
-
-        // Opening the input file specified
-        try {
-            this.fis = new FileInputStream("TestInherentMnemonics.asm");
-            this.finishScanning = false;
-        }
-
-        // Checking if the file was read correctly.
-        catch (FileNotFoundException e) {
-            System.out.println("File not found");
-            System.exit(0);
-        }
-    }
-
-    // Creating a constructor for the lexicalAnalyzer, the parametrized constructor
-    //NOTES FROM PROF: should have a mnemonic class that has all characteristics of the mnemonic (name, size, opcode, type, etc.)
     public LexicalAnalyzer(String fileName, ISymbolTable symbolTable, IErrorReporter errorReporter) {
 
         // Checking if the file was read correctly.
         try {
             this.fis = new FileInputStream(fileName);
-            this.symbolTable = symbolTable; // constructor injection of symbol table. NOTES FROM PROF: should insert mnemonic objects in the constructor
+            this.symbolTable = symbolTable; // constructor injection of symbol table.
             this.finishScanning = false;
             this.errorReporter = errorReporter; // constructor injection of error reporter
         } catch (FileNotFoundException e) {
@@ -59,11 +41,10 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
         IToken token = null;
 
         try {
-            // if the token is a comment (starts with a ;), build the string until reaching
-            // end of line
-            if (i == 59) {
+            // if the token is a comment (starts with a ;), build the string until reaching end of line
+            if (i == ';') {
                 unknownString += (char) i;
-                while ((i = fis.read()) != 10) {
+                while ((i = fis.read()) != '\n') {
                     unknownString += (char) i;
                 }
                 unknownString = unknownString.trim();
@@ -74,11 +55,11 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             }
 
             // if the token does not contain the EOL marker
-            else if ((i == 32) && unknownString.trim().length() > 0) {
+            else if ((i == ' ') && unknownString.trim().length() > 0) {
 
                 unknownString = unknownString.trim();
                 // check for invalid characters if it's not a comment
-                if (!unknownString.matches("[a-zA-Z0-9\".-]*")) {
+                if (hasInvalidChar(unknownString)) {
                     String error = "Error: Invalid character in " + unknownString;
                     errorReporter.record(new ErrorMessage(error, new Position(tokenColumn, tokenLine)));
                 }
@@ -104,7 +85,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
                 if (unknownString.length() > 0) {
 
                     // check for invalid characters if it's not a comment
-                    if (!unknownString.matches("[a-zA-Z0-9\".-]*")) {
+                    if (hasInvalidChar(unknownString)) {
                         String error = "Error: Invalid character in " + unknownString;
                         errorReporter.record(new ErrorMessage(error, new Position(tokenColumn, tokenLine)));
                     }
@@ -144,10 +125,10 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
                 if (token != null) {
                     // Insert mnemonic in the symbol table. This mnemonic is the same as the one
                     // that is sent as a token.
-                    if (Arrays.asList(inherentMnemonics).contains(token.getTokenString())
-                            || Arrays.asList(immediateMnemonics).contains(token.getTokenString())) {
+                    if (isMnemonic(token.getTokenString())) {
                         symbolTable.insertMnemonic(token.getTokenString(),
-                                new Instruction(token.getTokenString(), token.getPosition()));
+                                new Mnemonic(token.getTokenString(), getOpcode(token.getTokenString())));
+                        // something like new Mnemonic(mnemonic name string, mnemonic opcode)
                     }
                     return token; // Return token to the Parser
                 }
@@ -165,28 +146,116 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
 
         // Expection handling if error not related to the file
         catch (IOException e) {
-            System.out.println("Error");
+            System.out.println("IO Exception");
             System.exit(0);
         }
         return token;
 
     }
 
-    public ISymbolTable getSymbolTable() {
-        return this.symbolTable;
-    }
-
-    public void setSymbolTable(ISymbolTable symbolTable) {
-        this.symbolTable = symbolTable;
-    }
-
     public boolean getFinishScanning() {
-
         return finishScanning;
     }
 
-    public void setFinishScanning(boolean fs) {
-        finishScanning = fs;
+    private boolean isMnemonic(String mnemonicString) {
+        if (Arrays.asList(inherentMnemonics).contains(mnemonicString)
+                || Arrays.asList(immediateMnemonics).contains(mnemonicString)
+                || mnemonicString.equalsIgnoreCase(".cstring")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    private boolean hasInvalidChar(String tokenString){
+        char[] chars = tokenString.toCharArray();
+        int count = 0;
+        for(char c : chars){
+            if(Character.isLetter(c) || Character.isDigit(c) || c == '\"' || c == '.' || c == '-' ){
+            }
+            else{
+                count++;
+            }
+        }
+        if(count > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    // returns opcode of mnemonics. In the case of immediate mnemonics, it returns
+    // the base opcode
+    private int getOpcode(String mnemonic) {
+
+        // Inherent addressing
+        if (mnemonic.equals("halt"))
+            return 0;
+        else if (mnemonic.equals("pop"))
+            return 1;
+        else if (mnemonic.equals("dup"))
+            return 2;
+        else if (mnemonic.equals("exit"))
+            return 3;
+        else if (mnemonic.equals("ret"))
+            return 4;
+        else if (mnemonic.equals("not"))
+            return 12;
+        else if (mnemonic.equals("and"))
+            return 13;
+        else if (mnemonic.equals("or"))
+            return 14;
+        else if (mnemonic.equals("xor"))
+            return 15;
+        else if (mnemonic.equals("neg"))
+            return 16;
+        else if (mnemonic.equals("inc"))
+            return 17;
+        else if (mnemonic.equals("dec"))
+            return 18;
+        else if (mnemonic.equals("add"))
+            return 19;
+        else if (mnemonic.equals("sub"))
+            return 20;
+        else if (mnemonic.equals("mul"))
+            return 21;
+        else if (mnemonic.equals("div"))
+            return 22;
+        else if (mnemonic.equals("rem"))
+            return 23;
+        else if (mnemonic.equals("shl"))
+            return 24;
+        else if (mnemonic.equals("shr"))
+            return 25;
+        else if (mnemonic.equals("teq"))
+            return 26;
+        else if (mnemonic.equals("tne"))
+            return 27;
+        else if (mnemonic.equals("tlt"))
+            return 28;
+        else if (mnemonic.equals("tgt"))
+            return 29;
+        else if (mnemonic.equals("tle"))
+            return 30;
+        else if (mnemonic.equals("tge"))
+            return 31;
+        //Immediate addressing
+        else if (mnemonic.equals("enter.u5"))
+            return 0x70;
+        else if (mnemonic.equals("ldc.i3"))
+            return 0x90;
+        else if (mnemonic.equals("addv.u3"))
+            return 0x98;
+        else if (mnemonic.equals("ldv.u3"))
+            return 0xA0;
+        else if (mnemonic.equals("stv.u3"))
+            return 0xA8;
+        else
+            return -1;
+        
+
+    }
+    
 }

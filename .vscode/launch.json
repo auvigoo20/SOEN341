@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Operand",
+            "request": "launch",
+            "mainClass": "SourceFiles.Operand",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch TestPosition",
             "request": "launch",
             "mainClass": "TestPosition",

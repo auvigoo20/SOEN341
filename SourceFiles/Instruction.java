@@ -6,7 +6,7 @@ public class Instruction extends Token implements IInstruction {
 
     // Attributes
     private String mnemonic;
-    private String operand;
+    private IOperand operand;
     private IPosition position;
     private String instructionType;
 
@@ -23,7 +23,7 @@ public class Instruction extends Token implements IInstruction {
     }
 
     // Parametrized constructor with operand field
-    public Instruction(String mnemonic, String operand, IPosition position) {
+    public Instruction(String mnemonic, IOperand operand, IPosition position) {
         this.mnemonic = mnemonic;
         this.operand = operand;
         this.position = position;
@@ -36,7 +36,7 @@ public class Instruction extends Token implements IInstruction {
     }
 
     // Set the instruction type according to the mnemonic
-    public void setInstructionType(String mnemonic) {
+    private void setInstructionType(String mnemonic) {
         if (mnemonic.equals(".cstring")) {
             this.instructionType = "Directive";
             return;
@@ -52,11 +52,8 @@ public class Instruction extends Token implements IInstruction {
         return mnemonic;
     }
 
-    public void setMnemonic(String m) {
-        mnemonic = m;
-    }
 
-    public String getOperand() {
+    public IOperand getOperand() {
         return operand;
     }
 

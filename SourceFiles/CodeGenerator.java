@@ -28,7 +28,8 @@ public class CodeGenerator implements ICGenerator {
         int counter = 0; // decimal counter for line number and address, will be converted to hexadecimal
         String label = "";
         String mne = "";
-        String operand = "";
+        String operandString = null;
+        int operandNumber = Integer.MAX_VALUE;
         String comment = "";
         String addr = "";
         String code = "";
@@ -63,18 +64,25 @@ public class CodeGenerator implements ICGenerator {
             if (intRep.get(i).getMnemonic() != null) {
                 
                 // for each symbol in the table
-                for (String tableMne : symbols.gHashMap().keySet()) {
+                for (String tableMne : symbols.getSymbolTable().keySet()) {
 
                     if (tableMne.equals(intRep.get(i).getMnemonic().getMnemonic())) { // if table mnemonic is the same as line mnemonic
 
                         // assign all the info into the appropriate variables
                         // label = intRep.get(i).getLabel().getLabelToken(); //for later
                         mne = intRep.get(i).getMnemonic().getMnemonic();
-                        operand = intRep.get(i).getMnemonic().getOperand(); // to do this sprint
+
+                        //first check if operand is a number or a string
+                        if(intRep.get(i).getMnemonic().getOperand().isOperandNumber()){
+                            operandNumber = intRep.get(i).getMnemonic().getOperand().getOperandNumber();
+                        }
+                        else{
+                            operandString = intRep.get(i).getMnemonic().getOperand().getOperandString();
+                        }
 
                         // find the opcode to the mnemonic
                         if(mne.equals(".cstring")) { //evaluate opcode for cstring
-                            String string=operand;
+                            String string=operandString;
                             String cstring;
                             if(string.length() > 4) //if there are more than 3 characters to evaluate (1 is a quotation mark)
                                 cstring = string.substring(string.indexOf("\"")+1, 4); //ignore 1st quotation mark
@@ -91,7 +99,7 @@ public class CodeGenerator implements ICGenerator {
                             code = builder.toString() + "00";
                         }
                         else { //opcode for every other mnemonic
-                            int opcode = searchCode(mne, operand);
+                            int opcode = searchCode(mne, operandNumber);
                             if (opcode == -1)
                                 code = "";
                             else
@@ -110,17 +118,25 @@ public class CodeGenerator implements ICGenerator {
             addr = String.format("%04X", counter); // Convert decimal counter to hexadecimal (4bit)
 
             opening.add(String.format("%-5s%-5s%-6s", lineNbr, addr, code));
-            if (operand == null) {
-                operand = "";
+
+            if (operandString == null && operandNumber == Integer.MAX_VALUE) {
+                closing.add(String.format("%-10s%-10s%-10s%-10s", label, mne, "", comment));
             }
-            closing.add(String.format("%-10s%-10s%-10s%-10s", label, mne, operand, comment));
+            else if(operandString != null){
+                closing.add(String.format("%-10s%-10s%-10s%-10s", label, mne, operandString, comment));
+            }
+            else if(operandNumber != Integer.MAX_VALUE){
+                closing.add(String.format("%-10s%-10s%-10s%-10s", label, mne, operandNumber, comment));
+
+            }
 
             // increment line number and address
             lineNbr++;
             counter++;
             label = "";
             mne = "";
-            operand = "";
+            operandString = null;
+            operandNumber = Integer.MAX_VALUE;
             comment = "";
         }
     }
@@ -131,7 +147,7 @@ public class CodeGenerator implements ICGenerator {
      * @param mnemonic the mnemonic to look the opcode for
      * @return opcode associated to the mnemonic
      */
-    public int searchCode(String mnemonic, String operand) {
+    public int searchCode(String mnemonic, int operand) {
 
         // Inherent addressing
         if (mnemonic.equals("halt"))
@@ -188,7 +204,7 @@ public class CodeGenerator implements ICGenerator {
         // Immediate addressing
         else if (mnemonic.equals("enter.u5")) {
             
-            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
 		    int opcode = (number > 15) ? 0x70 : 0x80;
 			opcode = opcode | number;
 		
@@ -199,7 +215,7 @@ public class CodeGenerator implements ICGenerator {
 
         else if (mnemonic.equals("ldc.i3")) {
           
-            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
             int opcode = 0x90;
             
             if(number >= 0)
@@ -214,7 +230,7 @@ public class CodeGenerator implements ICGenerator {
         else if (mnemonic.equals("addv.u3")) {
             
 
-            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
 		    int opcode = 0x98;
 			opcode = opcode | number;
 
@@ -225,7 +241,7 @@ public class CodeGenerator implements ICGenerator {
         else if (mnemonic.equals("ldv.u3")) {
           
 
-            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
 		    int opcode = 0xA0; 
 			opcode = opcode | number; 
 
@@ -236,7 +252,7 @@ public class CodeGenerator implements ICGenerator {
         else if (mnemonic.equals("stv.u3")) {
          
 
-            int number = Integer.parseInt(operand); //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
 		    int opcode = 0xA8; 
 			opcode = opcode | number;
 

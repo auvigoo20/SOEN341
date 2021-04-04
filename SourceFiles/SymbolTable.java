@@ -5,28 +5,24 @@ import InterfaceFiles.*;
 
 public class SymbolTable implements ISymbolTable {
 
-    // Using linked hash map to preserve order of tokens
-    private LinkedHashMap<String, IToken> symbolTable;
+    //the key represents the mnemonic string, and the value is the Mnemonic object itself (contains mnemonic string and opcode)
+    private LinkedHashMap<String, IMnemonic> symbolTable;
 
     public SymbolTable() {
-        symbolTable = new LinkedHashMap<String, IToken>();
+        symbolTable = new LinkedHashMap<String, IMnemonic>();
     }
 
-    // Only inserting mnemonic in symbol table for sprint 2
-    public void insertMnemonic(String key, IToken value) {
+    public void insertMnemonic(String key, IMnemonic value) {
         symbolTable.put(key, value);
     }
 
-    public LinkedHashMap<String, IToken> gHashMap() {
-        return symbolTable;
+    public IMnemonic getMnemonicObject(String key){
+        return symbolTable.get(key);
     }
 
-    public LinkedHashMap<String, IToken> getSymbolTable() {
+    public LinkedHashMap<String, IMnemonic> getSymbolTable() {
         return this.symbolTable;
     }
 
-    public void setSymbolTable(LinkedHashMap<String, IToken> symbolTable) {
-        this.symbolTable = symbolTable;
-    }
 
 }
