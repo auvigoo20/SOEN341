@@ -3,17 +3,15 @@
 
 #### Before merging your branch or pushing into `master`, please make sure to delete all `.class` files created after compiling java files in the command line
 
-### **TODO for Sprint 3**
+### **TODO REFACTORING**
 
-- [x] Apply the prof's recommended changes in the code (check David's comments in latest commit in `master`)
-- [x] Create Position class for Lexical Analyzer
-- [x] Remove dependencies of Parser from LexicalAnalyzer
-- [x] Scan comments, numbers and report scanner errors to ErrorReporter
-- [x] Parse an immediate instruction and report parser errors to ErrorReporter
-- [x] Parse a directive (.cstring)
-- [x] Create ErrorReporter class
-- [x] Create immediate instruction formatter for `.lst` output file
-- [x] Create tests **FOR ALL** files
+- [ ] Remove useless set() methods (and get() if you never use them)
+- [ ] Create IR class. Return type of parse() should be IR object, inject this IR to code generator constructor
+- [ ] Make helper methods private
+- [ ] Make .lst file same name as input .asm file name
+- [ ] Make cross assembler class. the main will call the cross assembler and instantiate it. In the constructor of cross-assembler, instantiate (inject) error reporter, symbol table. In the assemble() method, call the parse(), generateListing(), etc methods
+- [ ] Do constructor injection of symbol table in code generator
+- [ ] Remove **ALL** `System.out.print` in `CodeGenerator.java`
 
 
 ### **AUnit Testing**  
