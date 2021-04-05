@@ -48,13 +48,15 @@ public class Driver {
         // Store the intermediate representation in a variable
         IIntermediateRepresentation IR = parser.parse();
 
-        // Create a new code generator
-        CodeGenerator codeGenerator = new CodeGenerator(IR);
-
         if(errorReporter.getNumOfReports() > 0){
             errorReporter.report();
             System.exit(0);
         }
+
+        // Create a new code generator
+        CodeGenerator codeGenerator = new CodeGenerator(IR);
+
+        
 
         // Traverse the intermediate representation using the symbol table
         codeGenerator.traverseIR(symbolTable);
