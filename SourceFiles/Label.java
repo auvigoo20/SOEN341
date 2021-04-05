@@ -19,15 +19,7 @@ public class Label extends Token implements ILabel {
         return this.label;
     }
 
-    public void setLabelToken(String label) {
-        this.label = label;
-    }
-
     public IPosition getPosition() {
         return this.position;
-    }
-
-    public void setPosition(IPosition position) {
-        this.position = position;
     }
 }

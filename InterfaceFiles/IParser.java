@@ -9,7 +9,7 @@ public interface IParser {
 
     public ArrayList<IToken> getTokenList(); //  returns the list of tokens received form the lexical analyzer
 
-    public ArrayList<ILineStatement> parse();
+    public IIntermediateRepresentation parse();
 
 
 }

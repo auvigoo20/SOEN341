@@ -24,17 +24,9 @@ public class Position implements IPosition {
         return this.column;
     }
 
-    public void setColumn(int column) {
-        this.column = column;
-    }
-
     // get the line of the token
     public int getLine() {
         return this.line;
-    }
-
-    public void setLine(int line) {
-        this.line = line;
     }
 
 }

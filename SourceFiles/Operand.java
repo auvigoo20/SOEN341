@@ -44,11 +44,4 @@ public class Operand implements IOperand{
         }
         return true;
     }
-
-    public static void main(String[] args){
-        Operand o1 = new Operand("-4");
-        System.out.println(o1.getOperandNumber());
-        // System.out.println(Integer.parseInt("5"));
-    }
-
 }

@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 public class Parser implements IParser {
 
-    private ArrayList<ILineStatement> IR;
     private ArrayList<IToken> tokens; // tokens received from the lexical analyzer
     private IErrorReporter errorReporter;
+    private IIntermediateRepresentation intermediateRepresentation;
 
     // Does not contain ALL 7 immediate instructions (br.i5, brf.15)
     private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
@@ -21,7 +21,7 @@ public class Parser implements IParser {
     public Parser(IErrorReporter errorReporter) {
         this.tokens = new ArrayList<IToken>();
         this.errorReporter = errorReporter;
-        this.IR = new ArrayList<ILineStatement>();
+        this.intermediateRepresentation = new IntermediateRepresentation();
     }
 
     // This method will be used to take the inputs from the Lexical analyzer
@@ -34,7 +34,7 @@ public class Parser implements IParser {
     }
 
     // Returns the IR that the code generator will use
-    public ArrayList<ILineStatement> parse() {
+    public IIntermediateRepresentation parse() {
 
         Label label = null; // label field
         Instruction mnemonic = null; // Instruction field
@@ -191,7 +191,7 @@ public class Parser implements IParser {
                 // Line statement object initialization
                 LineStatement line = new LineStatement(label, mnemonic, comment);
                 // Add to the IR array list
-                IR.add(line);
+                intermediateRepresentation.addLineStatement(line);
 
                 // reinitilize fields to loop again
                 // label = null;
@@ -200,7 +200,7 @@ public class Parser implements IParser {
             }
 
         }
-        return IR;
+        return intermediateRepresentation;
     }
 
     private boolean checkOperand(IToken mnemonic, IToken operand) {
@@ -240,9 +240,9 @@ public class Parser implements IParser {
                 parser.requestToken(token);
             }
         }
-        ArrayList<ILineStatement> lineStatements = parser.parse();
+        IIntermediateRepresentation IR = parser.parse();
 
-        for (ILineStatement l : lineStatements) {
+        for (ILineStatement l : IR.getIR()) {
             if (l.getMnemonic() != null) {
                 System.out.print(l.getMnemonic().getMnemonic() + " " + l.getMnemonic().getOperand().getOperandNumber());
             }

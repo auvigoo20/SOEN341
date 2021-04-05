@@ -38,24 +38,26 @@ public class Driver {
             }
         }
         
-        if(errorReporter.getErrorReports().size() > 0){
+        if(errorReporter.getNumOfReports() > 0){
             errorReporter.report();
             System.exit(0);
         }
 
-        // Create a new code generator
-        CodeGenerator codeGenerator = new CodeGenerator();
+
 
         // Store the intermediate representation in a variable
-        ArrayList<ILineStatement> IR = parser.parse();
+        IIntermediateRepresentation IR = parser.parse();
 
-        if(errorReporter.getErrorReports().size() > 0){
+        // Create a new code generator
+        CodeGenerator codeGenerator = new CodeGenerator(IR);
+
+        if(errorReporter.getNumOfReports() > 0){
             errorReporter.report();
             System.exit(0);
         }
 
         // Traverse the intermediate representation using the symbol table
-        codeGenerator.traverseIR(IR, symbolTable);
+        codeGenerator.traverseIR(symbolTable);
 
         // Generate a listing file
         codeGenerator.generateListing();

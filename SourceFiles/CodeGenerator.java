@@ -16,6 +16,12 @@ public class CodeGenerator implements ICGenerator {
 
     // private String option; //to implement for next sprints
 
+    private IIntermediateRepresentation IR;
+
+    public CodeGenerator(IIntermediateRepresentation IR){
+        this.IR = IR;
+    }
+
     // methods
     /**
      * Traverse the IR using the symbol table
@@ -23,7 +29,7 @@ public class CodeGenerator implements ICGenerator {
      * @param intRep  the IR produced
      * @param symbols the symbol table produced
      */
-    public void traverseIR(ArrayList<ILineStatement> intRep, ISymbolTable symbols) {
+    public void traverseIR(ISymbolTable symbols) {
         int lineNbr = 1; // line number decimal output, will be converted to hexadecimal
         int counter = 0; // decimal counter for line number and address, will be converted to hexadecimal
         String label = "";
@@ -33,6 +39,7 @@ public class CodeGenerator implements ICGenerator {
         String comment = "";
         String addr = "";
         String code = "";
+        ArrayList<ILineStatement> intRep = IR.getIR();
 
         // for each line statement in IR
         for (int i = 0; i < intRep.size(); i++) {

@@ -8,10 +8,6 @@ public class Comment extends Token implements IComment {
     private String comment;
     private IPosition position;
 
-    public Comment() {
-        this.comment = null;
-        this.position = null;
-    }
 
     public Comment(String comment, IPosition position) {
 
@@ -21,10 +17,6 @@ public class Comment extends Token implements IComment {
 
     public String getCommentToken() {
         return comment;
-    }
-
-    public void setCommentToken(String comment) {
-        this.comment = comment;
     }
 
     // used to retrieve the position of a token

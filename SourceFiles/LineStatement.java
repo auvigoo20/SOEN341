@@ -26,27 +26,11 @@ public class LineStatement implements ILineStatement {
         return this.label;
     }
 
-    public void setLabel(ILabel label) {
-        this.label = label;
-    }
-
     public IInstruction getMnemonic() {
         return this.mnemonic;
     }
 
-    public void setMnemonic(IInstruction mnemonic) {
-        this.mnemonic = mnemonic;
-    }
-
     public IComment getComment() {
         return this.comment;
-    }
-
-    public void setComment(IComment comment) {
-        this.comment = comment;
-    }
-
-    public String toString() {
-        return "[" + mnemonic + "]";
     }
 }

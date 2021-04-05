@@ -10,8 +10,8 @@ public class Token implements IToken {
     private IPosition position;
     private String tokenString;
 
-    public Token() {
-
+    public Token(){
+        
     }
 
     public Token(String tokenString, String EOL, IPosition position) {
@@ -24,24 +24,12 @@ public class Token implements IToken {
         return this.EOL;
     }
 
-    public void setEOL(String EOL) {
-        this.EOL = EOL;
-    }
-
     public IPosition getPosition() {
         return this.position;
     }
 
-    public void setPosition(IPosition position) {
-        this.position = position;
-    }
-
     public String getTokenString() {
         return this.tokenString;
-    }
-
-    public void setTokenString(String tokenString) {
-        this.tokenString = tokenString;
     }
 
 }

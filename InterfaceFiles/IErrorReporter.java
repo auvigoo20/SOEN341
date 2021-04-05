@@ -11,4 +11,6 @@ public interface IErrorReporter {
     
     public void report();
 
+    public int getNumOfReports();
+
 }

@@ -16,16 +16,8 @@ public class ErrorMessage implements IErrorMessage {
         return this.message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public IPosition getPosition() {
         return this.position;
-    }
-
-    public void setPosition(IPosition position) {
-        this.position = position;
     }
 
 }
