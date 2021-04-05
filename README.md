@@ -12,6 +12,7 @@
 - [x] Make cross assembler class. the main will call the cross assembler and instantiate it. In the constructor of cross-assembler, instantiate (inject) error reporter, symbol table. In the assemble() method, call the parse(), generateListing(), etc methods
 - [ ] Do constructor injection of symbol table in code generator
 - [ ] Remove **ALL** `System.out.print` in `CodeGenerator.java`
+- [ ] Fix `searchCode()` in CodeGenerator to support new symbol table
 
 
 ### **AUnit Testing**  
