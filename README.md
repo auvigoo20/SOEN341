@@ -5,11 +5,11 @@
 
 ### **TODO REFACTORING**
 
-- [ ] Remove useless set() methods (and get() if you never use them)
+- [x] Remove useless set() methods (and get() if you never use them)
 - [x] Create IR class. Return type of parse() should be IR object, inject this IR to code generator constructor
 - [ ] Make helper methods private
 - [ ] Make .lst file same name as input .asm file name
-- [ ] Make cross assembler class. the main will call the cross assembler and instantiate it. In the constructor of cross-assembler, instantiate (inject) error reporter, symbol table. In the assemble() method, call the parse(), generateListing(), etc methods
+- [x] Make cross assembler class. the main will call the cross assembler and instantiate it. In the constructor of cross-assembler, instantiate (inject) error reporter, symbol table. In the assemble() method, call the parse(), generateListing(), etc methods
 - [ ] Do constructor injection of symbol table in code generator
 - [ ] Remove **ALL** `System.out.print` in `CodeGenerator.java`
 
