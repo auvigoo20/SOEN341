@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public interface ICGenerator {
 
-    public void traverseIR(ISymbolTable symbolTable); // traverse IR using symbol table
+    private void traverseIR(); // traverse IR using symbol table, TO ASK: should private methods be included in interface UML
 
 
     public void generateListing();

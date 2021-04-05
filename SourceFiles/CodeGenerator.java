@@ -17,9 +17,11 @@ public class CodeGenerator implements ICGenerator {
     // private String option; //to implement for next sprints
 
     private IIntermediateRepresentation IR;
+    private ISymbolTable symbols;
 
-    public CodeGenerator(IIntermediateRepresentation IR){
+    public CodeGenerator(IIntermediateRepresentation IR, ISymbolTable symbols){
         this.IR = IR;
+        this.symbols = symbols;
     }
 
     // methods
@@ -29,7 +31,7 @@ public class CodeGenerator implements ICGenerator {
      * @param intRep  the IR produced
      * @param symbols the symbol table produced
      */
-    public void traverseIR(ISymbolTable symbols) {
+    private void traverseIR() { //TODO: symbolTable in constructor, make method private
         int lineNbr = 1; // line number decimal output, will be converted to hexadecimal
         int counter = 0; // decimal counter for line number and address, will be converted to hexadecimal
         String label = "";
@@ -154,7 +156,7 @@ public class CodeGenerator implements ICGenerator {
      * @param mnemonic the mnemonic to look the opcode for
      * @return opcode associated to the mnemonic
      */
-    public int searchCode(String mnemonic, int operand) {
+    public int searchCode(String mnemonic, int operand) { //TODO: adjust based on symbol table class changes
 
         // Inherent addressing
         if (mnemonic.equals("halt"))
@@ -274,12 +276,12 @@ public class CodeGenerator implements ICGenerator {
      * Generates the listing file
      */
 
-    public void generateListing() {
+    public void generateListing() { //TO ASK: if this needs to be private. TODO: remove useless sysouts, file naming
 
         // create listing file to output to
         PrintWriter outStr = null;
         try {
-            outStr = new PrintWriter(new FileOutputStream("listing.lst"));
+            outStr = new PrintWriter(new FileOutputStream("TestImmediate.lst"));
 
         } catch (FileNotFoundException e) {
             System.out.println("Cannot create file!");
