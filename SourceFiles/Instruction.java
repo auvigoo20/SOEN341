@@ -4,6 +4,8 @@ import InterfaceFiles.*;
 
 public class Instruction extends Token implements IInstruction {
 
+//NOTES FROM PROF: should have class Inherent and Relative
+
     // Attributes
     private String mnemonic;
     private IOperand operand;
@@ -22,7 +24,7 @@ public class Instruction extends Token implements IInstruction {
         this.position = position;
     }
 
-    // Parametrized constructor with operand field
+    // Parametrized constructor with operand field. NOTES FROM PROF: not String mnemonic, Object Mnemonic (IMnemonic)
     public Instruction(String mnemonic, IOperand operand, IPosition position) {
         this.mnemonic = mnemonic;
         this.operand = operand;

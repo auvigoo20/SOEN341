@@ -31,7 +31,7 @@ public class CodeGenerator implements ICGenerator {
      * @param intRep  the IR produced
      * @param symbols the symbol table produced
      */
-    private void traverseIR() { //TODO: symbolTable in constructor, make method private
+    private void traverseIR() {
         int lineNbr = 1; // line number decimal output, will be converted to hexadecimal
         int counter = 0; // decimal counter for line number and address, will be converted to hexadecimal
         String label = "";
@@ -148,7 +148,7 @@ public class CodeGenerator implements ICGenerator {
             operandNumber = Integer.MAX_VALUE;
             comment = "";
         }
-    }
+    } 
 
     /**
      * Associate a hexadecimal code to the mnemonic
@@ -156,7 +156,7 @@ public class CodeGenerator implements ICGenerator {
      * @param mnemonic the mnemonic to look the opcode for
      * @return opcode associated to the mnemonic
      */
-    public int searchCode(String mnemonic, int operand) { //TODO: adjust based on symbol table class changes
+    private int searchCode(String mnemonic, int operand) { //TODO: adjust based on symbol table class changes.
 
         // Inherent addressing
         if (mnemonic.equals("halt"))
@@ -276,8 +276,12 @@ public class CodeGenerator implements ICGenerator {
      * Generates the listing file
      */
 
-    public void generateListing() { //TO ASK: if this needs to be private. TODO: remove useless sysouts, file naming
+    public String generateListing() { //TO ASK: if this needs to be private. TODO: remove useless sysouts, file naming
 
+        String testStr;
+
+        traverseIR();
+        
         // create listing file to output to
         PrintWriter outStr = null;
         try {
@@ -290,16 +294,17 @@ public class CodeGenerator implements ICGenerator {
         // Create format header
         outStr.println(String.format("%-5s%-5s%-6s%-10s%-10s%-10s%-10s", "Line", "Addr", "Code", "Label", "Mne",
                 "Operand", "Comments"));
-        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "Line", "Addr", "Code", "Label", "Mne",
-                "Operand", "Comments")); // for testing purposes
+        testStr = String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "Line", "Addr", "Code", "Label", "Mne",
+                "Operand", "Comments"); // for testing purposes
 
         // Generating opening and closing line statement
         for (int i = 0; i < opening.size(); i++) {
             outStr.println(String.format("%-16s%-40s", opening.get(i), closing.get(i)));
-            System.out.print(String.format("[%-16s%-40s]", opening.get(i), closing.get(i))); // for testing purposes
+            testStr = testStr + (String.format("[%-16s%-40s]", opening.get(i), closing.get(i))); // for testing purposes
         }
 
         // close listing file
         outStr.close();
+        return testStr;
     }
 }
