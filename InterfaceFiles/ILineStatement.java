@@ -6,7 +6,7 @@ public interface ILineStatement {
 
     public ILabel getLabel();
 
-    public IInstruction getMnemonic();
+    public IInstruction getInstruction();
 
     public IComment getComment();
 

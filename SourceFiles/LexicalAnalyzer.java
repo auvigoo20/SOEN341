@@ -29,6 +29,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             this.symbolTable = symbolTable; // constructor injection of symbol table.
             this.finishScanning = false;
             this.errorReporter = errorReporter; // constructor injection of error reporter
+            insertInSymbolTable();
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
             System.exit(0);
@@ -36,7 +37,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     }
 
     // Method to sequentially generate tokens while reading the file
-    public IToken getToken() {
+    private IToken getToken() {
 
         IToken token = null;
 
@@ -125,11 +126,14 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
                 if (token != null) {
                     // Insert mnemonic in the symbol table. This mnemonic is the same as the one
                     // that is sent as a token.
-                    if (isMnemonic(token.getTokenString())) {
-                        symbolTable.insertMnemonic(token.getTokenString(),
-                                new Mnemonic(token.getTokenString(), getOpcode(token.getTokenString())));
-                        // something like new Mnemonic(mnemonic name string, mnemonic opcode)
-                    }
+                    //NOT SURE IF WE HAVE TO INSERT ONLY MNEMONICS THAT WE READ OR ALL POSSIBLE MNEMONICS
+                    //PROF SAID LAST LECTURE TO INSERT ALL POSSIBLE MNEMONICS DIRECTLY
+                    //I DO THIS BY CALLING PRIVATE METHOD INSERTINSYMBOLTABLE() IN CONSTRUCTOR
+                    // if (isMnemonic(token.getTokenString())) {
+                    //     symbolTable.insertMnemonic(token.getTokenString(),
+                    //             new Mnemonic(token.getTokenString(), getOpcode(token.getTokenString())));
+                    //     // something like new Mnemonic(mnemonic name string, mnemonic opcode)
+                    // }
                     return token; // Return token to the Parser
                 }
             }
@@ -254,8 +258,20 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             return 0xA8;
         else
             return -1;
-        
+    }
 
+    private void insertInSymbolTable(){
+        //insert all inherent mnemonics in symbol table
+        for(String mnemonic : Arrays.asList(inherentMnemonics)){
+            symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
+        }
+
+        //insert all immediate mnemonics in symbol table
+        for(String mnemonic : Arrays.asList(immediateMnemonics)){
+            symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
+        }
+
+        
     }
     
 }

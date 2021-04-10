@@ -47,8 +47,8 @@ public class CodeGenerator implements ICGenerator {
             IPosition position = null;
 
             //Get the position from either the mnemonic or the comment (doesn't matter which since only line number is needed)
-            if (intRep.get(i).getMnemonic() != null){
-                position = intRep.get(i).getMnemonic().getPosition();
+            if (intRep.get(i).getInstruction() != null){
+                position = intRep.get(i).getInstruction().getPosition();
             }
 
             if (intRep.get(i).getComment() != null) {
@@ -68,23 +68,23 @@ public class CodeGenerator implements ICGenerator {
 
 
             // if the current line statement contains a mnemonic
-            if (intRep.get(i).getMnemonic() != null) {
+            if (intRep.get(i).getInstruction() != null) {
                 
                 // for each symbol in the table
                 for (String tableMne : symbols.getSymbolTable().keySet()) {
 
-                    if (tableMne.equals(intRep.get(i).getMnemonic().getMnemonic())) { // if table mnemonic is the same as line mnemonic
+                    if (tableMne.equals(intRep.get(i).getInstruction().getMnemonic().getMnemonicString())) { // if table mnemonic is the same as line mnemonic
 
                         // assign all the info into the appropriate variables
                         // label = intRep.get(i).getLabel().getLabelToken(); //for later
-                        mne = intRep.get(i).getMnemonic().getMnemonic();
+                        mne = intRep.get(i).getInstruction().getMnemonic().getMnemonicString();
 
                         //first check if operand is a number or a string
-                        if(intRep.get(i).getMnemonic().getOperand().isOperandNumber()){
-                            operandNumber = intRep.get(i).getMnemonic().getOperand().getOperandNumber();
+                        if(intRep.get(i).getInstruction().getOperand().isOperandNumber()){
+                            operandNumber = intRep.get(i).getInstruction().getOperand().getOperandNumber();
                         }
                         else{
-                            operandString = intRep.get(i).getMnemonic().getOperand().getOperandString();
+                            operandString = intRep.get(i).getInstruction().getOperand().getOperandString();
                         }
 
                         // find the opcode to the mnemonic
