@@ -141,7 +141,11 @@ public class Parser implements IParser {
                                         tokens.get(i).getPosition().getLine())));
                     }
                 }
+                //else if RELATIVE
                 //else, ITS A LABEL
+                else{
+                    label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition() );
+                }
                 // *****LABEL CHECK FOR SPRINT 4*****
             }
 
@@ -187,6 +191,9 @@ public class Parser implements IParser {
                     comment = new Comment(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                 }
                 // *****LABEL CHECK FOR SPRINT 4*****
+                else{
+                    label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition() );
+                }
 
                 // Line statement object initialization
                 LineStatement line = new LineStatement(label, mnemonic, comment);
@@ -194,7 +201,7 @@ public class Parser implements IParser {
                 intermediateRepresentation.addLineStatement(line);
 
                 // reinitilize fields to loop again
-                // label = null;
+                label = null;
                 mnemonic = null;
                 comment = null;
             }

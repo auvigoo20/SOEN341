@@ -1,5 +1,4 @@
-package SourceFiles;
-
+import SourceFiles.*;
 import InterfaceFiles.*;
 
 public class CrossAssembler implements ICrossAssembler{
