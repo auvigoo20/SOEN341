@@ -2,7 +2,7 @@ package SourceFiles;
 
 import InterfaceFiles.*;
 
-public class Instruction extends Token implements IInstruction {
+public class Instruction implements IInstruction {
 
     // Attributes
     private IMnemonic mnemonic;
@@ -13,9 +13,13 @@ public class Instruction extends Token implements IInstruction {
     public Instruction() {
 
     }
-    //NOTES FROM PROF: Should also have class Operand that can be either int or Label
+
+    // NOTES FROM PROF: Should also have class Operand that can be either int or
+    // Label
     // Parametrized constructor without operand field
-    public Instruction(IMnemonic mnemonic, IPosition position) { //NOTES FROM PROF: should inject the object mnemonic class (should create mnemonic class: has all characteristics; size, type, opcode, operand, etc.)
+    public Instruction(IMnemonic mnemonic, IPosition position) { // NOTES FROM PROF: should inject the object mnemonic
+                                                                 // class (should create mnemonic class: has all
+                                                                 // characteristics; size, type, opcode, operand, etc.)
         this.mnemonic = mnemonic;
         this.position = position;
     }
@@ -27,11 +31,9 @@ public class Instruction extends Token implements IInstruction {
         this.position = position;
     }
 
-
     public IMnemonic getMnemonic() {
         return mnemonic;
     }
-
 
     public IOperand getOperand() {
         return operand;

@@ -10,6 +10,7 @@ public class Parser implements IParser {
     private ArrayList<IToken> tokens; // tokens received from the lexical analyzer
     private IErrorReporter errorReporter;
     private IIntermediateRepresentation intermediateRepresentation;
+    private ISymbolTable symbolTable;
 
     // Does not contain ALL 7 immediate instructions (br.i5, brf.15)
     private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
@@ -18,10 +19,13 @@ public class Parser implements IParser {
     private final String[] inherentMnemonics = { "halt", "pop", "dup", "exit", "ret", "not", "and", "or", "xor", "neg",
             "inc", "dec", "add", "sub", "mul", "div", "rem", "shl", "shr", "teq", "tne", "tlt", "tgt", "tle", "tge" };
 
-    public Parser(IErrorReporter errorReporter) {
+    private final String[] relativeMnemonics = { "br.i8", "brf.i8", "ldc.i8", "ldv.u8", "stv.u8", "lda.i16" };
+
+    public Parser(IErrorReporter errorReporter, ISymbolTable symbolTable) {
         this.tokens = new ArrayList<IToken>();
         this.errorReporter = errorReporter;
         this.intermediateRepresentation = new IntermediateRepresentation();
+        this.symbolTable = symbolTable;
     }
 
     // This method will be used to take the inputs from the Lexical analyzer
@@ -49,11 +53,14 @@ public class Parser implements IParser {
 
                     // check if the token that follows it is a string operand
                     // [.cstring "ABC]
+                    // if the mnemonic has no operand, use Integer.MAX_VALUE as a placeholder of
+                    // opcode in Mnemonic constructor
                     if (i != (tokens.size() - 1)) {
                         if (tokens.get(i + 1).getTokenString().contains("\"")) {
-                            
-                            instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE), new Operand(tokens.get(i + 1).getTokenString())
-                                    ,tokens.get(i).getPosition());
+
+                            instruction = new Instruction(
+                                    new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE),
+                                    new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
                         } else {
                             String error = "Error: A directive instruction must be followed by an array of characters in the operand field";
                             errorReporter.record(new ErrorMessage(error, new Position(
@@ -79,8 +86,10 @@ public class Parser implements IParser {
                         }
 
                         else {
-                            
-                            instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE), tokens.get(i).getPosition());
+
+                            instruction = new Instruction(
+                                    new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE),
+                                    tokens.get(i).getPosition());
                         }
                     }
                 }
@@ -131,31 +140,58 @@ public class Parser implements IParser {
                             } else {
                                 int operand = Integer.parseInt(tokens.get(i + 1).getTokenString());
                                 int opcode = searchCode(tokens.get(i).getTokenString(), operand);
-                                
+
                                 instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), opcode),
-                                new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
+                                        new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
+
                             }
                         }
                     }
                     // The immediate mnemonic is the LAST token, meaning it does not have an operand
                     // after it
                     else {
-                        String error = "Error: This immediate instruction must have a number as an operand field.\n@column: ";
+                        String error = "Error: This immediate instruction must have a number as an operand field.";
                         errorReporter
                                 .record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(),
                                         tokens.get(i).getPosition().getLine())));
                     }
                 }
-                //else if RELATIVE
-                //else, ITS A LABEL
-                else{
-                    label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition() );
+
+                // Relative mnemonic check
+                else if (Arrays.asList(relativeMnemonics).contains(tokens.get(i).getTokenString())) {
+
+                    if (i != (tokens.size() - 1)) {
+                        // if token is followed by a number then pop error
+                        if (isNumber(tokens.get(i + 1).getTokenString())) {
+                            String error = "Error: This relative instruction must have a label as an operand.";
+                            errorReporter.record(new ErrorMessage(error, new Position(
+                                    tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                        } else {
+                            instruction = new Instruction(
+                                    new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE),
+                                    new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
+                        }
+                    }
+                }
+
+                // if the token is a label
+                else {
+                    if (tokens.get(i).getPosition().getColumn() == 1) {
+                        if (symbolTable.getSymbolTable().keySet().contains(tokens.get(i).getTokenString())) {
+                            String error = "Error: This label has already been defined.";
+                            errorReporter.record(new ErrorMessage(error, new Position(
+                                    tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                        } else {
+                            label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
+                            symbolTable.insertMnemonic(tokens.get(i).getTokenString(), label);
+                        }
+                    }
                 }
                 // *****LABEL CHECK FOR SPRINT 4*****
             }
+            // --------------------------------------------------------------------------------------------------------------------------------
 
-            // Otherwise if the token contains the end of line marker "newLine"
-            else if (tokens.get(i).getEOL().equalsIgnoreCase("newLine")) {
+            if (tokens.get(i).getEOL().equalsIgnoreCase("newLine")) {
 
                 // check to see if .cstring mnemonic is valid. If not then print message
                 if (tokens.get(i).getTokenString().equalsIgnoreCase(".cstring")) {
@@ -179,11 +215,10 @@ public class Parser implements IParser {
                         }
 
                         else {
-                            int operand = Integer.parseInt(tokens.get(i + 1).getTokenString());
-                            int opcode = searchCode(tokens.get(i).getTokenString(), operand);
-                                
-                            instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), opcode),
-                            new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
+
+                            instruction = new Instruction(
+                                    new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE),
+                                    tokens.get(i).getPosition());
                         }
                     }
                 }
@@ -199,9 +234,25 @@ public class Parser implements IParser {
                 else if (tokens.get(i).getTokenString().contains(";")) {
                     comment = new Comment(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
                 }
+                // check for relative
+                else if (Arrays.asList(relativeMnemonics).contains(tokens.get(i).getTokenString())) {
+                    String error = "Error: This relative instruction must have a label as an operand.";
+                    errorReporter.record(new ErrorMessage(error, new Position(tokens.get(i).getPosition().getColumn(),
+                            tokens.get(i).getPosition().getLine())));
+                }
+
                 // *****LABEL CHECK FOR SPRINT 4*****
-                else{
-                    label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition() );
+                else {
+                    if (tokens.get(i).getPosition().getColumn() == 1) {
+                        if (symbolTable.getSymbolTable().keySet().contains(tokens.get(i).getTokenString())) {
+                            String error = "Error: This label has already been defined.";
+                            errorReporter.record(new ErrorMessage(error, new Position(
+                                    tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
+                        } else {
+                            label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
+                            symbolTable.insertMnemonic(tokens.get(i).getTokenString(), label);
+                        }
+                    }
                 }
 
                 // Line statement object initialization
@@ -217,6 +268,7 @@ public class Parser implements IParser {
 
         }
         return intermediateRepresentation;
+
     }
 
     private boolean checkOperand(IToken mnemonic, IToken operand) {
@@ -231,10 +283,10 @@ public class Parser implements IParser {
         return true;
     }
 
-    private boolean isNumber(String operand){
+    private boolean isNumber(String operand) {
         char[] chars = operand.toCharArray();
-        for(char c : chars){
-            if(!Character.isDigit(c) && c != '-'){
+        for (char c : chars) {
+            if (!Character.isDigit(c) && c != '-') {
                 return false;
             }
         }
@@ -303,60 +355,61 @@ public class Parser implements IParser {
 
         // Immediate addressing
         else if (mnemonic.equals("enter.u5")) {
-            
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = (number > 15) ? 0x70 : 0x80;
-			opcode = opcode | number;
-		
-		    return opcode;
 
+            int number = operand; // for next sprint, may change; operand connected to bits; assume error handler
+                                  // takes care of non-integer operands
+            int opcode = (number > 15) ? 0x70 : 0x80;
+            opcode = opcode | number;
+
+            return opcode;
 
         }
 
         else if (mnemonic.equals("ldc.i3")) {
-          
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
+
+            int number = operand; // for next sprint, may change; operand connected to bits; assume error handler
+                                  // takes care of non-integer operands
             int opcode = 0x90;
-            
-            if(number >= 0)
+
+            if (number >= 0)
                 opcode = opcode | number;
             else
                 opcode = opcode | (number & 0x07);
-            
+
             return opcode;
-        
+
         }
 
         else if (mnemonic.equals("addv.u3")) {
-            
 
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = 0x98;
-			opcode = opcode | number;
+            int number = operand; // for next sprint, may change; operand connected to bits; assume error handler
+                                  // takes care of non-integer operands
+            int opcode = 0x98;
+            opcode = opcode | number;
 
-            return opcode; 
+            return opcode;
 
         }
 
         else if (mnemonic.equals("ldv.u3")) {
-          
 
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = 0xA0; 
-			opcode = opcode | number; 
+            int number = operand; // for next sprint, may change; operand connected to bits; assume error handler
+                                  // takes care of non-integer operands
+            int opcode = 0xA0;
+            opcode = opcode | number;
 
             return opcode;
 
         }
 
         else if (mnemonic.equals("stv.u3")) {
-         
 
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = 0xA8; 
-			opcode = opcode | number;
+            int number = operand; // for next sprint, may change; operand connected to bits; assume error handler
+                                  // takes care of non-integer operands
+            int opcode = 0xA8;
+            opcode = opcode | number;
 
-            return opcode; 
+            return opcode;
         }
 
         else
@@ -368,9 +421,9 @@ public class Parser implements IParser {
         SymbolTable st = new SymbolTable();
 
         ErrorReporter er = new ErrorReporter();
-        LexicalAnalyzer la = new LexicalAnalyzer("TestImmediate.asm", st, er);
+        LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
 
-        Parser parser = new Parser(er);
+        Parser parser = new Parser(er, st);
 
         while (la.getFinishScanning() == false) {
             IToken token = la.scan();
@@ -380,17 +433,25 @@ public class Parser implements IParser {
         }
         IIntermediateRepresentation IR = parser.parse();
 
-        for (ILineStatement l : IR.getIR()) {
-            if (l.getInstruction() != null) {
-                System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " " + l.getInstruction().getOperand().getOperandNumber());
-            }
-            if (l.getComment() != null) {
-                System.out.print(" " + l.getComment().getCommentToken());
-            }
-            System.out.println();
-        }
+        // for (ILineStatement l : IR.getIR()) {
+        //     if (l.getInstruction() != null) {
+        //         System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " ");
+        //     }
+
+        //     if (l.getLabel() != null) {
+        //         System.out.print(l.getLabel().getLabelToken());
+        //     }
+        //     if (l.getComment() != null) {
+        //         System.out.print(" " + l.getComment().getCommentToken());
+        //     }
+        //     System.out.println();
+        // }
 
         er.report();
+
+        for (String s : st.getSymbolTable().keySet()) {
+        System.out.println(s);
+        }
     }
 
 }
