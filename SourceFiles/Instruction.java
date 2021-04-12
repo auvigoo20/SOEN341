@@ -23,6 +23,7 @@ public class Instruction extends Token implements IInstruction {
     }
 
     // Parametrized constructor with operand field
+    public Instruction(IMnemonic mnemonic, IOperand operand, IPosition position) {
         this.mnemonic = mnemonic;
         this.operand = operand;
         this.position = position;
