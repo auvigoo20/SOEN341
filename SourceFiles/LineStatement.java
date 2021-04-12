@@ -7,7 +7,7 @@ public class LineStatement implements ILineStatement {
 
     // Attributes
     private ILabel label;
-    private IInstruction mnemonic;
+    private IInstruction instruction;
     private IComment comment;
 
     // Default constructor
@@ -15,9 +15,9 @@ public class LineStatement implements ILineStatement {
     }
 
     // Regular constructor
-    public LineStatement(ILabel label, IInstruction mnemonic, IComment comment) {
+    public LineStatement(ILabel label, IInstruction instruction, IComment comment) {
         this.label = label;
-        this.mnemonic = mnemonic;
+        this.instruction = instruction;
         this.comment = comment;
 
     }
@@ -26,8 +26,8 @@ public class LineStatement implements ILineStatement {
         return this.label;
     }
 
-    public IInstruction getMnemonic() {
-        return this.mnemonic;
+    public IInstruction getInstruction() {
+        return this.instruction;
     }
 
     public IComment getComment() {

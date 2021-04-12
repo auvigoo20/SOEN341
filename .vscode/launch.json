@@ -8,6 +8,13 @@
             "type": "java",
             "name": "Launch CrossAssembler",
             "request": "launch",
+            "mainClass": "CrossAssembler",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch CrossAssembler",
+            "request": "launch",
             "mainClass": "SourceFiles.CrossAssembler",
             "projectName": "SOEN341_7a1d1cb1"
         },

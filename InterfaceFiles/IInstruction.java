@@ -3,9 +3,7 @@ import SourceFiles.*;
 
 public interface IInstruction {
 
-    public String getInstructionType();
-
-    public String getMnemonic();
+    public IMnemonic getMnemonic();
 
     public IOperand getOperand();
     

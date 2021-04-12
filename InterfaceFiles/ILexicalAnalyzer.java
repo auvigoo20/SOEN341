@@ -8,8 +8,6 @@ public interface ILexicalAnalyzer { // Interface to be used for the lexicalAnaly
     
     public IToken scan();
 
-    public IToken getToken();
-
     public boolean getFinishScanning();
 
 
