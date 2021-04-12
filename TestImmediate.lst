@@ -1,0 +1,6 @@
+Line Addr Code  Label     Mne       Operand   Comments  
+1    0000 85              enter.u5  5         ; OK, number <u5> [0..31].
+2    0001 98              addv.u3   0         ; OK, number <u3> [0..7].
+3    0002 AF              stv.u3    7         ; OK, number <u3> [0..7].
+4    0003 97              ldc.i3    -1        ; OK, number <i3> [-4..3].
+5    0004 A2              ldv.u3    2         ; OK, number <u3> [0..7].

@@ -108,7 +108,7 @@ public class CodeGenerator implements ICGenerator {
                             code = builder.toString() + "00";
                         }
                         else { //opcode for every other mnemonic
-                            int opcode = searchCode(mne, operandNumber);
+                            int opcode = intRep.get(i).getInstruction().getMnemonic().getOpcode();
                             if (opcode == -1)
                                 code = "";
                             else
@@ -150,132 +150,10 @@ public class CodeGenerator implements ICGenerator {
         }
     } 
 
-    /**
-     * Associate a hexadecimal code to the mnemonic
-     * 
-     * @param mnemonic the mnemonic to look the opcode for
-     * @return opcode associated to the mnemonic
-     */
-    private int searchCode(String mnemonic, int operand) { //TODO: adjust based on symbol table class changes.
-
-        // Inherent addressing
-        if (mnemonic.equals("halt"))
-            return 0;
-        else if (mnemonic.equals("pop"))
-            return 1;
-        else if (mnemonic.equals("dup"))
-            return 2;
-        else if (mnemonic.equals("exit"))
-            return 3;
-        else if (mnemonic.equals("ret"))
-            return 4;
-        else if (mnemonic.equals("not"))
-            return 12;
-        else if (mnemonic.equals("and"))
-            return 13;
-        else if (mnemonic.equals("or"))
-            return 14;
-        else if (mnemonic.equals("xor"))
-            return 15;
-        else if (mnemonic.equals("neg"))
-            return 16;
-        else if (mnemonic.equals("inc"))
-            return 17;
-        else if (mnemonic.equals("dec"))
-            return 18;
-        else if (mnemonic.equals("add"))
-            return 19;
-        else if (mnemonic.equals("sub"))
-            return 20;
-        else if (mnemonic.equals("mul"))
-            return 21;
-        else if (mnemonic.equals("div"))
-            return 22;
-        else if (mnemonic.equals("rem"))
-            return 23;
-        else if (mnemonic.equals("shl"))
-            return 24;
-        else if (mnemonic.equals("shr"))
-            return 25;
-        else if (mnemonic.equals("teq"))
-            return 26;
-        else if (mnemonic.equals("tne"))
-            return 27;
-        else if (mnemonic.equals("tlt"))
-            return 28;
-        else if (mnemonic.equals("tgt"))
-            return 29;
-        else if (mnemonic.equals("tle"))
-            return 30;
-        else if (mnemonic.equals("tge"))
-            return 31;
-
-        // Immediate addressing
-        else if (mnemonic.equals("enter.u5")) {
-            
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = (number > 15) ? 0x70 : 0x80;
-			opcode = opcode | number;
-		
-		    return opcode;
-
-
-        }
-
-        else if (mnemonic.equals("ldc.i3")) {
-          
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-            int opcode = 0x90;
-            
-            if(number >= 0)
-                opcode = opcode | number;
-            else
-                opcode = opcode | (number & 0x07);
-            
-            return opcode;
-        
-        }
-
-        else if (mnemonic.equals("addv.u3")) {
-            
-
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = 0x98;
-			opcode = opcode | number;
-
-            return opcode; 
-
-        }
-
-        else if (mnemonic.equals("ldv.u3")) {
-          
-
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = 0xA0; 
-			opcode = opcode | number; 
-
-            return opcode;
-
-        }
-
-        else if (mnemonic.equals("stv.u3")) {
-         
-
-            int number = operand; //for next sprint, may change; operand connected to bits; assume error handler takes care of non-integer operands
-		    int opcode = 0xA8; 
-			opcode = opcode | number;
-
-            return opcode; 
-        }
-
-        else
-            return -1;
-    }
 
     /**
      * Generates the listing file
      */
-
     public String generateListing() { //TO ASK: if this needs to be private. TODO: remove useless sysouts, file naming
 
         String testStr;

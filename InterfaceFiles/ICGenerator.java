@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface ICGenerator {
 
-    public void generateListing();
+    public String generateListing();
 
 }
