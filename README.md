@@ -3,16 +3,24 @@
 
 #### Before merging your branch or pushing into `master`, please make sure to delete all `.class` files created after compiling java files in the command line
 
+### **TODO FOR THIS FRIDAY (APRIL 16TH)**
+
+- [ ] Make `Parser.java` calculate the opcodes for `.cstring`
+- [ ] **FIX ARCHITECTURE PACKAGES**
+- [ ] Add command line in main of `cma.java` (Epic #1)
+- [ ] Make `Parser.java` be able to parse Labels and Relative instructions
+
 ### **TODO REFACTORING**
 
 - [x] Remove useless set() methods (and get() if you never use them)
 - [x] Create IR class. Return type of parse() should be IR object, inject this IR to code generator constructor
-- [ ] Make helper methods private
-- [ ] Make .lst file same name as input .asm file name
+- [x] Make helper methods private
+- [x] Make .lst file same name as input .asm file name
 - [x] Make cross assembler class. the main will call the cross assembler and instantiate it. In the constructor of cross-assembler, instantiate (inject) error reporter, symbol table. In the assemble() method, call the parse(), generateListing(), etc methods
-- [ ] Do constructor injection of symbol table in code generator
-- [ ] Remove **ALL** `System.out.print` in `CodeGenerator.java`
-- [ ] Fix `searchCode()` in CodeGenerator to support new symbol table
+- [x] Do constructor injection of symbol table in code generator
+- [x] Remove **ALL** `System.out.print` in `CodeGenerator.java`
+- [x] Fix `searchCode()` in CodeGenerator to support new symbol table
+- [x] Make `Parser.java` calculate the opcodes
 
 
 ### **AUnit Testing**  
