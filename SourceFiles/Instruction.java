@@ -2,7 +2,7 @@ package SourceFiles;
 
 import InterfaceFiles.*;
 
-public class Instruction extends Token implements IInstruction {
+public class Instruction implements IInstruction {
 
 //NOTES FROM PROF: should have class Inherent and Relative
 

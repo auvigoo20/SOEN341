@@ -6,9 +6,9 @@ import java.util.LinkedHashMap;
 
 public interface ISymbolTable {
 
-    public void insertMnemonic(String key, IMnemonic value);
+    public void insertMnemonic(String key, IToken value);
 
-    public IMnemonic getMnemonicObject(String key);
+    public IToken getMnemonicObject(String key);
 
-    public LinkedHashMap<String, IMnemonic> getSymbolTable();
+    public LinkedHashMap<String, IToken> getSymbolTable();
 }

@@ -1,7 +1,7 @@
 package SourceFiles;
 import InterfaceFiles.*;
 
-public class Mnemonic implements IMnemonic{
+public class Mnemonic extends Token implements IMnemonic{
     
     private String mnemonicString;
     private int opcode;

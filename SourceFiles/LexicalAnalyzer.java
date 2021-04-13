@@ -19,6 +19,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     private final String[] inherentMnemonics = { "halt", "pop", "dup", "exit", "ret", "not", "and", "or", "xor", "neg",
             "inc", "dec", "add", "sub", "mul", "div", "rem", "shl", "shr", "teq", "tne", "tlt", "tgt", "tle", "tge" };
     private final String[] immediateMnemonics = { "enter.u5", "ldc.i3", "addv.u3", "ldv.u3", "stv.u3" };
+    private final String[] relativeMnemonics = { "br.i8", "brf.i8", "ldc.i8", "ldv.u8", "stv.u8", "lda.i16" };
     private boolean finishScanning;
 
     public LexicalAnalyzer(String fileName, ISymbolTable symbolTable, IErrorReporter errorReporter) {
@@ -256,6 +257,19 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             return 0xA0;
         else if (mnemonic.equals("stv.u3"))
             return 0xA8;
+        // Relative addressing
+        else if (mnemonic.equals("br.i8"))
+            return 0xE0;
+        else if (mnemonic.equals("brf.i8"))
+           return 0xE3;
+        else if (mnemonic.equals("ldc.i8"))
+          return 0xD9;
+        else if (mnemonic.equals("ldv.u8"))
+           return 0xB1;
+        else if (mnemonic.equals("stv.u8"))
+            return 0xB2;
+        else if (mnemonic.equals("lda.i16"))
+            return 0xD5;
         else
             return -1;
     }
@@ -271,7 +285,43 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
         }
 
+        for (String mnemonic : Arrays.asList(relativeMnemonics)) {
+            symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
+
+        }
         
     }
+
+//         public static void main(String[] args) {
+
+//     SymbolTable st = new SymbolTable();
+//     ErrorReporter er = new ErrorReporter();
+
+//     LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
+
+//     while (la.getFinishScanning() == false) {
+//     IToken token = la.scan();
+//     if (token != null) {
+
+//     // String newLine = token.getEOL().equals("newLine") ? "newLine" : "not
+//     // newLine";
+
+//     // System.out.println(token.getTokenString() + " @column:" +
+//     // token.getPosition().getColumn() + " @line: "
+//     // + token.getPosition().getLine());
+//     // }
+//     // }
+
+//     for(String s: st.getSymbolTable().keySet()){
+//     System.out.println(s);
+//     }
+
+//     // er.report();
+
+//     }
     
+// }
+
+
+// }
 }
