@@ -1,6 +1,7 @@
-
-import SourceFiles.*;
-import InterfaceFiles.*;
+import CrossAssembler.*;
+import CrossAssembler.Backend.*;
+import CrossAssembler.Core.*;
+import CrossAssembler.Frontend.*;
 import java.util.ArrayList;
 
 public class TestCGenerator {

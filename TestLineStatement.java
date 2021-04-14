@@ -1,5 +1,7 @@
-import SourceFiles.*;
-import InterfaceFiles.*;
+import CrossAssembler.*;
+import CrossAssembler.Backend.*;
+import CrossAssembler.Core.*;
+import CrossAssembler.Frontend.*;
 
 public class TestLineStatement {
     public static void main(String args[]) {

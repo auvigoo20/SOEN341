@@ -1,8 +1,8 @@
 package CrossAssembler;
 
-import Components.*;
-import Frontend.*;
-import Backend.*;
+import CrossAssembler.Core.*;
+import CrossAssembler.Frontend.*;
+import CrossAssembler.Backend.*;
 
 
 public interface ICrossAssembler {
