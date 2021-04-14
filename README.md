@@ -3,6 +3,24 @@
 
 #### Before merging your branch or pushing into `master`, please make sure to delete all `.class` files created after compiling java files in the command line
 
+## Overall Architecture of the Cross-Assembler
+
+_Package Architecture:_
+
+![Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/CrossAssembler_package.png)
+
+_Core Package Architecture:_
+
+![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/Core_package.png)
+
+_Frontend Package Architecture:_
+
+![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/Frontend_package.png)
+
+_Backend Package Architecture:_
+
+![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/Backend_package.png)
+
 ### **TODO FOR THIS FRIDAY (APRIL 16TH)**
 
 - [x] Make `Parser.java` calculate the opcodes for `.cstring`
