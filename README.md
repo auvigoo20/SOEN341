@@ -5,11 +5,11 @@
 
 ### **TODO FOR THIS FRIDAY (APRIL 16TH)**
 
-- [ ] Make `Parser.java` calculate the opcodes for `.cstring`
-- [ ] Fix relative instruction errors
-- [ ] **FIX ARCHITECTURE PACKAGES**
+- [x] Make `Parser.java` calculate the opcodes for `.cstring`
+- [x] Fix relative instruction errors
+- [x] **FIX ARCHITECTURE PACKAGES**
 - [ ] Add command line in main of `cma.java` (Epic #1)
-- [ ] Make `Parser.java` be able to parse Labels and Relative instructions
+- [x] Make `Parser.java` be able to parse Labels and Relative instructions
 
 ### **TODO REFACTORING**
 
