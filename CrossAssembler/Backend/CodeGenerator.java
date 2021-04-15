@@ -194,4 +194,15 @@ public class CodeGenerator implements ICGenerator {
         outStr.close();
         return testStr;
     }
+
+    //Creating the executable file
+    public String generateExe() {
+        String exeName = filename.substring(0, filename.length()-3) + "exe";
+        
+        DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("data/data.bin"))())
+        
+                
+        
+    }
 }
+
