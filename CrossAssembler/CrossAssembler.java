@@ -4,31 +4,30 @@ import CrossAssembler.Core.*;
 import CrossAssembler.Frontend.*;
 import CrossAssembler.Backend.*;
 
-
-public class CrossAssembler implements ICrossAssembler{
+public class CrossAssembler implements ICrossAssembler {
 
     private IErrorReporter errorReporter;
     private ISymbolTable symbolTable;
     private ILexicalAnalyzer lexicalAnalyzer;
     private IParser parser;
-    
-    public CrossAssembler(String fileName){
+
+    public CrossAssembler(String fileName) {
         this.errorReporter = new ErrorReporter();
         this.symbolTable = new SymbolTable();
         lexicalAnalyzer = new LexicalAnalyzer(fileName, this.symbolTable, this.errorReporter);
         parser = new Parser(this.errorReporter, this.symbolTable);
     }
 
-    public void assemble(){
+    public void assemble(String options) {
 
-        while(lexicalAnalyzer.getFinishScanning() == false){
+        while (lexicalAnalyzer.getFinishScanning() == false) {
             IToken token = lexicalAnalyzer.scan();
-            if(token != null){
-            parser.requestToken(token);
+            if (token != null) {
+                parser.requestToken(token);
             }
         }
 
-        if(errorReporter.getNumOfReports() > 0){
+        if (errorReporter.getNumOfReports() > 0) {
             errorReporter.report();
             System.exit(0);
         }
@@ -36,7 +35,7 @@ public class CrossAssembler implements ICrossAssembler{
         // Store the intermediate representation in a variable
         IIntermediateRepresentation IR = parser.parse();
 
-        if(errorReporter.getNumOfReports() > 0){
+        if (errorReporter.getNumOfReports() > 0) {
             errorReporter.report();
             System.exit(0);
         }
@@ -44,24 +43,26 @@ public class CrossAssembler implements ICrossAssembler{
         // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator(IR, symbolTable);
 
-
         // Generate a listing file
-        codeGenerator.generateListing();
+        if (options.equals("-l") || options.equals("-listing")) {
+            codeGenerator.generateListing();
+        }
     }
 
-    public static void main(String[] args){
-        String fileName = null;
+    // public static void main(String[] args) {
+    // String fileName = null;
 
-        if(args.length == 0){
-            fileName = "TestImmediate.asm";
-        }
+    // if (args.length == 0) {
+    // fileName = "TestImmediate.asm";
+    // }
 
-        // File name from the user input in the command line
-        else{
-            fileName = args[0];
-        }
+    // // File name from the user input in the command line
+    // else {
+    // fileName = args[0];
+    // }
 
-        CrossAssembler crossAssembler = new CrossAssembler(fileName);
-        crossAssembler.assemble();
-    }
+    // CrossAssembler crossAssembler = new CrossAssembler(fileName);
+
+    // crossAssembler.assemble(null);
+    // }
 }

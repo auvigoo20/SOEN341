@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch cma",
+            "request": "launch",
+            "mainClass": "cma",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch CrossAssembler",
             "request": "launch",
             "mainClass": "CrossAssembler.CrossAssembler",
