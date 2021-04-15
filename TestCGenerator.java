@@ -49,7 +49,7 @@ public class TestCGenerator {
 
         // Tested output
 
-        CodeGenerator generate = new CodeGenerator(IR, table);
+        CodeGenerator generate = new CodeGenerator("listing.asm", IR, table);
         System.out.println(generate.generateListing()); //need to test
         System.out.println();
 

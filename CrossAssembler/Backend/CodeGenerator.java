@@ -14,13 +14,15 @@ public class CodeGenerator implements ICGenerator {
                                                            // Code
     private ArrayList<String> closing = new ArrayList<>(); // array containing all closings of line statement: Label Mne
                                                            // Operand Comment
+    private String filename;
 
     // private String option; //to implement for next sprints
 
     private IIntermediateRepresentation IR;
     private ISymbolTable symbols;
 
-    public CodeGenerator(IIntermediateRepresentation IR, ISymbolTable symbols) {
+    public CodeGenerator(String filename, IIntermediateRepresentation IR, ISymbolTable symbols) {
+        this.filename = filename;
         this.IR = IR;
         this.symbols = symbols;
     }
@@ -164,13 +166,13 @@ public class CodeGenerator implements ICGenerator {
                                       // naming
 
         String testStr;
-
+        String listName = filename.substring(0, filename.length()-3) + "lst";
         traverseIR();
 
         // create listing file to output to
         PrintWriter outStr = null;
         try {
-            outStr = new PrintWriter(new FileOutputStream("TestImmediate.lst"));
+            outStr = new PrintWriter(new FileOutputStream(listName));
 
         } catch (FileNotFoundException e) {
             System.out.println("Cannot create file!");
