@@ -9,7 +9,7 @@
 
 ## Overall Architecture of the Cross-Assembler
 
-_Package Architecture:_
+_Cross-Assembler Package Architecture:_
 
 ![Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/diagrams/CrossAssembler_package.png)
 
