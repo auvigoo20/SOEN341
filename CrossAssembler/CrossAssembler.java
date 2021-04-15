@@ -10,12 +10,14 @@ public class CrossAssembler implements ICrossAssembler {
     private ISymbolTable symbolTable;
     private ILexicalAnalyzer lexicalAnalyzer;
     private IParser parser;
+    private String fileName;
 
     public CrossAssembler(String fileName) {
         this.errorReporter = new ErrorReporter();
         this.symbolTable = new SymbolTable();
         lexicalAnalyzer = new LexicalAnalyzer(fileName, this.symbolTable, this.errorReporter);
         parser = new Parser(this.errorReporter, this.symbolTable);
+        this.fileName = fileName;
     }
 
     public void assemble(String options) {
@@ -41,7 +43,7 @@ public class CrossAssembler implements ICrossAssembler {
         }
 
         // Create a new code generator
-        CodeGenerator codeGenerator = new CodeGenerator(IR, symbolTable);
+        CodeGenerator codeGenerator = new CodeGenerator(fileName,IR, symbolTable);
 
         // Generate a listing file
         if (options.equals("-l") || options.equals("-listing")) {
