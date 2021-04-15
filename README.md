@@ -3,23 +3,27 @@
 
 #### Before merging your branch or pushing into `master`, please make sure to delete all `.class` files created after compiling java files in the command line
 
+## Key Concept Model
+
+![Key_Concept_Model](https://github.com/auvigoo20/SOEN341/blob/master/diagrams/KeyConcept.png)
+
 ## Overall Architecture of the Cross-Assembler
 
 _Package Architecture:_
 
-![Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/CrossAssembler_package.png)
+![Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/diagrams/CrossAssembler_package.png)
 
 _Core Package Architecture:_
 
-![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/Core_package.png)
+![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/diagrams/Core_package.png)
 
 _Frontend Package Architecture:_
 
-![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/Frontend_package.png)
+![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/diagrams/Frontend_package.png)
 
 _Backend Package Architecture:_
 
-![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/package_diagrams/Backend_package.png)
+![Core Package Architecture](https://github.com/auvigoo20/SOEN341/blob/master/diagrams/Backend_package.png)
 
 ### **TODO FOR THIS FRIDAY (APRIL 16TH)**
 
