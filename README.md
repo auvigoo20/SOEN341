@@ -30,7 +30,7 @@ _Backend Package Architecture:_
 - [x] Make `Parser.java` calculate the opcodes for `.cstring`
 - [x] Fix relative instruction errors
 - [x] **FIX ARCHITECTURE PACKAGES**
-- [ ] Add command line in main of `cma.java` (Epic #1)
+- [x] Add command line in main of `cma.java` (Epic #1)
 - [x] Make `Parser.java` be able to parse Labels and Relative instructions
 
 ### **TODO REFACTORING**
