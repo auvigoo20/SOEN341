@@ -1,7 +1,7 @@
 package CrossAssembler.Core;
 
 
-public interface IOperand {
+public interface IOperand extends IToken{
 
     public boolean isOperandNumber();
 

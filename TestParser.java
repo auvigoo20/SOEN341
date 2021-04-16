@@ -15,7 +15,9 @@ public class TestParser {
         IToken t3 = new Token(";hello","newLine",new Position(3,1));
 
         IErrorReporter er = new ErrorReporter();
-        IParser parser = new Parser(er);
+        ISymbolTable symbolTable = new SymbolTable();
+
+        IParser parser = new Parser(er, symbolTable);
 
         // Simulate the lexical analyzer sending 3 tokens to the parser
         parser.requestToken(t1);
@@ -24,9 +26,9 @@ public class TestParser {
 
         // Parser creating line statements from the tokens and inserting them into
         // the intermediate representation
-        ArrayList<ILineStatement> IR = parser.parse();
+        IIntermediateRepresentation IR = parser.parse();
 
-        ILineStatement l0 = IR.get(0);
+        ILineStatement l0 = IR.getIR().get(0);
 
 
         // Expected Output
@@ -34,7 +36,7 @@ public class TestParser {
         System.out.println("enter.u5 10 ;hello");
 
         // Actual output
-        System.out.print(l0.getMnemonic().getMnemonic() + " " + l0.getMnemonic().getOperand() + " "+ l0.getComment().getCommentToken());
+        System.out.print(l0.getInstruction().getMnemonic().getMnemonicString() + " " + l0.getInstruction().getOperand().getOperandNumber() + " "+ l0.getComment().getCommentToken());
         System.out.println();
 
     }

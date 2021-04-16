@@ -5,7 +5,7 @@ import CrossAssembler.Frontend.*;
 
 public class cma {
 
-    private static final String helpMessage = "Usage: cma [ Options ] <file>.asm\n\n" + "where options are:\n\n"
+    private static final String helpMessage = "Usage: java cma [ Options ] <file>.asm\n\n" + "where options are:\n\n"
             + "Short version  Long version    Meaning\n"
             + "-h             -help           Print the usage of the program.\n"
             + "-v             -verbose        Verbose during the execution of the program.\n"

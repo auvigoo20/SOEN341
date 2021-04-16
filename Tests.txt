@@ -1,0 +1,33 @@
+Test Code Generator
+[Line Addr Code  Label     Mne       Operand   Comments  ][1    0000 85              enter.u5  5         ; OK, number <u5> [0..31].][2    0001 98              addv.u3   0         ; OK, number <u3> [0..7].][3    0002 AF              stv.u3    7         ; OK, number <u3> [0..7].][4    0003 97              ldc.i3    -1        ; OK, number <i3> [-4..3].][5    0004 A2              ldv.u3    2         ; OK, number <u3> [0..7].]
+[Line Addr Code  Label     Mne       Operand   Comments  ][1    0000 85              enter.u5  5         ; OK, number <u5> [0..31].][2    0001 98              addv.u3   0         ; OK, number <u3> [0..7].][3    0002 AF              stv.u3    7         ; OK, number <u3> [0..7].][4    0003 97              ldc.i3    -1        ; OK, number <i3> [-4..3].][5    0004 A2              ldv.u3    2         ; OK, number <u3> [0..7].]
+Test Comment
+;hello 1 1
+;hello 1 1
+Test ErrorMessage
+error 1 2
+error 1 2
+Test ErrorReporter
+error @column: 1 @line: 2
+error @column: 1 @line: 2
+Test Instruction
+enter.u5 0 1 2
+enter.u5 0 1 2
+Test LexicalAnalyzer
+enter.u5 0 ; OK, number <u5> [0..31]. enter.u5 1 ; OK, number <u5> [0..31]. enter.u5 2 ; OK, number <u5> [0..31]. 
+enter.u5 0 ; OK, number <u5> [0..31]. enter.u5 1 ; OK, number <u5> [0..31]. enter.u5 2 ; OK, number <u5> [0..31]. 
+Test Line Statement
+halt ;hello
+halt ;hello
+Test Parser
+enter.u5 10 ;hello
+enter.u5 10 ;hello
+TestPosition
+1 2
+1 2
+Test Symbol Table
+enter.u5 ldc.i3 
+enter.u5 ldc.i3 
+Test Token
+halt 1 1
+halt 1 1

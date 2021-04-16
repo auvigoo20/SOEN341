@@ -1,7 +1,7 @@
 package CrossAssembler.Core;
 
 
-public interface IMnemonic {
+public interface IMnemonic extends IToken{
 
     public String getMnemonicString();
 
