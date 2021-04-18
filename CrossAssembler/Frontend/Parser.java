@@ -53,9 +53,9 @@ public class Parser implements IParser {
                     if (i != (tokens.size() - 1)) {
                         if (tokens.get(i + 1).getTokenString().contains("\"")) {
 
-                            String cstringOperand = getStringOpcode(tokens.get(i + 1).getTokenString());
+                            String cstringOpcode = getStringOpcode(tokens.get(i + 1).getTokenString());
 
-                            instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), cstringOperand),
+                            instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), cstringOpcode),
                                     new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
                         }
 
@@ -466,43 +466,43 @@ public class Parser implements IParser {
         return builder.toString() + "00";
     }
 
-    // public static void main(String[] args) {
+    public static void main(String[] args) {
 
-    //     SymbolTable st = new SymbolTable();
+        SymbolTable st = new SymbolTable();
 
-    //     ErrorReporter er = new ErrorReporter();
-    //     LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
+        ErrorReporter er = new ErrorReporter();
+        LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
 
-    //     Parser parser = new Parser(er, st);
+        Parser parser = new Parser(er, st);
 
-    //     while (la.getFinishScanning() == false) {
-    //         IToken token = la.scan();
-    //         if (token != null) {
-    //             parser.requestToken(token);
-    //         }
-    //     }
-    //     IIntermediateRepresentation IR = parser.parse();
+        while (la.getFinishScanning() == false) {
+            IToken token = la.scan();
+            if (token != null) {
+                parser.requestToken(token);
+            }
+        }
+        IIntermediateRepresentation IR = parser.parse();
 
-    //     // for (ILineStatement l : IR.getIR()) {
-    //     //     if (l.getInstruction() != null) {
-    //     //         System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
-    //     //                 + l.getInstruction().getOperand().getOperandNumber());
-    //     //     }
-    //     //     if (l.getComment() != null) {
-    //     //         System.out.print(" " + l.getComment().getCommentToken());
-    //     //     }
-    //     //     if (l.getLabel() != null) {
-    //     //         System.out.println(" " + l.getLabel().getLabelToken());
-    //     //     }
-    //     //     System.out.println();
-    //     // }
+        // for (ILineStatement l : IR.getIR()) {
+        //     if (l.getInstruction() != null) {
+        //         System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
+        //                 + l.getInstruction().getOperand().getOperandNumber());
+        //     }
+        //     if (l.getComment() != null) {
+        //         System.out.print(" " + l.getComment().getCommentToken());
+        //     }
+        //     if (l.getLabel() != null) {
+        //         System.out.println(" " + l.getLabel().getLabelToken());
+        //     }
+        //     System.out.println();
+        // }
 
-    //     // for (String s : st.getSymbolTable().keySet()) {
-    //     // System.out.println(s);
-    //     // }
+        // for (String s : st.getSymbolTable().keySet()) {
+        // System.out.println(s);
+        // }
 
-    //     er.report();
+        er.report();
 
-    // }
+    }
 
 }

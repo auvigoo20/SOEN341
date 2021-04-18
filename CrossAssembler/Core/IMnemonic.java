@@ -8,4 +8,8 @@ public interface IMnemonic extends IToken{
     public int getOpcode();
 
     public String getCStringOpcode();
+
+    public int getSize();
+
+    public void setSize(int size);
 }

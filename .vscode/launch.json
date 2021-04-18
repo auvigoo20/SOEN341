@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Mnemonic",
+            "request": "launch",
+            "mainClass": "CrossAssembler.Core.Mnemonic",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch LexicalAnalyzer",
+            "request": "launch",
+            "mainClass": "CrossAssembler.Frontend.LexicalAnalyzer",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch Parser",
+            "request": "launch",
+            "mainClass": "CrossAssembler.Frontend.Parser",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch cma",
             "request": "launch",
             "mainClass": "cma",
