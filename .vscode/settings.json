@@ -1,4 +1,7 @@
 {
-    "VSCord.appName": "Visual Studio Code"
+    "VSCord.appName": "Visual Studio Code",
+    "java.project.sourcePaths": [
+        ""
+    ]
     
 }

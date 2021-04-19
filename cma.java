@@ -10,7 +10,7 @@ public class cma {
             + "-h             -help           Print the usage of the program.\n"
             + "-v             -verbose        Verbose during the execution of the program.\n"
             + "-b             -banner         Print the banner of the program.\n"
-            + "-l             -listing         Generate a listing of the assembly file.\n";
+            + "-l             -listing        Generate a listing of the assembly file.\n";
 
     private static final String bannerMessage = "Cm Cross-Assembler - Developed by Team 1.";
 
@@ -78,6 +78,10 @@ public class cma {
             else if(listing){
                 crossAssembler.assemble("-l");
             }
+        }
+        else{
+            System.out.println(helpMessage);
+            System.exit(0);
         }
     }
 }

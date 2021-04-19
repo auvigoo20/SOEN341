@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch TestLabelError",
+            "request": "launch",
+            "mainClass": "TestLabelError",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestRelativeError",
+            "request": "launch",
+            "mainClass": "TestRelativeError",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch Mnemonic",
             "request": "launch",
             "mainClass": "CrossAssembler.Core.Mnemonic",

@@ -31,3 +31,9 @@ enter.u5 ldc.i3
 Test Token
 halt 1 1
 halt 1 1
+Test Relative Error
+Error: This relative instruction must have a label as an operand. @column: 1 @line: 1
+Error: This relative instruction must have a label as an operand. @column: 1 @line: 1
+Test Label Error
+Error: This label has already been defined. @column: 1 @line: 2
+Error: This label has already been defined. @column: 1 @line: 2
