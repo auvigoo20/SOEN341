@@ -7,4 +7,6 @@ public interface IToken {
     public IPosition getPosition();
 
     public String getTokenString();
+
+    public int getOpcodeOrAddress();
 }

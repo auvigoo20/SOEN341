@@ -16,6 +16,7 @@ public class Mnemonic extends Token implements IMnemonic{
 
 
     public Mnemonic(String mnemonicString, int opcode){
+        super(opcode);
         this.mnemonicString = mnemonicString;
         this.opcode = opcode;
         determineMnemonicSize(mnemonicString);

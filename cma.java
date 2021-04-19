@@ -17,6 +17,7 @@ public class cma {
     public static void main(String[] args) {
         String fileName = null;
         boolean listing = false;
+        boolean verbose = false;
 
         if (args.length > 0) {
 
@@ -61,11 +62,20 @@ public class cma {
                     else if (args[i].equals("-l") || args[i].equals("-listing")) {
                         listing = true;
                     }
+                    else if (args[i].equals("-v") || args[i].equals("-verbose")) {
+                        verbose = true;
+                    }
                 }
             }
             CrossAssembler crossAssembler = new CrossAssembler(fileName);
 
-            if(listing){
+            if(listing && verbose){
+                crossAssembler.assemble("-l -v");
+            }
+            else if(verbose){
+                crossAssembler.assemble("-v");
+            }
+            else if(listing){
                 crossAssembler.assemble("-l");
             }
         }

@@ -209,7 +209,9 @@ public class Parser implements IParser {
                             errorReporter.record(new ErrorMessage(error, new Position(
                                     tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
                         } else {
-                            label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
+                            //ADDRESS TO CALCULATE
+                            int address = 0;
+                            label = new Label(tokens.get(i).getTokenString(), address, tokens.get(i).getPosition());
                             symbolTable.insertMnemonic(tokens.get(i).getTokenString(), label);
                         }
                     }
@@ -276,7 +278,10 @@ public class Parser implements IParser {
                             errorReporter.record(new ErrorMessage(error, new Position(
                                     tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
                         } else {
-                            label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
+                            //ADDRESS TO CALCULATE
+                            int address = 0;
+
+                            label = new Label(tokens.get(i).getTokenString(), address, tokens.get(i).getPosition());
                             symbolTable.insertMnemonic(tokens.get(i).getTokenString(), label);
                         }
                     }
@@ -294,6 +299,22 @@ public class Parser implements IParser {
             }
         }
         return intermediateRepresentation;
+    }
+
+    public void getVerbose(){
+        String verbose = String.format("%-10s%-10s%-10s", "Name", "Type", "Addr/Code");
+        verbose += "\n";
+
+        for(String key : symbolTable.getSymbolTable().keySet()){
+            String name = key;
+            String classPath = symbolTable.getSymbolTable().get(key).getClass().toString();
+            String type = classPath.substring(classPath.lastIndexOf(".") + 1);
+            String code = String.format("%02X", symbolTable.getSymbolTable().get(key).getOpcodeOrAddress());
+            verbose += String.format("%-10s%-10s%-10s", name, type, code);
+            verbose += "\n";
+        }
+
+        System.out.println(verbose);
     }
 
     // "ldc.i8", "ldv.u8", "stv.u8", "lda.i16" -- operands
@@ -454,7 +475,7 @@ public class Parser implements IParser {
 
         String cstring = "";
 
-        cstring = operandString.substring(0, operandString.length());
+        cstring = operandString.substring(1, operandString.length()-1);
 
         char[] ch = cstring.toCharArray();
 
@@ -466,43 +487,46 @@ public class Parser implements IParser {
         return builder.toString() + "00";
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
 
-        SymbolTable st = new SymbolTable();
+    //     SymbolTable st = new SymbolTable();
 
-        ErrorReporter er = new ErrorReporter();
-        LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
+    //     ErrorReporter er = new ErrorReporter();
+    //     LexicalAnalyzer la = new LexicalAnalyzer("rela02.asm", st, er);
 
-        Parser parser = new Parser(er, st);
+    //     Parser parser = new Parser(er, st);
 
-        while (la.getFinishScanning() == false) {
-            IToken token = la.scan();
-            if (token != null) {
-                parser.requestToken(token);
-            }
-        }
-        IIntermediateRepresentation IR = parser.parse();
+    //     while (la.getFinishScanning() == false) {
+    //         IToken token = la.scan();
+    //         if (token != null) {
+    //             parser.requestToken(token);
+    //         }
+    //     }
+    //     IIntermediateRepresentation IR = parser.parse();
 
-        // for (ILineStatement l : IR.getIR()) {
-        //     if (l.getInstruction() != null) {
-        //         System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
-        //                 + l.getInstruction().getOperand().getOperandNumber());
-        //     }
-        //     if (l.getComment() != null) {
-        //         System.out.print(" " + l.getComment().getCommentToken());
-        //     }
-        //     if (l.getLabel() != null) {
-        //         System.out.println(" " + l.getLabel().getLabelToken());
-        //     }
-        //     System.out.println();
-        // }
+    //     for (ILineStatement l : IR.getIR()) {
+    //         if (l.getInstruction() != null) {
+    //             System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
+    //                     + l.getInstruction().getOperand().getOperandNumber() + " " + l.getInstruction().getMnemonic().getCStringOpcode());
+    //         }
+    //         if (l.getComment() != null) {
+    //             System.out.print(" " + l.getComment().getCommentToken());
+    //         }
+    //         if (l.getLabel() != null) {
+    //             System.out.println(" " + l.getLabel().getLabelToken());
+    //         }
+    //         System.out.println();
+    //     }
 
-        // for (String s : st.getSymbolTable().keySet()) {
-        // System.out.println(s);
-        // }
+    //     for (String s : st.getSymbolTable().keySet()) {
+    //     System.out.println(s);
+    //     System.out.println(String.format("%02X", st.getSymbolTable().get(s).getOpcodeOrAddress())  );
+    //     }
 
-        er.report();
+    //     System.out.println(parser.getVerbose());
 
-    }
+    //     // er.report();
+
+    // }
 
 }
