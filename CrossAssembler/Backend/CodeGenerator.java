@@ -5,6 +5,7 @@ import CrossAssembler.Frontend.*;
 
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList; 
 
@@ -202,11 +203,29 @@ public class CodeGenerator implements ICGenerator {
     public String generateExe() {
         String exeName = filename.substring(0, filename.length()-3) + "exe";
         
-        DataOutputStream dataStream = new DataOutputStream(new FileOutputStream(exeName));
+        DataOutputStream dataStream = null;
+        try {
+           dataStream = new DataOutputStream(new FileOutputStream(exeName));
+        } catch (FileNotFoundException e) {
+            //TODO: handle exception
+            System.out.println("Cannot create file!");
+        }
         
-        dataOutputStream.writeByte();
+        try {
+            dataStream.writeByte(2);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-        
+        try {
+            dataStream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return "hello";
     }
 }
 

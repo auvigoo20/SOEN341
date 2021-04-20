@@ -7,5 +7,7 @@ import java.util.ArrayList;
 public interface ICGenerator {
 
     public String generateListing();
+    
+    public String generateExe();
 
 }
