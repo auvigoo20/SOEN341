@@ -32,10 +32,6 @@ public class Parser implements IParser {
         tokens.add(t);
     }
 
-    public ArrayList<IToken> getTokenList() {
-        return tokens;
-    }
-
     // Returns the IR that the code generator will use
     public IIntermediateRepresentation parse() {
 

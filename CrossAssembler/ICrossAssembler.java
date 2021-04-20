@@ -7,6 +7,6 @@ import CrossAssembler.Backend.*;
 
 public interface ICrossAssembler {
 
-    public void assemble();
+    public void assemble(String options);
     
 }
