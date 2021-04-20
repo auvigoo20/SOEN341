@@ -20,6 +20,8 @@ public class CodeGenerator implements ICGenerator {
                                                            // Operand Comment
     private String filename;
 
+    private ArrayList<Integer> bytes = new ArrayList<>(); //array buffer containing each byte for the executable file
+
     // private String option; //to implement for next sprints
 
     private IIntermediateRepresentation IR;
@@ -202,30 +204,28 @@ public class CodeGenerator implements ICGenerator {
     //Creating the executable file
     public String generateExe() {
         String exeName = filename.substring(0, filename.length()-3) + "exe";
-        
-        DataOutputStream dataStream = null;
-        try {
-           dataStream = new DataOutputStream(new FileOutputStream(exeName));
-        } catch (FileNotFoundException e) {
-            //TODO: handle exception
-            System.out.println("Cannot create file!");
-        }
-        
-        try {
-            dataStream.writeByte(2);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        try {
-            dataStream.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        String testStr;
+        
+        DataOutputStream dos = null;
 
-        return "hello";
+        DataOutputStream dis = null; //for testing purposes
+
+        //generating the exe file
+        try {
+			dos = new DataOutputStream(new FileOutputStream(exeName)); //create exe file
+            for(int i = 0; i < bytes.size(); i++) { //write byte by byte
+                dos.writeByte(bytes.get(i));
+                testStr = testStr + String.format("%02X ", bytes.get(i)); //for testing purposes
+            }
+			dos.flush();
+            dos.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+        return testStr;
     }
 }
 
