@@ -6,7 +6,10 @@ import CrossAssembler.Frontend.*;
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.ArrayList; 
+
+import java.io.DataOutputStream; 
+
 
 public class CodeGenerator implements ICGenerator {
     // Class attributes
@@ -199,9 +202,10 @@ public class CodeGenerator implements ICGenerator {
     public String generateExe() {
         String exeName = filename.substring(0, filename.length()-3) + "exe";
         
-        DataOutputStream dataStream = new DataOutputStream(new FileOutputStream("data/data.bin"))())
+        DataOutputStream dataStream = new DataOutputStream(new FileOutputStream(exeName));
         
-                
+        dataOutputStream.writeByte();
+
         
     }
 }
