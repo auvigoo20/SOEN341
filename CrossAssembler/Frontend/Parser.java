@@ -53,9 +53,9 @@ public class Parser implements IParser {
                     if (i != (tokens.size() - 1)) {
                         if (tokens.get(i + 1).getTokenString().contains("\"")) {
 
-                            String cstringOperand = getStringOpcode(tokens.get(i + 1).getTokenString());
+                            String cstringOpcode = getStringOpcode(tokens.get(i + 1).getTokenString());
 
-                            instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), cstringOperand),
+                            instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), cstringOpcode),
                                     new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
                         }
 
@@ -85,8 +85,10 @@ public class Parser implements IParser {
 
                         else {
 
+                            int opcode = searchCode(tokens.get(i).getTokenString(), -1);
+
                             instruction = new Instruction(
-                                    new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE),
+                                    new Mnemonic(tokens.get(i).getTokenString(), opcode),
                                     tokens.get(i).getPosition());
                         }
                     }
@@ -169,7 +171,7 @@ public class Parser implements IParser {
                                                 tokens.get(i).getPosition().getLine())));
                             } else {
                                 instruction = new Instruction(
-                                        new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE),
+                                        new Mnemonic(tokens.get(i).getTokenString(), symbolTable.getSymbolTable().get(tokens.get(i).getTokenString()).getOpcodeOrAddress()),
                                         new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
                             }
                         }
@@ -207,7 +209,9 @@ public class Parser implements IParser {
                             errorReporter.record(new ErrorMessage(error, new Position(
                                     tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
                         } else {
-                            label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
+                            //ADDRESS TO CALCULATE
+                            int address = 0;
+                            label = new Label(tokens.get(i).getTokenString(), address, tokens.get(i).getPosition());
                             symbolTable.insertMnemonic(tokens.get(i).getTokenString(), label);
                         }
                     }
@@ -274,7 +278,10 @@ public class Parser implements IParser {
                             errorReporter.record(new ErrorMessage(error, new Position(
                                     tokens.get(i).getPosition().getColumn(), tokens.get(i).getPosition().getLine())));
                         } else {
-                            label = new Label(tokens.get(i).getTokenString(), tokens.get(i).getPosition());
+                            //ADDRESS TO CALCULATE
+                            int address = 0;
+
+                            label = new Label(tokens.get(i).getTokenString(), address, tokens.get(i).getPosition());
                             symbolTable.insertMnemonic(tokens.get(i).getTokenString(), label);
                         }
                     }
@@ -292,6 +299,22 @@ public class Parser implements IParser {
             }
         }
         return intermediateRepresentation;
+    }
+
+    public void getVerbose(){
+        String verbose = String.format("%-10s%-10s%-10s", "Name", "Type", "Addr/Code");
+        verbose += "\n";
+
+        for(String key : symbolTable.getSymbolTable().keySet()){
+            String name = key;
+            String classPath = symbolTable.getSymbolTable().get(key).getClass().toString();
+            String type = classPath.substring(classPath.lastIndexOf(".") + 1);
+            String code = String.format("%02X", symbolTable.getSymbolTable().get(key).getOpcodeOrAddress());
+            verbose += String.format("%-10s%-10s%-10s", name, type, code);
+            verbose += "\n";
+        }
+
+        System.out.println(verbose);
     }
 
     // "ldc.i8", "ldv.u8", "stv.u8", "lda.i16" -- operands
@@ -452,7 +475,7 @@ public class Parser implements IParser {
 
         String cstring = "";
 
-        cstring = operandString.substring(0, operandString.length());
+        cstring = operandString.substring(1, operandString.length()-1);
 
         char[] ch = cstring.toCharArray();
 
@@ -469,7 +492,7 @@ public class Parser implements IParser {
         SymbolTable st = new SymbolTable();
 
         ErrorReporter er = new ErrorReporter();
-        LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
+        LexicalAnalyzer la = new LexicalAnalyzer("rela02.asm", st, er);
 
         Parser parser = new Parser(er, st);
 
@@ -481,25 +504,27 @@ public class Parser implements IParser {
         }
         IIntermediateRepresentation IR = parser.parse();
 
-        // for (ILineStatement l : IR.getIR()) {
-        //     if (l.getInstruction() != null) {
-        //         System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
-        //                 + l.getInstruction().getOperand().getOperandNumber());
-        //     }
-        //     if (l.getComment() != null) {
-        //         System.out.print(" " + l.getComment().getCommentToken());
-        //     }
-        //     if (l.getLabel() != null) {
-        //         System.out.println(" " + l.getLabel().getLabelToken());
-        //     }
-        //     System.out.println();
-        // }
+        for (ILineStatement l : IR.getIR()) {
+            if (l.getInstruction() != null) {
+                System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
+                        + l.getInstruction().getOperand().getOperandNumber() + " " + l.getInstruction().getMnemonic().getCStringOpcode());
+            }
+            if (l.getComment() != null) {
+                System.out.print(" " + l.getComment().getCommentToken());
+            }
+            if (l.getLabel() != null) {
+                System.out.println(" " + l.getLabel().getLabelToken());
+            }
+            System.out.println();
+        }
 
         // for (String s : st.getSymbolTable().keySet()) {
         // System.out.println(s);
+        // System.out.println(String.format("%02X", st.getSymbolTable().get(s).getOpcodeOrAddress())  );
         // }
 
-        er.report();
+
+        // er.report();
 
     }
 

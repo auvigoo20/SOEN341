@@ -1,6 +1,5 @@
 package CrossAssembler.Backend;
 import CrossAssembler.Core.*;
-import CrossAssembler.Frontend.*;
 
 
 import java.io.PrintWriter;
@@ -65,6 +64,10 @@ public class CodeGenerator implements ICGenerator {
 
             if (intRep.get(i).getComment() != null) {
                 position = intRep.get(i).getComment().getPosition();
+            }
+
+            if (intRep.get(i).getLabel() != null) {
+                position = intRep.get(i).getLabel().getPosition();
             }
 
             // Add empty lines (except for line number and address) if the .asm contains
@@ -139,6 +142,10 @@ public class CodeGenerator implements ICGenerator {
             // if the current line statement contains a comment
             if (intRep.get(i).getComment() != null) {
                 comment = intRep.get(i).getComment().getCommentToken(); // to do this sprint
+            }
+
+            if(intRep.get(i).getLabel() != null){
+                label = intRep.get(i).getLabel().getLabelToken();
             }
 
             addr = String.format("%04X", counter); // Convert decimal counter to hexadecimal (4bit)

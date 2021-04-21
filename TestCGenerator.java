@@ -51,7 +51,6 @@ public class TestCGenerator {
 
         CodeGenerator generate = new CodeGenerator("listing.asm", IR, table);
         System.out.println(generate.generateListing()); //need to test
-        System.out.println();
 
     }
 

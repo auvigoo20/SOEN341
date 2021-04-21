@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
-
 public class LexicalAnalyzer implements ILexicalAnalyzer {
 
     private FileInputStream fis; // Creating an object of type FileInputStream for use in opening the file.
@@ -31,7 +30,6 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             this.symbolTable = symbolTable; // constructor injection of symbol table.
             this.finishScanning = false;
             this.errorReporter = errorReporter; // constructor injection of error reporter
-            insertInSymbolTable();
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
             System.exit(0);
@@ -44,7 +42,8 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
         IToken token = null;
 
         try {
-            // if the token is a comment (starts with a ;), build the string until reaching end of line
+            // if the token is a comment (starts with a ;), build the string until reaching
+            // end of line
             if (i == ';') {
                 unknownString += (char) i;
                 while ((i = fis.read()) != '\n') {
@@ -126,16 +125,11 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             while ((i = fis.read()) != -1) {
                 token = getToken();
                 if (token != null) {
-                    // Insert mnemonic in the symbol table. This mnemonic is the same as the one
-                    // that is sent as a token.
-                    //NOT SURE IF WE HAVE TO INSERT ONLY MNEMONICS THAT WE READ OR ALL POSSIBLE MNEMONICS
-                    //PROF SAID LAST LECTURE TO INSERT ALL POSSIBLE MNEMONICS DIRECTLY
-                    //I DO THIS BY CALLING PRIVATE METHOD INSERTINSYMBOLTABLE() IN CONSTRUCTOR
-                    // if (isMnemonic(token.getTokenString())) {
-                    //     symbolTable.insertMnemonic(token.getTokenString(),
-                    //             new Mnemonic(token.getTokenString(), getOpcode(token.getTokenString())));
-                    //     // something like new Mnemonic(mnemonic name string, mnemonic opcode)
-                    // }
+                    // Insert mnemonic in the symbol table.
+                    if (isMnemonic(token.getTokenString())) {
+                        symbolTable.insertMnemonic(token.getTokenString(),
+                                new Mnemonic(token.getTokenString(), getOpcode(token.getTokenString())));
+                    }
                     return token; // Return token to the Parser
                 }
             }
@@ -166,27 +160,25 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
     private boolean isMnemonic(String mnemonicString) {
         if (Arrays.asList(inherentMnemonics).contains(mnemonicString)
                 || Arrays.asList(immediateMnemonics).contains(mnemonicString)
-                || mnemonicString.equalsIgnoreCase(".cstring")) {
+                || Arrays.asList(relativeMnemonics).contains(mnemonicString)) {
             return true;
         } else {
             return false;
         }
     }
 
-    private boolean hasInvalidChar(String tokenString){
+    private boolean hasInvalidChar(String tokenString) {
         char[] chars = tokenString.toCharArray();
         int count = 0;
-        for(char c : chars){
-            if(Character.isLetter(c) || Character.isDigit(c) || c == '\"' || c == '.' || c == '-' ){
-            }
-            else{
+        for (char c : chars) {
+            if (Character.isLetter(c) || Character.isDigit(c) || c == '\"' || c == '.' || c == '-') {
+            } else {
                 count++;
             }
         }
-        if(count > 0){
+        if (count > 0) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
 
@@ -247,7 +239,7 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             return 30;
         else if (mnemonic.equals("tge"))
             return 31;
-        //Immediate addressing
+        // Immediate addressing
         else if (mnemonic.equals("enter.u5"))
             return 0x70;
         else if (mnemonic.equals("ldc.i3"))
@@ -262,11 +254,11 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
         else if (mnemonic.equals("br.i8"))
             return 0xE0;
         else if (mnemonic.equals("brf.i8"))
-           return 0xE3;
+            return 0xE3;
         else if (mnemonic.equals("ldc.i8"))
-          return 0xD9;
+            return 0xD9;
         else if (mnemonic.equals("ldv.u8"))
-           return 0xB1;
+            return 0xB1;
         else if (mnemonic.equals("stv.u8"))
             return 0xB2;
         else if (mnemonic.equals("lda.i16"))
@@ -275,54 +267,55 @@ public class LexicalAnalyzer implements ILexicalAnalyzer {
             return -1;
     }
 
-    private void insertInSymbolTable(){
-        //insert all inherent mnemonics in symbol table
-        for(String mnemonic : Arrays.asList(inherentMnemonics)){
-            symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
-        }
+    // private void insertInSymbolTable() {
+    //     // insert all inherent mnemonics in symbol table
+    //     for (String mnemonic : Arrays.asList(inherentMnemonics)) {
+    //         symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
+    //     }
 
-        //insert all immediate mnemonics in symbol table
-        for(String mnemonic : Arrays.asList(immediateMnemonics)){
-            symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
-        }
+    //     // insert all immediate mnemonics in symbol table
+    //     for (String mnemonic : Arrays.asList(immediateMnemonics)) {
+    //         symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
+    //     }
 
-        for (String mnemonic : Arrays.asList(relativeMnemonics)) {
-            symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
+    //     for (String mnemonic : Arrays.asList(relativeMnemonics)) {
+    //         symbolTable.insertMnemonic(mnemonic, new Mnemonic(mnemonic, getOpcode(mnemonic)));
 
-        }
-        
-    }
+    //     }
 
-//         public static void main(String[] args) {
+    // }
 
-//     SymbolTable st = new SymbolTable();
-//     ErrorReporter er = new ErrorReporter();
+    // public static void main(String[] args) {
 
-//     LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
+    //     SymbolTable st = new SymbolTable();
+    //     ErrorReporter er = new ErrorReporter();
 
-//     while (la.getFinishScanning() == false) {
-//     IToken token = la.scan();
-//     if (token != null) {
+    //     LexicalAnalyzer la = new LexicalAnalyzer("relaErrors.asm", st, er);
 
-//     // String newLine = token.getEOL().equals("newLine") ? "newLine" : "not
-//     // newLine";
+    //     while (la.getFinishScanning() == false) {
+    //         IToken token = la.scan();
+    //         if (token != null) {
 
-//     // System.out.println(token.getTokenString() + " @column:" +
-//     // token.getPosition().getColumn() + " @line: "
-//     // + token.getPosition().getLine());
-//     // }
-//     // }
+    //             // String newLine = token.getEOL().equals("newLine") ? "newLine" : "not
+    //             // newLine";
 
-//     for(String s: st.getSymbolTable().keySet()){
-//     System.out.println(s);
-//     }
-
-//     // er.report();
-
-//     }
-    
-// }
+    //             // System.out.println(token.getTokenString() + " @column:" +
+    //             // token.getPosition().getColumn() + " @line: "
+    //             // + token.getPosition().getLine());
+    //             // }
+    //             // }
 
 
-// }
+    //             // er.report();
+
+    //         }
+            
+
+    //     }
+
+
+    //     for (String s : st.getSymbolTable().keySet()) {
+    //         System.out.println(s);
+    //     }
+    // }
 }

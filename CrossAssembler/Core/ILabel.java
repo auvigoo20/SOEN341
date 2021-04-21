@@ -2,7 +2,7 @@ package CrossAssembler.Core;
 
 
 
-public interface ILabel{
+public interface ILabel extends IToken{
     
     public String getLabelToken();
 

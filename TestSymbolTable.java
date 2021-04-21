@@ -12,20 +12,19 @@ public class TestSymbolTable {
         ISymbolTable symbolTable = new SymbolTable();
 
         // Create tokens to insert into symbol table
-        IToken token1 = new Token(".cstring", "", new Position(1, 2));
-        IToken token2 = new Token("enter.u5","",new Position(2,2));
-        IToken token3 = new Token("halt", "newLine", new Position(3,3));
+        IMnemonic mnemonic1 = new Mnemonic("enter.u5", 80);
+        IMnemonic mnemonic2 = new Mnemonic("ldc.i3", 90);
+
 
         // Insert tokens into symbol table
-        symbolTable.insertMnemonic(".cstring", token1);
-        symbolTable.insertMnemonic("enter.u5", token2);
-        symbolTable.insertMnemonic("halt", token3);
+        symbolTable.insertMnemonic("enter.u5", mnemonic1);
+        symbolTable.insertMnemonic("ldc.i3", mnemonic2);
 
-        LinkedHashMap<String, IToken> hashMap = symbolTable.gHashMap();
+        LinkedHashMap<String, IToken> hashMap = symbolTable.getSymbolTable();
 
         // Expected Output
         System.out.println("Test Symbol Table");
-        System.out.println(".cstring enter.u5 halt ");
+        System.out.println("enter.u5 ldc.i3 ");
 
         // Actual Output
         for (String mnemonic : hashMap.keySet()) {

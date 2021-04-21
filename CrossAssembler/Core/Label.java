@@ -8,7 +8,8 @@ public class Label extends Token implements ILabel {
     public Label() {
     }
 
-    public Label(String label, IPosition position) {
+    public Label(String label,int address, IPosition position) {
+        super(address);
         this.label = label;
         this.position = position;
     }

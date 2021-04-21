@@ -37,6 +37,10 @@ public class CrossAssembler implements ICrossAssembler {
         // Store the intermediate representation in a variable
         IIntermediateRepresentation IR = parser.parse();
 
+        if(options.contains("-v")){
+            parser.getVerbose();
+        }
+
         if (errorReporter.getNumOfReports() > 0) {
             errorReporter.report();
             System.exit(0);
@@ -46,7 +50,7 @@ public class CrossAssembler implements ICrossAssembler {
         CodeGenerator codeGenerator = new CodeGenerator(fileName,IR, symbolTable);
 
         // Generate a listing file
-        if (options.equals("-l") || options.equals("-listing")) {
+        if (options.contains("-l")) {
             codeGenerator.generateListing();
         }
     }

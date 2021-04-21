@@ -6,15 +6,24 @@ public class Token implements IToken {
     private String EOL;
     private IPosition position;
     private String tokenString;
+    private int opcodeOrAddress;
 
     public Token() {
 
+    }
+
+    public Token(int opcode){
+        opcodeOrAddress = opcode;
     }
 
     public Token(String tokenString, String EOL, IPosition position) {
         this.tokenString = tokenString;
         this.EOL = EOL;
         this.position = position;
+    }
+
+    public int getOpcodeOrAddress(){
+        return opcodeOrAddress;
     }
 
     public String getEOL() {

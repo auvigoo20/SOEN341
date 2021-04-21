@@ -1,7 +1,7 @@
 package CrossAssembler.Core;
 
 
-public class Operand implements IOperand{
+public class Operand extends Token implements IOperand{
     
     private int operandNumber;
     private String operandString;
