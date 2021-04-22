@@ -7,7 +7,7 @@ This project uses the Java programming language to create a cross-assembler that
 
 The front-end consists of a lexical analyzer and parser, which translate the source code into an in-memory intermediate representation (IR) built from a sequence of instructions. Two additional helpers are a symbol table (for all opcodes and labels) and an error reporter.
 
-The back-end consists of a code generator that traverses the IR and generates assembly source code (.asm) listing and/or binary (virtual) machine code.
+The back-end consists of a code generator that traverses the IR and generates assembly source code listing (`.lst`) and/or binary (virtual) machine code.
 
 The functionality of the cross-assembler is represented in the Key Concept Model.
 
