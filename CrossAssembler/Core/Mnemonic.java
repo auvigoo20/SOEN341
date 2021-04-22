@@ -56,11 +56,11 @@ public class Mnemonic extends Token implements IMnemonic{
             size = 1;
         }
         else if(Arrays.asList(relativeMnemonics).contains(mnemonicString)){
-            if(mnemonicString.contains("i8")){
-                size = 1;
+            if(mnemonicString.contains("i8") || mnemonicString.contains("u8") ){
+                size = 2;
             }
             else if(mnemonicString.contains("i16")){
-                size = 2;
+                size = 3;
             }
         }
     }
@@ -70,13 +70,5 @@ public class Mnemonic extends Token implements IMnemonic{
         size = hexCodes.length;
     }
 
-    // public static void main(String[] args){
-    //     IMnemonic mnemonic1 = new Mnemonic("halt", 9);
-    //     System.out.println(mnemonic1.getSize());
-
-    //     System.out.println();
-    //     IMnemonic mnemonic2 = new Mnemonic("cstring", "A2 F4");
-    //     System.out.println(mnemonic2.getSize());
-    // }
 
 }

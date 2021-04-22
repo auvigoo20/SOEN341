@@ -1,6 +1,6 @@
 Line Addr Code  Label     Mne       Operand   Comments  
 1    0000                                     ; rela02.asm
-2    0001 E0    Main      br.i8     Main                
-3    0002 E0              br.i8     Main      ; Backward branching
-4    0003 E0              br.i8     End       ; Forward branching
-5    0004 E0    End       br.i8     End                 
+2    0000 E0    Main      br.i8                         
+3    0001 E0              br.i8               ; Backward branching
+4    0002 E0              br.i8               ; Forward branching
+5    0003 E0    End       br.i8                         

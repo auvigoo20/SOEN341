@@ -49,6 +49,8 @@ public class CrossAssembler implements ICrossAssembler {
         // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator(fileName,IR, symbolTable);
 
+        codeGenerator.generateExe();
+
         // Generate a listing file
         if (options.contains("-l")) {
             codeGenerator.generateListing();
