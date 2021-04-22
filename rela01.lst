@@ -1,7 +1,0 @@
-Line Addr Code  Label     Mne       Operand   Comments  
-1    0000                                     ; rela01.asm
-2    0000 D5              lda.i16                       
-3    0002                 ldc.i8    12                  
-4    0003 D5              lda.i16                       
-5    0005 41 31 00Msg1      .cstring  "A1"      ; OK. Code generated -> 41 31 00
-6    0008 42 32 33 00Msg2      .cstring  "B23"     ; Only ASCII printable characters are allowed.

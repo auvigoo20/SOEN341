@@ -146,8 +146,7 @@ public class CodeGenerator implements ICGenerator {
     /**
      * Generates the listing file
      */
-    public String generateListing() { // TO ASK: if this needs to be private. TODO: remove useless sysouts, file
-                                      // naming
+    public String generateListing() {
 
         String testStr;
         String listName = filename.substring(0, filename.length() - 3) + "lst";
@@ -196,7 +195,6 @@ public class CodeGenerator implements ICGenerator {
 			dos.flush();
             dos.close();
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 

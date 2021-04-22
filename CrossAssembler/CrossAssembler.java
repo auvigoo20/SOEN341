@@ -49,6 +49,7 @@ public class CrossAssembler implements ICrossAssembler {
         // Create a new code generator
         CodeGenerator codeGenerator = new CodeGenerator(fileName,IR, symbolTable);
 
+        //Generate exe for all options
         codeGenerator.generateExe();
 
         // Generate a listing file
@@ -56,21 +57,4 @@ public class CrossAssembler implements ICrossAssembler {
             codeGenerator.generateListing();
         }
     }
-
-    // public static void main(String[] args) {
-    // String fileName = null;
-
-    // if (args.length == 0) {
-    // fileName = "TestImmediate.asm";
-    // }
-
-    // // File name from the user input in the command line
-    // else {
-    // fileName = args[0];
-    // }
-
-    // CrossAssembler crossAssembler = new CrossAssembler(fileName);
-
-    // crossAssembler.assemble(null);
-    // }
 }

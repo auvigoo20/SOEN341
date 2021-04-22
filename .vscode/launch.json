@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch TestToken",
+            "request": "launch",
+            "mainClass": "Tests.TestToken",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestCGenerator",
+            "request": "launch",
+            "mainClass": "Tests.TestCGenerator",
+            "projectName": "SOEN341_7a1d1cb1"
+        },
+        {
+            "type": "java",
             "name": "Launch TestLabelError",
             "request": "launch",
             "mainClass": "TestLabelError",

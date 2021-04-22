@@ -1,3 +1,4 @@
+package Tests;
 
 import CrossAssembler.*;
 import CrossAssembler.Backend.*;

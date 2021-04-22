@@ -486,45 +486,4 @@ public class Parser implements IParser {
         return builder.toString() + "00";
     }
 
-    public static void main(String[] args) {
-
-        SymbolTable st = new SymbolTable();
-
-        ErrorReporter er = new ErrorReporter();
-        LexicalAnalyzer la = new LexicalAnalyzer("rela02.asm", st, er);
-
-        Parser parser = new Parser(er, st);
-
-        while (la.getFinishScanning() == false) {
-            IToken token = la.scan();
-            if (token != null) {
-                parser.requestToken(token);
-            }
-        }
-        IIntermediateRepresentation IR = parser.parse();
-
-        // for (ILineStatement l : IR.getIR()) {
-        //     if (l.getInstruction() != null) {
-        //         System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
-        //                 + l.getInstruction().getOperand().getOperandNumber() + " " + l.getInstruction().getMnemonic().getCStringOpcode());
-        //     }
-        //     if (l.getComment() != null) {
-        //         System.out.print(" " + l.getComment().getCommentToken());
-        //     }
-        //     if (l.getLabel() != null) {
-        //         System.out.println(" " + l.getLabel().getLabelToken());
-        //     }
-        //     System.out.println();
-        // }
-
-        for (String s : st.getSymbolTable().keySet()) {
-        System.out.println(s);
-        System.out.println(String.format("%02X", st.getSymbolTable().get(s).getOpcodeOrAddress())  );
-        }
-
-
-        // er.report();
-
-    }
-
 }
