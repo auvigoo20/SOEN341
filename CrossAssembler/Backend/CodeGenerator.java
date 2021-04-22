@@ -4,8 +4,12 @@ import CrossAssembler.Core.*;
 
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.ArrayList; 
+
+import java.io.DataOutputStream; 
+
 
 public class CodeGenerator implements ICGenerator {
     // Class attributes
@@ -14,6 +18,8 @@ public class CodeGenerator implements ICGenerator {
     private ArrayList<String> closing = new ArrayList<>(); // array containing all closings of line statement: Label Mne
                                                            // Operand Comment
     private String filename;
+
+    private ArrayList<Integer> bytes = new ArrayList<>(); //array buffer containing each byte for the executable file
 
     // private String option; //to implement for next sprints
 
@@ -224,4 +230,32 @@ public class CodeGenerator implements ICGenerator {
         outStr.close();
         return testStr;
     }
+
+    //Creating the executable file
+    public String generateExe() {
+        String exeName = filename.substring(0, filename.length()-3) + "exe";
+
+        String testStr;
+        
+        DataOutputStream dos = null;
+
+        DataOutputStream dis = null; //for testing purposes
+
+        //generating the exe file
+        try {
+			dos = new DataOutputStream(new FileOutputStream(exeName)); //create exe file
+            for(int i = 0; i < bytes.size(); i++) { //write byte by byte
+                dos.writeByte(bytes.get(i));
+                testStr = testStr + String.format("%02X ", bytes.get(i)); //for testing purposes
+            }
+			dos.flush();
+            dos.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+        return testStr;
+    }
 }
+
