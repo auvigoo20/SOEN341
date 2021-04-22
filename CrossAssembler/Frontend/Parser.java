@@ -194,7 +194,7 @@ public class Parser implements IParser {
                                 }
                             } else {
                                 instruction = new Instruction(
-                                        new Mnemonic(tokens.get(i).getTokenString(), Integer.MAX_VALUE),
+                                        new Mnemonic(tokens.get(i).getTokenString(), symbolTable.getSymbolTable().get(tokens.get(i).getTokenString()).getOpcodeOrAddress()),
                                         new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
                             }
                         }
@@ -244,8 +244,7 @@ public class Parser implements IParser {
                         }
 
                         else {
-                            int operand = Integer.parseInt(tokens.get(i + 1).getTokenString());
-                            int opcode = searchCode(tokens.get(i).getTokenString(), operand);
+                            int opcode = searchCode(tokens.get(i).getTokenString(), -1);
 
                             instruction = new Instruction(new Mnemonic(tokens.get(i).getTokenString(), opcode),
                                     new Operand(tokens.get(i + 1).getTokenString()), tokens.get(i).getPosition());
@@ -504,24 +503,24 @@ public class Parser implements IParser {
         }
         IIntermediateRepresentation IR = parser.parse();
 
-        for (ILineStatement l : IR.getIR()) {
-            if (l.getInstruction() != null) {
-                System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
-                        + l.getInstruction().getOperand().getOperandNumber() + " " + l.getInstruction().getMnemonic().getCStringOpcode());
-            }
-            if (l.getComment() != null) {
-                System.out.print(" " + l.getComment().getCommentToken());
-            }
-            if (l.getLabel() != null) {
-                System.out.println(" " + l.getLabel().getLabelToken());
-            }
-            System.out.println();
-        }
-
-        // for (String s : st.getSymbolTable().keySet()) {
-        // System.out.println(s);
-        // System.out.println(String.format("%02X", st.getSymbolTable().get(s).getOpcodeOrAddress())  );
+        // for (ILineStatement l : IR.getIR()) {
+        //     if (l.getInstruction() != null) {
+        //         System.out.print(l.getInstruction().getMnemonic().getMnemonicString() + " "
+        //                 + l.getInstruction().getOperand().getOperandNumber() + " " + l.getInstruction().getMnemonic().getCStringOpcode());
+        //     }
+        //     if (l.getComment() != null) {
+        //         System.out.print(" " + l.getComment().getCommentToken());
+        //     }
+        //     if (l.getLabel() != null) {
+        //         System.out.println(" " + l.getLabel().getLabelToken());
+        //     }
+        //     System.out.println();
         // }
+
+        for (String s : st.getSymbolTable().keySet()) {
+        System.out.println(s);
+        System.out.println(String.format("%02X", st.getSymbolTable().get(s).getOpcodeOrAddress())  );
+        }
 
 
         // er.report();

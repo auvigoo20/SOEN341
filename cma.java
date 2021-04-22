@@ -15,7 +15,7 @@ public class cma {
     private static final String bannerMessage = "Cm Cross-Assembler - Developed by Team 1.";
 
     public static void main(String[] args) {
-        String fileName = null;
+        String fileName = "";
         boolean listing = false;
         boolean verbose = false;
 
@@ -34,10 +34,10 @@ public class cma {
                     System.exit(0);
                 }
                 // to generate only .exe
-                else if (args[0].contains(".asm")) {
+                else if (args[0].contains(".")) {
                     fileName = args[0];
                 } else {
-                    System.out.println("Invalid arguments");
+                    System.out.println(helpMessage);
                     System.exit(0);
                 }
             }

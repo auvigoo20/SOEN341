@@ -1,6 +1,6 @@
 package CrossAssembler.Backend;
-import CrossAssembler.Core.*;
 
+import CrossAssembler.Core.*;
 
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
@@ -79,57 +79,79 @@ public class CodeGenerator implements ICGenerator {
             // if the current line statement contains a mnemonic
             if (intRep.get(i).getInstruction() != null) {
 
-                // for each symbol in the table
-                for (String tableMne : symbols.getSymbolTable().keySet()) {
+                mne = intRep.get(i).getInstruction().getMnemonic().getMnemonicString();
 
-                    if (tableMne.equals(intRep.get(i).getInstruction().getMnemonic().getMnemonicString())) { // if table
-                                                                                                             // mnemonic
-                                                                                                             // is the
-                                                                                                             // same as
-                                                                                                             // line
-                                                                                                             // mnemonic
-
-                        // assign all the info into the appropriate variables
-                        // label = intRep.get(i).getLabel().getLabelToken(); //for later
-                        mne = intRep.get(i).getInstruction().getMnemonic().getMnemonicString();
-
-                        // first check if operand is a number or a string
-                        if (intRep.get(i).getInstruction().getOperand().isOperandNumber()) {
-                            operandNumber = intRep.get(i).getInstruction().getOperand().getOperandNumber();
-                        } else {
-                            operandString = intRep.get(i).getInstruction().getOperand().getOperandString();
-                        }
-
-                        // find the opcode to the mnemonic
-                        // .cstring "ABC"
-                        if (mne.equals(".cstring")) { // evaluate opcode for cstring
-                            String string = operandString;
-                            String cstring;
-                            if (string.length() > 4) // if there are more than 3 characters to evaluate (1 is a
-                                                     // quotation mark)
-                                cstring = string.substring(string.indexOf("\"") + 1, 4); // ignore 1st quotation mark
-                            else
-                                cstring = string.substring(string.indexOf("\"") + 1, string.lastIndexOf("\"")); // ignore
-                                                                                                                // quotation
-                                                                                                                // marks
-
-                            char[] ch = cstring.toCharArray();
-
-                            StringBuilder builder = new StringBuilder();
-                            for (char c : ch) { // evaluate the hex for each char
-                                String Hex = String.format("%H", c);
-                                builder.append(Hex + " ");
-                            }
-                            code = builder.toString() + "00";
-                        } else { // opcode for every other mnemonic
-                            int opcode = intRep.get(i).getInstruction().getMnemonic().getOpcode();
-                            if (opcode == -1)
-                                code = "";
-                            else
-                                code = String.format("%02X", opcode); // Convert opcode to hexadecimal (2bit)
-                        }
-                    }
+                if (mne.equals(".cstring")) {
+                    operandString = intRep.get(i).getInstruction().getOperand().getOperandString();
+                    code = intRep.get(i).getInstruction().getMnemonic().getCStringOpcode();
+                } 
+                else {
+                    int opcode = intRep.get(i).getInstruction().getMnemonic().getOpcode();
+                    if (opcode == -1)
+                        code = "";
+                    else
+                        code = String.format("%02X", opcode); // Convert opcode to hexadecimal (2bit)
+                    operandNumber = intRep.get(i).getInstruction().getOperand().getOperandNumber();
                 }
+
+                // // for each symbol in the table
+                // for (String tableMne : symbols.getSymbolTable().keySet()) {
+
+                // if
+                // (tableMne.equals(intRep.get(i).getInstruction().getMnemonic().getMnemonicString()))
+                // { // if table
+                // // mnemonic
+                // // is the
+                // // same as
+                // // line
+                // // mnemonic
+
+                // // assign all the info into the appropriate variables
+                // // label = intRep.get(i).getLabel().getLabelToken(); //for later
+                // mne = intRep.get(i).getInstruction().getMnemonic().getMnemonicString();
+
+                // // first check if operand is a number or a string
+                // if (intRep.get(i).getInstruction().getOperand().isOperandNumber()) {
+                // operandNumber =
+                // intRep.get(i).getInstruction().getOperand().getOperandNumber();
+                // } else {
+                // operandString =
+                // intRep.get(i).getInstruction().getOperand().getOperandString();
+                // }
+
+                // // find the opcode to the mnemonic
+                // // .cstring "ABC"
+                // if (mne.equals(".cstring")) { // evaluate opcode for cstring
+                // String string = operandString;
+                // String cstring;
+                // if (string.length() > 4) // if there are more than 3 characters to evaluate
+                // (1 is a
+                // // quotation mark)
+                // cstring = string.substring(string.indexOf("\"") + 1, 4); // ignore 1st
+                // quotation mark
+                // else
+                // cstring = string.substring(string.indexOf("\"") + 1,
+                // string.lastIndexOf("\"")); // ignore
+                // // quotation
+                // // marks
+
+                // char[] ch = cstring.toCharArray();
+
+                // StringBuilder builder = new StringBuilder();
+                // for (char c : ch) { // evaluate the hex for each char
+                // String Hex = String.format("%H", c);
+                // builder.append(Hex + " ");
+                // }
+                // code = builder.toString() + "00";
+                // } else { // opcode for every other mnemonic
+                // int opcode = intRep.get(i).getInstruction().getMnemonic().getOpcode();
+                // if (opcode == -1)
+                // code = "";
+                // else
+                // code = String.format("%02X", opcode); // Convert opcode to hexadecimal (2bit)
+                // }
+                // }
+                // }
 
             }
 
@@ -138,7 +160,7 @@ public class CodeGenerator implements ICGenerator {
                 comment = intRep.get(i).getComment().getCommentToken(); // to do this sprint
             }
 
-            if(intRep.get(i).getLabel() != null){
+            if (intRep.get(i).getLabel() != null) {
                 label = intRep.get(i).getLabel().getLabelToken();
             }
 
@@ -163,6 +185,7 @@ public class CodeGenerator implements ICGenerator {
             operandString = null;
             operandNumber = Integer.MAX_VALUE;
             comment = "";
+            code = "";
         }
     }
 
@@ -173,7 +196,7 @@ public class CodeGenerator implements ICGenerator {
                                       // naming
 
         String testStr;
-        String listName = filename.substring(0, filename.length()-3) + "lst";
+        String listName = filename.substring(0, filename.length() - 3) + "lst";
         traverseIR();
 
         // create listing file to output to
