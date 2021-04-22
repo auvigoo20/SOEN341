@@ -42,6 +42,11 @@ _Backend Package Architecture:_
 <img src="https://github.com/auvigoo20/SOEN341/blob/master/diagrams/Backend_package.png" />
 </p>
 
+## UML Diagram
+
+<p align="center">
+<img src="https://github.com/auvigoo20/SOEN341/blob/master/diagrams/UML.png" />
+</p>
 
 ### **AUnit Testing**  
 
