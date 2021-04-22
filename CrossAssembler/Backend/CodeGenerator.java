@@ -124,6 +124,7 @@ public class CodeGenerator implements ICGenerator {
                             StringBuilder builder = new StringBuilder();
                             for (char c : ch) { // evaluate the hex for each char
                                 String Hex = String.format("%H", c);
+                                bytes.add(Integer.parseInt("0x" + Hex)); //THEORY: adding cstring opcode to the bytes buffer array
                                 builder.append(Hex + " ");
                             }
                             code = builder.toString() + "00";
@@ -131,8 +132,10 @@ public class CodeGenerator implements ICGenerator {
                             int opcode = intRep.get(i).getInstruction().getMnemonic().getOpcode();
                             if (opcode == -1)
                                 code = "";
-                            else
+                            else {
                                 code = String.format("%02X", opcode); // Convert opcode to hexadecimal (2bit)
+                                bytes.add(opcode); //THEORY: adding inherent/immediate opcode to the bytes buffer array
+                            }
                         }
                     }
                 }
