@@ -1,8 +1,6 @@
 
 # SOEN 341: Cm Cross-Assembler
 
-#### Before merging your branch or pushing into `master`, please make sure to delete all `.class` files created after compiling java files in the command line
-
 ## Key Concept Model
 <p align="center">
 <img src="https://github.com/auvigoo20/SOEN341/blob/master/diagrams/KeyConcept.png" />
@@ -42,45 +40,28 @@ Follow the following commands to run the tests:
 
 ```
 javac -Xlint:unchecked aunit.java
-javac TestCGenerator.java
-javac TestComment.java
-javac TestErrorMessage.java
-javac TestErrorReporter.java
-javac TestInstruction.java
-javac TestLexicalAnalyzer.java
-javac TestLineStatement.java
-javac TestParser.java
-javac TestPosition.java
-javac TestSymbolTable.java
-javac TestToken.java
-java TestCGenerator > Tests.txt
-java TestComment >> Tests.txt
-java TestErrorMessage >> Tests.txt
-java TestErrorReporter >> Tests.txt
-java TestInstruction >> Tests.txt
-java TestLexicalAnalyzer >> Tests.txt
-java TestLineStatement >> Tests.txt
-java TestParser >> Tests.txt
-java TestPosition >> Tests.txt
-java TestSymbolTable >> Tests.txt
-java TestToken >> Tests.txt
+javac [fileToTest.java]
+java [fileToTest] > Tests.txt
 java aunit Tests.txt
 ```
 
-The final output should be:
+The output should be:
 
 ```
-...........
+.
 OK
 ```
 
-### Running the `Driver.java`
-To run the code to generate the `.lst` file from the `.asm` file, you need to run it in command line since we want the user to input the `.asm` file name
-without using any `Scanner` class. In order to do so, I added a constructor that will take in the value of `args[0]`, which is the first string that the user inputs in the command line when running `Driver.java`. In our case, `args[0] = "TestInherentMnemonics.asm"`
-
-Follow these steps:
+### Running the `cma.java`
 
 ```
-javac Driver.java
-java Driver TestInherentMnemonics.asm
+Usage: java cma [ Options ] <file>.asm
+
+where options are:
+
+Short version  Long version    Meaning
+-h             -help           Print the usage of the program.
+-v             -verbose        Verbose during the execution of the program.
+-b             -banner         Print the banner of the program.
+-l             -listing        Generate a listing of the assembly file.
 ```
