@@ -1,6 +1,16 @@
 
 # SOEN 341: Cm Cross-Assembler
 
+## Project Purpose
+
+This project uses the Java programming language to create a cross-assembler that can process the Cm assembly language (a fictional language created by Dr. Michel de Champlain). The code reads an assembly language source code file and create an in-memory intermediate representation (IR) of the assembly language program. It then traverses this IR and writes the executable file.
+
+The front-end consists of a lexical analyzer and parser, which translate the source code into an in-memory intermediate representation (IR) built from a sequence of instructions. Two additional helpers are a symbol table (for all opcodes and labels) and an error reporter.
+
+The back-end consists of a code generator that traverses the IR and generates assembly source code (.asm) listing and/or binary (virtual) machine code.
+
+The functionality of the cross-assembler is represented in the Key Concept Model.
+
 ## Key Concept Model
 <p align="center">
 <img src="https://github.com/auvigoo20/SOEN341/blob/master/diagrams/KeyConcept.png" />
@@ -35,6 +45,8 @@ _Backend Package Architecture:_
 
 ### **AUnit Testing**  
 
+In order to perform unit and integration tests, `AUnit` (a testing software developed by Dr. Michel de Champlain) was used.
+
 
 Follow the following commands to run the tests: 
 
@@ -52,7 +64,11 @@ The output should be:
 OK
 ```
 
-### Running the `cma.java`
+### Running the cross-assembler
+
+The `cma.java` file contains the main method to run the cross-assembler. The input assembly file should be written in `Cm`. The following shows the possible options and format to run the cross-assembler in the command-line:
+
+_*Note: make sure to compile `cma.java` (`javac cma.java`) before running the following commands._
 
 ```
 Usage: java cma [ Options ] <file>.asm
@@ -65,3 +81,7 @@ Short version  Long version    Meaning
 -b             -banner         Print the banner of the program.
 -l             -listing        Generate a listing of the assembly file.
 ```
+
+An example of running `TestImmediate.asm` to generate the verbose, listing and executable file:
+
+`java cma -v -l TestImmediate.asm`
