@@ -16,7 +16,7 @@ public class TestCGenerator {
         table.insertMnemonic("stv.u3", new Mnemonic("stv.u3", 175));
         table.insertMnemonic("ldc.i3", new Mnemonic("ldc.i3", 151));
         table.insertMnemonic("ldv.u3", new Mnemonic("ldv.u3", 162));
-        //table.insertMnemonic(".cstring", new Mnemonic(".cstring", "\"AB\""));
+        table.insertMnemonic(".cstring", new Mnemonic(".cstring", "\"AB\""));
 
         // add test data in test IR
 
@@ -44,13 +44,15 @@ public class TestCGenerator {
         System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "2", "0001", "98", "", "addv.u3", "0", "; OK, number <u3> [0..7]."));
         System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "3", "0002", "AF", "", "stv.u3", "7", "; OK, number <u3> [0..7]."));
         System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "4", "0003", "97", "", "ldc.i3", "-1", "; OK, number <i3> [-4..3]."));
-        System.out.println(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "5", "0004", "A2", "", "ldv.u3", "2", "; OK, number <u3> [0..7]."));
-        //System.out.println(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "6", "0005", "41 42 00", "", ".cstring", "\"AB\"", "; AB has 3 bytes"));
+        System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "5", "0004", "A2", "", "ldv.u3", "2", "; OK, number <u3> [0..7]."));
+        //System.out.print(String.format("[%-5s%-5s%-6s%-10s%-10s%-10s%-10s]", "6", "0005", "41 42 00", "", ".cstring", "\"AB\"", "; AB has 3 bytes"));
+        System.out.println("[85 98 AF 97 A2 ]");
 
         // Tested output
 
         CodeGenerator generate = new CodeGenerator("listing.asm", IR, table);
-        System.out.println(generate.generateListing()); //need to test
+        System.out.print(generate.generateListing()); //need to test
+        System.out.println(generate.generateExe());
 
     }
 

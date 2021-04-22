@@ -30,6 +30,7 @@ public class CodeGenerator implements ICGenerator {
         this.filename = filename;
         this.IR = IR;
         this.symbols = symbols;
+        traverseIR();
     }
 
     // methods
@@ -42,6 +43,7 @@ public class CodeGenerator implements ICGenerator {
     private void traverseIR() {
         int lineNbr = 1; // line number decimal output, will be converted to hexadecimal
         int counter = 0; // decimal counter for line number and address, will be converted to hexadecimal
+        int size = 0; //size of the instruction
         String label = "";
         String mne = "";
         String operandString = null;
@@ -86,17 +88,23 @@ public class CodeGenerator implements ICGenerator {
             if (intRep.get(i).getInstruction() != null) {
 
                 mne = intRep.get(i).getInstruction().getMnemonic().getMnemonicString();
+                size = intRep.get(i).getInstruction().getMnemonic().getSize();
 
                 if (mne.equals(".cstring")) {
                     operandString = intRep.get(i).getInstruction().getOperand().getOperandString();
                     code = intRep.get(i).getInstruction().getMnemonic().getCStringOpcode();
+                    String[] byteCode = code.split(" ");
+                    for(int j = 0; j < byteCode.length; j++)
+                        bytes.add(Integer.parseInt("0x" + byteCode[j]));
                 } 
                 else {
                     int opcode = intRep.get(i).getInstruction().getMnemonic().getOpcode();
                     if (opcode == -1)
                         code = "";
-                    else
+                    else {
                         code = String.format("%02X", opcode); // Convert opcode to hexadecimal (2bit)
+                        bytes.add(opcode);
+                    }
                     operandNumber = intRep.get(i).getInstruction().getOperand().getOperandNumber();
                 }
 
@@ -185,7 +193,7 @@ public class CodeGenerator implements ICGenerator {
 
             // increment line number and address
             lineNbr++;
-            counter++;
+            counter += size;
             label = "";
             mne = "";
             operandString = null;
@@ -203,7 +211,6 @@ public class CodeGenerator implements ICGenerator {
 
         String testStr;
         String listName = filename.substring(0, filename.length() - 3) + "lst";
-        traverseIR();
 
         // create listing file to output to
         PrintWriter outStr = null;
@@ -235,11 +242,9 @@ public class CodeGenerator implements ICGenerator {
     public String generateExe() {
         String exeName = filename.substring(0, filename.length()-3) + "exe";
 
-        String testStr;
+        String testStr = "[";
         
         DataOutputStream dos = null;
-
-        DataOutputStream dis = null; //for testing purposes
 
         //generating the exe file
         try {
@@ -254,6 +259,8 @@ public class CodeGenerator implements ICGenerator {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+
+        testStr += "]";
 
         return testStr;
     }
